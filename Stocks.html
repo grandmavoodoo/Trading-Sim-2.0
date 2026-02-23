@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trading Sim 2.0</title>
+<style>
+  :root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --dark-color: #1f2937;
+    --light-color: #f9fafb;
+    --border-color: #e5e7eb;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  #app {
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    box-shadow: var(--shadow);
+  }
+  header {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .game-title {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  #cash-display {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+  }
+  nav {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  nav button {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 16px;
+    margin: 0 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  nav button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  nav button.active {
+    background-color: white;
+    color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: var(--shadow);
+  }
+  main {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    background-color: #f8fafc;
+  }
+  footer {
+    background-color: #f1f5f9;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+    border-top: 1px solid var(--border-color);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li.stock-item, li.investment-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  li.stock-item:hover, li.investment-item:hover {
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: var(--dark-color);
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:hover {
+    background-color: #f8fafc;
+  }
+  input[type=number] {
+    width: 100px;
+    margin-left: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin: 0 5px;
+  }
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+  }
+  .btn-success {
+    background-color: var(--success-color);
+    color: white;
+  }
+  .btn-success:hover {
+    background-color: #059669;
+  }
+  .btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+  }
+  .btn-danger:hover {
+    background-color: #dc2626;
+  }
+  .btn-warning {
+    background-color: var(--warning-color);
+    color: white;
+  }
+  .btn-warning:hover {
+    background-color: #d97706;
+  }
+  .btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+  }
+  .btn-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  button.back-btn {
+    margin-bottom: 15px;
+    background-color: #f1f5f9;
+    color: var(--dark-color);
+  }
+  #current-price {
+    font-weight: 700;
+    font-size: 22px;
+    margin: 15px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  svg {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: block;
+    margin: 20px auto;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  a.portfolio-stock-link, a.portfolio-investment-link {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a.portfolio-stock-link:hover, a.portfolio-investment-link:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+  }
+  label.color-label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: 600;
+    color: var(--dark-color);
+  }
+  input[type=color] {
+    width: 120px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .reset-btn {
+    margin-top: 25px;
+    padding: 12px 20px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  .reset-btn:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .order-section {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .order-section h3 {
+    margin-top: 0;
+    color: var(--dark-color);
+  }
+  .order-table {
+    margin-top: 15px;
+    width: 100%;
+  }
+  .order-table th, .order-table td {
+    padding: 10px;
+    text-align: center;
+  }
+  .cancel-order-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .loading-message {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+    font-size: 18px;
+  }
+  .price-change {
+    transition: color 0.3s ease;
+  }
+  .price-up {
+    color: var(--success-color);
+    font-weight: 600;
+  }
+  .price-down {
+    color: var(--danger-color);
+    font-weight: 600;
+  }
+  .positive {
+    color: var(--success-color);
+  }
+  .negative {
+    color: var(--danger-color);
+  }
+  .section-title {
+    color: var(--dark-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
+  .portfolio-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+  }
+  .portfolio-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+  .portfolio-gain-loss {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  .action-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+  }
+  .action-group label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
+  }
+
+  /* Detailed Chart Modal Styles */
+  #detailed-chart-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #detailed-chart-content {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 900px;
+    max-height: 90%;
+    overflow-y: auto;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
+  #detailed-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  #detailed-chart-header h3 {
+    margin: 0;
+    color: var(--dark-color);
+    font-size: 22px;
+  }
+  #close-detailed-chart {
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    color: #94a3b8;
+    transition: color 0.2s;
+  }
+  #close-detailed-chart:hover {
+    color: var(--danger-color);
+  }
+  #timeframe-buttons {
+    margin: 15px 0;
+  }
+  #timeframe-buttons button {
+    margin-right: 10px;
+    padding: 8px 16px;
+    background-color: #f1f5f9;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  #timeframe-buttons button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+  #detailed-chart-graph {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #f8fafc;
+  }
+  .chart-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .chart-controls input {
+    width: 120px;
+    margin: 0 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+  }
+  .chart-order-section {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: #f8fafc;
+  }
+  .chart-order-section h4 {
+    margin-top: 0;
+    color: var(--dark-color);
+  }
+  .chart-order-section input {
+    width: 100px;
+    margin: 0 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+  }
+  .chart-order-section button {
+    margin-left: 8px;
+    padding: 8px 16px;
+  }
+  .active-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .active-orders-table th, .active-orders-table td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: center;
+  }
+  .active-orders-table th {
+    background-color: #f1f5f9;
+  }
+  .trade-history-table th, .trade-history-table td {
+    text-align: right;
+  }
+  .trade-history-table th:first-child, .trade-history-table td:first-child {
+    text-align: left;
+  }
+  .trade-history-table th:last-child, .trade-history-table td:last-child {
+    text-align: right;
+  }
+  .checkmark {
+    color: var(--success-color);
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  .market-cap-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+  }
+  .market-cap-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+  }
+  .market-cap-change {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+    }
+    nav {
+      flex-direction: column;
+      align-items: center;
+    }
+    nav button {
+      margin: 5px 0;
+      width: 90%;
+    }
+    .header-content {
+      flex-direction: column;
+      gap: 15px;
+    }
+    #cash-display {
+      font-size: 1rem;
+    }
+    .action-buttons {
+      flex-direction: column;
+    }
+    .action-buttons .btn {
+      width: 100%;
+      margin: 5px 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="header-content">
+      <h1 class="game-title">Trading Sim 2.0</h1>
+      <div id="cash-display">Cash: $10,000.00</div>
+    </div>
+    <nav>
+      <button id="nav-portfolio">Portfolio</button>
+      <button id="nav-stocks" class="active">Stocks</button>
+      <button id="nav-market-cap">Market Cap</button>
+      <button id="nav-investments">Investments</button>
+      <button id="nav-trade-history">Trade History</button>
+      <button id="nav-vegas">Vegas</button>
+      <button id="nav-settings">Settings</button>
+    </nav>
+  </header>
+  <main id="main-content">
+    <!-- Content injected by JS -->
+  </main>
+  <footer>© Trading Sim 2.0 - UPDATE: 0.0.4 - Made By Mr.SusBus</footer>
+</div>
+
+<!-- Detailed Chart Modal -->
+<div id="detailed-chart-modal">
+  <div id="detailed-chart-content">
+    <div id="detailed-chart-header">
+      <h3 id="detailed-chart-title">Detailed Chart</h3>
+      <button id="close-detailed-chart" title="Close">×</button>
+    </div>
+    <div id="timeframe-buttons">
+      <button data-timeframe="monthly">Monthly</button>
+      <button data-timeframe="weekly">Weekly</button>
+      <button data-timeframe="daily" class="active">Daily</button>
+      <button data-timeframe="minute">Minute</button>
+    </div>
+    <svg id="detailed-chart-graph"></svg>
+
+    <div class="chart-controls">
+      <div>
+        <label>Zoom: <input type="range" id="zoom-slider" min="10" max="100" value="50"></label>
+      </div>
+      <div>
+        <button id="pan-left" class="btn btn-outline">←</button>
+        <button id="pan-right" class="btn btn-outline">→</button>
+      </div>
+    </div>
+
+    <div class="chart-order-section">
+      <h4>Place Buy/Sell Order</h4>
+      <div>
+        <label>Amount: <input type="number" id="modal-order-amount" min="0.001" step="0.001" value="1" /></label>
+        <label>Price: $<input type="number" id="modal-order-price" min="0.01" step="0.01" value="0" /></label>
+        <button id="modal-buy-btn" class="btn btn-success">Buy</button>
+        <button id="modal-sell-btn" class="btn btn-danger">Sell</button>
+        <button id="modal-short-btn" class="btn btn-warning">Short</button>
+        <button id="modal-cover-btn" class="btn btn-primary">Cover</button>
+      </div>
+    </div>
+
+    <div class="chart-order-section">
+      <h4>Active Orders</h4>
+      <table class="active-orders-table" id="modal-orders-table">
+        <thead>
+          <tr><th>Type</th><th>Amount</th><th>Price</th><th>Action</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/misc/vegas.js"></script>
+
+
+<script>
+// Stocks data with supply
+const stocks = [
+  { symbol: 'SUS', name: 'SUSBUS Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'AAPL', name: 'Apple Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'GOOGL', name: 'Alphabet Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'MSFT', name: 'Microsoft Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'TSLA', name: 'Tesla Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'WMT', name: 'Walmart Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'GME', name: 'GameStop Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'VALVE', name: 'Valve Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'META', name: 'Meta Platforms Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'AMZN', name: 'Amazon.com Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'NFLX', name: 'Netflix Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'NVDA', name: 'NVIDIA Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'DIS', name: 'The Walt Disney Company', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'PYPL', name: 'PayPal Holdings Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'ADBE', name: 'Adobe Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'INTC', name: 'Intel Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'CSCO', name: 'Cisco Systems Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'ORCL', name: 'Oracle Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'IBM', name: 'International Business Machines Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'BA', name: 'The Boeing Company', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'JNJ', name: 'Johnson & Johnson', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'PFE', name: 'Pfizer Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'MRK', name: 'Merck & Co. Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'T', name: 'AT&T Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'VZ', name: 'Verizon Communications Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'KO', name: 'The Coca-Cola Company', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'PEP', name: 'PepsiCo Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'MCD', name: "McDonald's Corporation", supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'NKE', name: 'Nike Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'XOM', name: 'Exxon Mobil Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'CVX', name: 'Chevron Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'JPM', name: 'JPMorgan Chase & Co.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'BAC', name: 'Bank of America Corporation', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'WFC', name: 'Wells Fargo & Company', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'C', name: 'Citigroup Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'GS', name: 'The Goldman Sachs Group Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'MS', name: 'Morgan Stanley', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'BABA', name: 'Alibaba Group Holding Limited', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'TSM', name: 'Taiwan Semiconductor Manufacturing Company Limited', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'CRM', name: 'Salesforce Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'UBER', name: 'Uber Technologies Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'LYFT', name: 'Lyft Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'SQ', name: 'Block Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'ZM', name: 'Zoom Video Communications Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'SNAP', name: 'Snap Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'TWTR', name: 'Twitter Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'SHOP', name: 'Shopify Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'SPOT', name: 'Spotify Technology S.A.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'DOCU', name: 'DocuSign Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'AMD', name: 'Advanced Micro Devices Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'QCOM', name: 'QUALCOMM Incorporated', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'TXN', name: 'Texas Instruments Incorporated', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'INTU', name: 'Intuit Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'ADP', name: 'Automatic Data Processing Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'ISRG', name: 'Intuitive Surgical Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'MDLZ', name: 'Mondelez International Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'TMO', name: 'Thermo Fisher Scientific Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'GE', name: 'General Electric Company', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'CAT', name: 'Caterpillar Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+  { symbol: 'PPMY', name: 'Quantum Technologies LLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'XNDU', name: 'Prime Platforms Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'UOU', name: 'Apex Services Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'IHA', name: 'Core Ventures SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'QPG', name: 'Core Technologies PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'OSQ', name: 'United Platforms SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'PCER', name: 'Core Industries Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'OV', name: 'First Energy Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'LFHI', name: 'Quantum Analytics PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'DZNB', name: 'American Labs Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'DB', name: 'United Technologies Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'YU', name: 'Hyper Labs Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'JT', name: 'Synergy Technologies AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'LJNH', name: 'Ultra Corporation LLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'HKWE', name: 'First Enterprises Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'IWYS', name: 'Ultra Labs Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'NLDT', name: 'Core Enterprises Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'TDM', name: 'Apex Services Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'XVK', name: 'United Systems Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'NH', name: 'United Industries AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'TQD', name: 'Hyper Platforms Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'BQB', name: 'Vertex Technologies Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'HVU', name: 'Quantum Solutions SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'VM', name: 'Vertex Analytics Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'TEY', name: 'Apex Ventures GmbH', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'EA', name: 'National Platforms Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'OOCH', name: 'Prime Robotics LLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'CN', name: 'First Holdings GmbH', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'NRJ', name: 'Synergy Solutions PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'NMCN', name: 'Omni Systems GmbH', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'TTPB', name: 'Vertex Networks Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'ZIN', name: 'National Energy Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'YMZ', name: 'Omni Solutions Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'LH', name: 'United Solutions Inc.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'AFFG', name: 'Tech Dynamics AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'KUYF', name: 'Quantum Labs AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'IQQ', name: 'Nexus Industries Corp.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'VCO', name: 'Future Solutions SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'JLL', name: 'Global Enterprises PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'ZKCK', name: 'Synergy Networks SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'XR', name: 'Omni Ventures AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'DCZ', name: 'National Healthcare AG', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'YO', name: 'Global Robotics SA', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'PA', name: 'Apex Industries GmbH', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'NC', name: 'Infinity Energy PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'VWCI', name: 'Infinity Networks LLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'REU', name: 'Prime Holdings PLC', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'RXLD', name: 'Ultra Systems GmbH', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'MO', name: 'Core Dynamics Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+{ symbol: 'YC', name: 'United Industries Ltd.', supply: Math.floor(Math.random() * 750000) + 250000 },
+];
+
+// Investments data
+const investments = [
+  { symbol: 'XAU', name: 'Gold', type: 'metal' },
+  { symbol: 'XAG', name: 'Silver', type: 'metal' },
+  { symbol: 'XPT', name: 'Platinum', type: 'metal' },
+  { symbol: 'XTI', name: 'Titanium', type: 'metal' },
+  { symbol: 'bitcoin', name: 'Bitcoin', type: 'crypto', initialPrice: 96000 },
+  { symbol: 'ethereum', name: 'Ethereum', type: 'crypto', initialPrice: 2600 },
+  { symbol: 'solana', name: 'Solana', type: 'crypto', initialPrice: 180 },
+  { symbol: 'cardano', name: 'Cardano', type: 'crypto', initialPrice: 0.85 },
+  { symbol: 'polkadot', name: 'Polkadot', type: 'crypto', initialPrice: 6.50 },
+  { symbol: 'dogecoin', name: 'Dogecoin', type: 'crypto', initialPrice: 0.25 },
+  { symbol: 'chainlink', name: 'Chainlink', type: 'crypto', initialPrice: 18.50 },
+  { symbol: 'litecoin', name: 'Litecoin', type: 'crypto', initialPrice: 105.00 },
+];
+
+// Generate price history
+function generatePriceHistory(days = 180, minPrice = 10, maxPrice = 1500) {
+  const prices = [];
+  let price = minPrice + Math.random() * (maxPrice - minPrice);
+  for (let i = days - 1; i >= 0; i--) {
+    const volatility = price * 0.05;
+    price += (Math.random() - 0.5) * volatility;
+    price = Math.max(price, minPrice);
+    prices.unshift({ day: i, price: parseFloat(price.toFixed(3)) });
+  }
+  return prices;
+}
+
+const priceHistories = {};
+stocks.forEach(stock => {
+  priceHistories[stock.symbol] = generatePriceHistory(180, 10, 1500);
+});
+investments.forEach(inv => {
+  if (inv.type === 'metal') {
+    priceHistories[inv.symbol] = generatePriceHistory(180, 10, 1500);
+  } else if (inv.type === 'crypto') {
+    const base = inv.initialPrice || 100;
+    priceHistories[inv.symbol] = generatePriceHistory(180, base * 0.5, base * 1.5);
+  }
+});
+
+// Market cap history for the past 180 days
+let marketCapHistory = [];
+function calculateMarketCapHistory() {
+  marketCapHistory = [];
+  for (let i = 0; i < 180; i++) {
+    let totalMarketCap = 0;
+    stocks.forEach(stock => {
+      const priceHistory = priceHistories[stock.symbol];
+      if (priceHistory && priceHistory.length > 0) {
+        // Use the price at index i if it exists, otherwise use the last available price
+        const priceObj = priceHistory[i] || priceHistory[priceHistory.length - 1];
+        totalMarketCap += priceObj.price * stock.supply;
+      } else {
+        totalMarketCap += 100 * stock.supply;
+      }
+    });
+    marketCapHistory.push({
+      day: i,
+      marketCap: totalMarketCap
+    });
+  }
+}
+
+let orders = [];
+let currentPage = 'stocks';
+let selectedStock = null;
+let selectedInvestment = null;
+let portfolio = {};
+let shortPositions = {};
+let cash = 10000;
+let colors = {
+  mainBg: '#ffff',
+  header: '#2563eb',
+  background: '#f0f9ff',
+  graphLine: '#2563eb',
+};
+let tradeHistory = [];
+let graphLineColor = colors.graphLine;
+
+const mainContent = document.getElementById('main-content');
+const navStocks = document.getElementById('nav-stocks');
+const navPortfolio = document.getElementById('nav-portfolio');
+const navMarketCap = document.getElementById('nav-market-cap');
+const navSettings = document.getElementById('nav-settings');
+const navTradeHistory = document.getElementById('nav-trade-history');
+const navInvestments = document.getElementById('nav-investments');
+const navVegas = document.getElementById('nav-vegas');
+const cashDisplay = document.getElementById('cash-display');
+
+navStocks.addEventListener('click', () => {
+  currentPage = 'stocks';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navPortfolio.addEventListener('click', () => {
+  currentPage = 'portfolio';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navMarketCap.addEventListener('click', () => {
+  currentPage = 'marketCap';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navSettings.addEventListener('click', () => {
+  currentPage = 'settings';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navTradeHistory.addEventListener('click', () => {
+  currentPage = 'tradeHistory';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navInvestments.addEventListener('click', () => {
+  currentPage = 'investments';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+navVegas.addEventListener('click', () => {
+  currentPage = 'vegas';
+  selectedStock = null;
+  selectedInvestment = null;
+  updateNav();
+  render();
+});
+
+function updateNav() {
+  navStocks.classList.toggle('active', currentPage === 'stocks');
+  navPortfolio.classList.toggle('active', currentPage === 'portfolio');
+  navMarketCap.classList.toggle('active', currentPage === 'marketCap');
+  navSettings.classList.toggle('active', currentPage === 'settings');
+  navTradeHistory.classList.toggle('active', currentPage === 'tradeHistory');
+  navInvestments.classList.toggle('active', currentPage === 'investments');
+  navVegas.classList.toggle('active', currentPage === 'vegas');
+}
+
+function updateCashDisplay() {
+  cashDisplay.textContent = `Cash: $${cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+}
+
+function saveProgress() {
+  localStorage.setItem('stockGameCash', cash.toFixed(2));
+  localStorage.setItem('stockGamePortfolio', JSON.stringify(portfolio));
+  localStorage.setItem('stockGameShorts', JSON.stringify(shortPositions));
+  localStorage.setItem('stockGamePrices', JSON.stringify(priceHistories));
+  localStorage.setItem('stockGameColors', JSON.stringify(colors));
+  localStorage.setItem('stockGameTradeHistory', JSON.stringify(tradeHistory));
+  localStorage.setItem('stockGameOrders', JSON.stringify(orders));
+  localStorage.setItem('stockGameMarketCapHistory', JSON.stringify(marketCapHistory));
+  // Save stock supplies
+  const stockSupplies = {};
+  stocks.forEach(stock => {
+    stockSupplies[stock.symbol] = stock.supply;
+  });
+  localStorage.setItem('stockGameSupplies', JSON.stringify(stockSupplies));
+}
+
+async function loadProgress() {
+  const savedCash = localStorage.getItem('stockGameCash');
+  const savedPortfolio = localStorage.getItem('stockGamePortfolio');
+  const savedShorts = localStorage.getItem('stockGameShorts');
+  const savedPrices = localStorage.getItem('stockGamePrices');
+  const savedColors = localStorage.getItem('stockGameColors');
+  const savedTradeHistory = localStorage.getItem('stockGameTradeHistory');
+  const savedOrders = localStorage.getItem('stockGameOrders');
+  const savedMarketCapHistory = localStorage.getItem('stockGameMarketCapHistory');
+  const savedSupplies = localStorage.getItem('stockGameSupplies');
+
+  if (savedCash !== null) cash = parseFloat(savedCash);
+  if (savedPortfolio !== null) portfolio = JSON.parse(savedPortfolio);
+  if (savedShorts !== null) shortPositions = JSON.parse(savedShorts);
+  if (savedPrices !== null) {
+    const parsedPrices = JSON.parse(savedPrices);
+    stocks.forEach(stock => {
+      if (parsedPrices[stock.symbol]) priceHistories[stock.symbol] = parsedPrices[stock.symbol];
+    });
+    investments.forEach(inv => {
+      if (parsedPrices[inv.symbol]) priceHistories[inv.symbol] = parsedPrices[inv.symbol];
+    });
+  }
+  if (savedColors !== null) colors = JSON.parse(savedColors);
+  if (savedTradeHistory !== null) tradeHistory = JSON.parse(savedTradeHistory);
+  if (savedOrders !== null) orders = JSON.parse(savedOrders);
+  if (savedMarketCapHistory !== null) marketCapHistory = JSON.parse(savedMarketCapHistory);
+  
+  // Load stock supplies
+  if (savedSupplies !== null) {
+    const parsedSupplies = JSON.parse(savedSupplies);
+    stocks.forEach(stock => {
+      if (parsedSupplies[stock.symbol]) {
+        stock.supply = parsedSupplies[stock.symbol];
+      }
+    });
+  } else {
+    // Initialize supplies if not found
+    stocks.forEach(stock => {
+      if (!stock.supply) {
+        stock.supply = Math.floor(Math.random() * 750000) + 250000;
+      }
+    });
+  }
+  
+  // Calculate market cap history if not found
+  if (marketCapHistory.length === 0) {
+    calculateMarketCapHistory();
+  }
+  
+  applyColors();
+}
+
+function applyColors() {
+  document.body.style.setProperty('--main-bg-color', colors.mainBg);
+  document.body.style.setProperty('--header-color', colors.header);
+  document.body.style.setProperty('--background-color', colors.background);
+  graphLineColor = colors.graphLine;
+
+  // Update CSS variables for the app
+  const root = document.documentElement;
+  root.style.setProperty('--primary-color', colors.header);
+  root.style.setProperty('--secondary-color', colors.header + 'dd'); // Slightly transparent for secondary
+  
+  // Update body background (the gradient or solid color)
+  document.body.style.background = colors.background;
+  
+  // Update app container background
+  const app = document.getElementById('app');
+  if (app) app.style.backgroundColor = colors.mainBg;
+
+  updateCashDisplay();
+  updateNav();
+}
+
+function placeOrder(symbol, type, amount, price) {
+  amount = parseFloat(amount);
+  price = parseFloat(price);
+  if (isNaN(amount) || amount <= 0) {
+    alert('Invalid order amount');
+    return;
+  }
+  if (isNaN(price) || price <= 0) {
+    alert('Invalid order price');
+    return;
+  }
+
+  const order = {
+    id: Date.now(),
+    symbol,
+    type,
+    amount,
+    price,
+    date: new Date().toISOString()
+  };
+  orders.push(order);
+  saveProgress();
+  alert(`${type.charAt(0).toUpperCase() + type.slice(1)} order placed for ${amount.toFixed(3)} units of ${symbol} at $${price.toFixed(2)}`);
+}
+
+function cancelOrder(orderId) {
+  orders = orders.filter(order => order.id !== orderId);
+  saveProgress();
+  render();
+}
+
+// Helper to get average buy entry price from history
+function getAverageBuyPrice(symbol) {
+  const buys = tradeHistory.filter(t => t.symbol === symbol && t.type.toLowerCase() === 'buy');
+  if (buys.length === 0) return null;
+  const totalShares = buys.reduce((sum, t) => sum + t.shares, 0);
+  const totalCost = buys.reduce((sum, t) => sum + (t.shares * t.price), 0);
+  return totalCost / totalShares;
+}
+
+// Helper to get average short entry price from history
+function getAverageShortPrice(symbol) {
+  const shorts = tradeHistory.filter(t => t.symbol === symbol && t.type.toLowerCase() === 'short');
+  if (shorts.length === 0) return null;
+  const totalShares = shorts.reduce((sum, t) => sum + t.shares, 0);
+  const totalProceeds = shorts.reduce((sum, t) => sum + (t.shares * t.price), 0);
+  return totalProceeds / totalShares;
+}
+
+function checkOrders() {
+  let executedOrders = [];
+  const TOLERANCE = 2.5;
+
+  orders.forEach(order => {
+    const orderPrice = parseFloat(order.price);
+    const orderAmount = parseFloat(order.amount);
+    if (isNaN(orderPrice) || isNaN(orderAmount) || orderAmount <= 0) return;
+
+    const prices = priceHistories[order.symbol];
+    if (!prices || prices.length === 0) return;
+    const currentPrice = prices[prices.length - 1].price;
+
+    if (order.type === 'buy' && currentPrice <= orderPrice + TOLERANCE) {
+      const cost = orderAmount * currentPrice;
+      if (cost <= cash) {
+        cash -= cost;
+        portfolio[order.symbol] = (portfolio[order.symbol] || 0) + orderAmount;
+        addTrade('Buy', order.symbol, orderAmount, currentPrice);
+        executedOrders.push(order);
+      }
+    } else if (order.type === 'sell' && currentPrice >= orderPrice - TOLERANCE) {
+      const owned = portfolio[order.symbol] || 0;
+      if (orderAmount <= owned) {
+        const revenue = orderAmount * currentPrice;
+        cash += revenue;
+        portfolio[order.symbol] = owned - orderAmount;
+        if (portfolio[order.symbol] === 0) delete portfolio[order.symbol];
+        const avgEntry = getAverageBuyPrice(order.symbol);
+        addTrade('Sell', order.symbol, orderAmount, currentPrice, avgEntry);
+        executedOrders.push(order);
+      }
+    } else if (order.type === 'short' && currentPrice >= orderPrice - TOLERANCE) {
+      const proceeds = orderAmount * currentPrice;
+      cash += proceeds;
+      shortPositions[order.symbol] = (shortPositions[order.symbol] || 0) + orderAmount;
+      addTrade('Short', order.symbol, orderAmount, currentPrice);
+      executedOrders.push(order);
+    } else if (order.type === 'cover' && currentPrice <= orderPrice + TOLERANCE) {
+      const shortAmt = shortPositions[order.symbol] || 0;
+      if (shortAmt > 0 && orderAmount <= shortAmt) {
+        const cost = orderAmount * currentPrice;
+        if (cost <= cash) {
+          cash -= cost;
+          shortPositions[order.symbol] = shortAmt - orderAmount;
+          if (shortPositions[order.symbol] === 0) delete shortPositions[order.symbol];
+          const avgShort = getAverageShortPrice(order.symbol);
+          addTrade('Cover', order.symbol, orderAmount, currentPrice, avgShort);
+          executedOrders.push(order);
+        }
+      }
+    }
+  });
+
+  if (executedOrders.length > 0) {
+    orders = orders.filter(order => !executedOrders.includes(order));
+    saveProgress();
+    if (currentPage === 'portfolio' || selectedStock || selectedInvestment) render();
+    if (currentPage === 'tradeHistory') renderTradeHistory();
+  }
+}
+
+async function updatePrices() {
+  const previousPrices = {};
+  stocks.forEach(stock => {
+    const history = priceHistories[stock.symbol];
+    if (history.length > 0) previousPrices[stock.symbol] = history[history.length - 1].price;
+  });
+  investments.forEach(inv => {
+    const history = priceHistories[inv.symbol];
+    if (history.length > 0) previousPrices[inv.symbol] = history[history.length - 1].price;
+  });
+
+  stocks.forEach(stock => {
+    const history = priceHistories[stock.symbol];
+    if (history.length >= 30) history.shift();
+    let lastPrice = history[history.length - 1].price;
+    const volatility = lastPrice * 0.03;
+    let newPrice = lastPrice + (Math.random() - 0.5) * volatility;
+    newPrice = Math.max(newPrice, 0.42);
+    history.push({ day: history[history.length - 1].day + 1, price: parseFloat(newPrice.toFixed(3)) });
+  });
+
+  investments.filter(i => i.type === 'metal').forEach(metal => {
+    const history = priceHistories[metal.symbol];
+    if (history.length >= 60) history.shift();
+    let lastPrice = history[history.length - 1].price;
+    const volatility = lastPrice * 0.02;
+    let newPrice = lastPrice + (Math.random() - 0.5) * volatility;
+    newPrice = Math.max(newPrice, 10);
+    history.push({ day: history[history.length - 1].day + 1, price: parseFloat(newPrice.toFixed(3)) });
+  });
+
+  investments.filter(i => i.type === 'crypto').forEach(crypto => {
+    const history = priceHistories[crypto.symbol] || [];
+    if (history.length >= 60) history.shift();
+    let lastPrice = history.length > 0 ? history[history.length - 1].price : (crypto.initialPrice || 10);
+    const volatility = lastPrice * 0.05;
+    let newPrice = lastPrice + (Math.random() - 0.5) * volatility;
+    newPrice = Math.max(newPrice, 0.01);
+    history.push({ day: history.length > 0 ? history[history.length - 1].day + 1 : 0, price: parseFloat(newPrice.toFixed(3)) });
+    priceHistories[crypto.symbol] = history;
+  });
+
+  // Update market cap history
+  updateMarketCapHistory();
+  
+  checkOrders();
+  saveProgress();
+  updatePriceDisplays(previousPrices);
+  updateCashDisplay();
+}
+
+function updateMarketCapHistory() {
+  let currentMarketCap = 0;
+  stocks.forEach(stock => {
+    const history = priceHistories[stock.symbol];
+    const currentPrice = history[history.length - 1].price;
+    currentMarketCap += currentPrice * stock.supply;
+  });
+  
+  if (marketCapHistory.length >= 180) marketCapHistory.shift();
+  marketCapHistory.push({
+    day: marketCapHistory.length > 0 ? marketCapHistory[marketCapHistory.length - 1].day + 1 : 0,
+    marketCap: currentMarketCap
+  });
+}
+
+function updatePriceDisplays(previousPrices) {
+  if (currentPage === 'stocks' && !selectedStock) {
+    document.querySelectorAll('.stock-item').forEach(item => {
+      const symbol = item.getAttribute('data-symbol');
+      const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+      const previousPrice = previousPrices[symbol];
+      const stock = stocks.find(s => s.symbol === symbol);
+      const owned = portfolio[symbol] || 0;
+      const hasFullOwnership = stock && owned >= stock.supply;
+      
+      item.querySelector('.stock-info').innerHTML = `${stock.name} (${symbol}) - $${currentPrice.toFixed(2)}`;
+      const checkmark = item.querySelector('.checkmark');
+      if (checkmark) {
+        checkmark.style.display = hasFullOwnership ? 'inline' : 'none';
+      }
+      
+      if (previousPrice) {
+        if (currentPrice > previousPrice) {
+          item.classList.add('price-up');
+          setTimeout(() => item.classList.remove('price-up'), 1000);
+        } else if (currentPrice < previousPrice) {
+          item.classList.add('price-down');
+          setTimeout(() => item.classList.remove('price-down'), 1000);
+        }
+      }
+    });
+  }
+  if (currentPage === 'investments' && !selectedInvestment) {
+    document.querySelectorAll('.investment-item').forEach(item => {
+      const symbol = item.getAttribute('data-symbol');
+      const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+      const previousPrice = previousPrices[symbol];
+      item.innerHTML = `${investments.find(i => i.symbol === symbol).name} (${symbol}) - $${currentPrice.toFixed(2)}`;
+      if (previousPrice) {
+        if (currentPrice > previousPrice) {
+          item.classList.add('price-up');
+          setTimeout(() => item.classList.remove('price-up'), 1000);
+        } else if (currentPrice < previousPrice) {
+          item.classList.add('price-down');
+          setTimeout(() => item.classList.remove('price-down'), 1000);
+        }
+      }
+    });
+  }
+  if (selectedStock && currentPage === 'stocks') {
+    const currentPrice = priceHistories[selectedStock.symbol][priceHistories[selectedStock.symbol].length - 1].price;
+    const previousPrice = previousPrices[selectedStock.symbol];
+    const priceElement = document.getElementById('current-price');
+    if (priceElement) {
+      priceElement.textContent = `Current Price: $${currentPrice.toFixed(2)}`;
+      if (previousPrice) {
+        if (currentPrice > previousPrice) {
+          priceElement.classList.add('price-up');
+          setTimeout(() => priceElement.classList.remove('price-up'), 1000);
+        } else if (currentPrice < previousPrice) {
+          priceElement.classList.add('price-down');
+          setTimeout(() => priceElement.classList.remove('price-down'), 1000);
+        }
+      }
+    }
+    drawGraph(priceHistories[selectedStock.symbol]);
+  }
+  if (selectedInvestment && currentPage === 'investments') {
+    const currentPrice = priceHistories[selectedInvestment.symbol][priceHistories[selectedInvestment.symbol].length - 1].price;
+    const previousPrice = previousPrices[selectedInvestment.symbol];
+    const priceElement = document.getElementById('current-price');
+    if (priceElement) {
+      priceElement.textContent = `Current Price: $${currentPrice.toFixed(2)}`;
+      if (previousPrice) {
+        if (currentPrice > previousPrice) {
+          priceElement.classList.add('price-up');
+          setTimeout(() => priceElement.classList.remove('price-up'), 1000);
+        } else if (currentPrice < previousPrice) {
+          priceElement.classList.add('price-down');
+          setTimeout(() => priceElement.classList.remove('price-down'), 1000);
+        }
+      }
+    }
+    drawGraph(priceHistories[selectedInvestment.symbol]);
+  }
+  if (currentPage === 'portfolio') {
+    renderPortfolioValues();
+  }
+}
+
+function renderPortfolioValues() {
+  const allSymbols = Array.from(new Set([...Object.keys(portfolio), ...Object.keys(shortPositions)]));
+  if (allSymbols.length === 0) return;
+  allSymbols.forEach(symbol => {
+    const owned = portfolio[symbol] || 0;
+    const short = shortPositions[symbol] || 0;
+    const prices = priceHistories[symbol];
+    if (!prices || prices.length === 0) return;
+    const currentPrice = prices[prices.length - 1].price;
+    const initialPrice = prices[0].price;
+    const currentValue = (owned * currentPrice) - (short * currentPrice);
+    const costBasis = (owned * initialPrice) - (short * initialPrice);
+    const gainLoss = currentValue - costBasis;
+    const gainLossFormatted = gainLoss.toFixed(2);
+    const gainLossColor = gainLoss >= 0 ? 'positive' : 'negative';
+    const valueCell = document.querySelector(`tr[data-symbol="${symbol}"] td:nth-child(3)`);
+    const gainLossCell = document.querySelector(`tr[data-symbol="${symbol}"] td:nth-child(4)`);
+    if (valueCell) valueCell.textContent = `$${currentValue.toFixed(2)}`;
+    if (gainLossCell) {
+      gainLossCell.textContent = `${gainLoss >= 0 ? '+' : ''}${gainLossFormatted}`;
+      gainLossCell.className = gainLossColor;
+    }
+  });
+  updateCashDisplay();
+}
+
+function addTrade(type, symbol, shares, price, entryPrice = null) {
+  if (!Array.isArray(tradeHistory)) tradeHistory = [];
+
+  const trade = {
+    type: String(type || '').trim(),
+    symbol: String(symbol || '').trim(),
+    shares: Number(shares) || 0,
+    price: Number(price) || 0,
+    entryPrice: entryPrice != null ? Number(entryPrice) : null,
+    date: new Date().toISOString(),
+  };
+
+  tradeHistory.unshift(trade);
+  if (tradeHistory.length > 125) tradeHistory.length = 125;
+
+  saveProgress();
+  if (currentPage === 'tradeHistory') renderTradeHistory();
+}
+
+function render() {
+  updateCashDisplay();
+  if (currentPage === 'stocks' && !selectedStock) renderStocksList();
+  else if (currentPage === 'stocks' && selectedStock) renderStockDetails();
+  else if (currentPage === 'portfolio') renderPortfolio();
+  else if (currentPage === 'marketCap') renderMarketCap();
+  else if (currentPage === 'settings') renderSettings();
+  else if (currentPage === 'tradeHistory') renderTradeHistory();
+  else if (currentPage === 'investments' && !selectedInvestment) renderInvestmentsList();
+  else if (currentPage === 'investments' && selectedInvestment) renderInvestmentDetails();
+  else if (currentPage === 'vegas') renderVegas();
+}
+
+function renderInvestmentDetails() {
+  if (!selectedInvestment) {
+    renderInvestmentsList();
+    return;
+  }
+
+  const prices = priceHistories[selectedInvestment.symbol] || [];
+  const currentPrice = prices.length > 0 ? prices[prices.length - 1].price : 0;
+
+  let html = `<button class="btn back-btn">← Back to Investments</button>`;
+  html += `<h2>${selectedInvestment.name} (${selectedInvestment.symbol})</h2>`;
+  html += `<div id="current-price">Current Price: $${currentPrice.toFixed(2)}</div>`;
+  html += `<div id="investment-graph"></div>`;
+
+  // Add a detailed chart button like stocks have
+  html += `<button class="btn btn-outline detailed-chart-btn" id="detailed-chart-btn">Detailed Chart</button>`;
+
+  html += `<div class="action-group">
+    <label>Buy Amount (Owned: ${(portfolio[selectedInvestment.symbol] || 0).toFixed(3)}):</label>
+    <div class="action-buttons">
+      <input type="number" id="buy-amount" min="0" step="0.001" value="0" />
+      <button class="btn btn-success buy-btn">Buy</button>
+      <button class="btn btn-danger sell-btn">Sell</button>
+      <button class="btn btn-danger sell-all-btn">Sell All</button>
+    </div>
+  </div>`;
+
+  // Add order section like stocks have
+  html += `
+    <div class="order-section">
+      <h3>Place Buy/Sell Order</h3>
+      <div class="action-group">
+        <label>Amount:</label>
+        <input type="number" id="order-amount" min="0.001" step="0.001" value="1" />
+      </div>
+      <div class="action-group">
+        <label>Target Price: $</label>
+        <input type="number" id="order-price" min="0.01" step="0.01" value="${currentPrice.toFixed(2)}" />
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-success order-btn" data-type="buy">Place Buy Order</button>
+        <button class="btn btn-danger order-btn" data-type="sell">Place Sell Order</button>
+      </div>
+    </div>
+  `;
+
+  mainContent.innerHTML = html;
+
+  document.querySelector('.back-btn').addEventListener('click', () => {
+    selectedInvestment = null;
+    render();
+  });
+
+  document.querySelector('.buy-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('buy-amount').value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter valid amount');
+    const cost = amount * currentPrice;
+    if (cost > cash) return alert('Not enough cash');
+    cash -= cost;
+    portfolio[selectedInvestment.symbol] = (portfolio[selectedInvestment.symbol] || 0) + amount;
+    addTrade('Buy', selectedInvestment.symbol, amount, currentPrice);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.sell-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('buy-amount').value);
+    const owned = portfolio[selectedInvestment.symbol] || 0;
+    if (isNaN(amount) || amount <= 0 || amount > owned) return alert('Invalid amount');
+    cash += amount * currentPrice;
+    portfolio[selectedInvestment.symbol] -= amount;
+    if (portfolio[selectedInvestment.symbol] === 0) delete portfolio[selectedInvestment.symbol];
+    const avgEntry = getAverageBuyPrice(selectedInvestment.symbol);
+    addTrade('Sell', selectedInvestment.symbol, amount, currentPrice, avgEntry);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.sell-all-btn').addEventListener('click', () => {
+    const owned = portfolio[selectedInvestment.symbol] || 0;
+    if (owned <= 0) return;
+    cash += owned * currentPrice;
+    const avgEntry = getAverageBuyPrice(selectedInvestment.symbol);
+    addTrade('Sell', selectedInvestment.symbol, owned, currentPrice, avgEntry);
+    delete portfolio[selectedInvestment.symbol];
+    saveProgress();
+    render();
+  });
+
+  // Add event listeners for order buttons
+  document.querySelectorAll('.order-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const type = button.getAttribute('data-type');
+      const amount = parseFloat(document.getElementById('order-amount').value);
+      const price = parseFloat(document.getElementById('order-price').value);
+      placeOrder(selectedInvestment.symbol, type, amount, price);
+    });
+  });
+
+  // Add event listener for detailed chart button
+  document.getElementById('detailed-chart-btn').addEventListener('click', () => {
+    openDetailedChart(selectedInvestment.symbol, selectedInvestment.name);
+  });
+
+  drawGraph(prices, 'investment-graph');
+}
+
+function renderStocksList(page = 1) {
+  const stocksPerPage = 10;
+  const startIndex = (page - 1) * stocksPerPage;
+  const endIndex = startIndex + stocksPerPage;
+  const paginatedStocks = stocks.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(stocks.length / stocksPerPage);
+  
+  let html = '<h2 class="section-title">Available Stocks</h2><ul>';
+  paginatedStocks.forEach(stock => {
+    const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
+    const owned = portfolio[stock.symbol] || 0;
+    const hasFullOwnership = owned >= stock.supply;
+    html += `<li class="stock-item" data-symbol="${stock.symbol}">
+      <span class="stock-info">${stock.name} (${stock.symbol}) - $${currentPrice.toFixed(2)}</span>
+      ${hasFullOwnership ? '<span class="checkmark">✓</span>' : ''}
+    </li>`;
+  });
+  html += '</ul>';
+  
+  // Add pagination controls
+  if (totalPages > 1) {
+    html += '<div class="pagination">';
+    if (page > 1) {
+      html += `<button class="page-btn" data-page="${page - 1}">Previous</button>`;
+    }
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="page-btn ${i === page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+    }
+    if (page < totalPages) {
+      html += `<button class="page-btn" data-page="${page + 1}">Next</button>`;
+    }
+    html += '</div>';
+  }
+  
+  mainContent.innerHTML = html;
+  
+  // Add event listeners for stock items
+  document.querySelectorAll('.stock-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const symbol = item.getAttribute('data-symbol');
+      selectedStock = stocks.find(s => s.symbol === symbol);
+      render();
+    });
+  });
+  
+  // Add event listeners for pagination buttons
+  document.querySelectorAll('.page-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const page = parseInt(e.target.getAttribute('data-page'));
+      renderStocksList(page);
+    });
+  });
+}
+
+function renderStockDetails() {
+  const prices = priceHistories[selectedStock.symbol];
+  const currentPrice = prices[prices.length - 1].price;
+  const ownedAmount = portfolio[selectedStock.symbol] || 0;
+  const shortAmount = shortPositions[selectedStock.symbol] || 0;
+  const hasFullOwnership = ownedAmount >= selectedStock.supply;
+
+  let html = `<button class="btn back-btn">← Back to Stocks</button>`;
+  html += `<h2>${selectedStock.name} (${selectedStock.symbol}) ${hasFullOwnership ? '<span class="checkmark">✓</span>' : ''}</h2>`;
+  html += `<div id="current-price">Current Price: $${currentPrice.toFixed(2)}</div>`;
+  html += `<div><strong>Supply:</strong> ${selectedStock.supply.toLocaleString()} shares</div>`;
+  html += `<div id="stock-graph"></div>`;
+  html += `<button class="btn btn-outline detailed-chart-btn" id="detailed-chart-btn">Detailed Chart</button>`;
+
+  html += `<div class="action-group">
+    <label>Buy/Short Amount (Owned: ${ownedAmount.toFixed(3)}, Short: ${shortAmount.toFixed(3)}):</label>
+    <div class="action-buttons">
+      <input type="number" id="buy-amount" min="0" step="0.001" value="0" />
+      <button class="btn btn-success buy-btn">Buy</button>
+      <button class="btn btn-warning short-btn">Short</button>
+      <button class="btn btn-danger sell-all-btn">Sell All</button>
+    </div>
+  </div>`;
+
+  html += `<div class="action-group">
+    <label>Sell/Cover Amount:</label>
+    <div class="action-buttons">
+      <input type="number" id="sell-amount" min="0" step="0.001" value="0" />
+      <button class="btn btn-danger sell-btn">Sell</button>
+      <button class="btn btn-primary cover-btn">Cover</button>
+      <button class="btn btn-primary cover-all-btn">Cover All</button>
+    </div>
+  </div>`;
+
+  html += `
+    <div class="order-section">
+      <h3>Place Buy/Sell/Short/Cover Order</h3>
+      <div class="action-group">
+        <label>Amount:</label>
+        <input type="number" id="order-amount" min="0.001" step="0.001" value="1" />
+      </div>
+      <div class="action-group">
+        <label>Target Price: $</label>
+        <input type="number" id="order-price" min="0.01" step="0.01" value="${currentPrice.toFixed(2)}" />
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-success order-btn" data-type="buy">Place Buy Order</button>
+        <button class="btn btn-danger order-btn" data-type="sell">Place Sell Order</button>
+        <button class="btn btn-warning order-btn" data-type="short">Place Short Order</button>
+        <button class="btn btn-primary order-btn" data-type="cover">Place Cover Order</button>
+      </div>
+    </div>
+  `;
+  mainContent.innerHTML = html;
+
+  document.querySelector('.back-btn').addEventListener('click', () => {
+    selectedStock = null;
+    render();
+  });
+
+  document.querySelector('.buy-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('buy-amount').value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter valid amount');
+    const cost = amount * currentPrice;
+    if (cost > cash) return alert('Not enough cash');
+    cash -= cost;
+    portfolio[selectedStock.symbol] = (portfolio[selectedStock.symbol] || 0) + amount;
+    addTrade('Buy', selectedStock.symbol, amount, currentPrice);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.short-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('buy-amount').value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter valid amount');
+    const proceeds = amount * currentPrice;
+    if (proceeds > cash) return alert('Not enough cash for margin');
+    cash -= proceeds;
+    shortPositions[selectedStock.symbol] = (shortPositions[selectedStock.symbol] || 0) + amount;
+    addTrade('Short', selectedStock.symbol, amount, currentPrice);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.sell-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('sell-amount').value);
+    const owned = portfolio[selectedStock.symbol] || 0;
+    if (isNaN(amount) || amount <= 0 || amount > owned) return alert('Invalid amount');
+    cash += amount * currentPrice;
+    portfolio[selectedStock.symbol] -= amount;
+    if (portfolio[selectedStock.symbol] === 0) delete portfolio[selectedStock.symbol];
+    const avgEntry = getAverageBuyPrice(selectedStock.symbol);
+    addTrade('Sell', selectedStock.symbol, amount, currentPrice, avgEntry);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.cover-btn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('sell-amount').value);
+    const shorted = shortPositions[selectedStock.symbol] || 0;
+    if (isNaN(amount) || amount <= 0 || amount > shorted) return alert('Invalid amount');
+    const cost = amount * currentPrice;
+    if (cost > cash) return alert('Not enough cash');
+    cash -= cost;
+    shortPositions[selectedStock.symbol] -= amount;
+    if (shortPositions[selectedStock.symbol] === 0) delete shortPositions[selectedStock.symbol];
+    const avgShort = getAverageShortPrice(selectedStock.symbol);
+    addTrade('Cover', selectedStock.symbol, amount, currentPrice, avgShort);
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.sell-all-btn').addEventListener('click', () => {
+    const owned = portfolio[selectedStock.symbol] || 0;
+    if (owned <= 0) return;
+    cash += owned * currentPrice;
+    const avgEntry = getAverageBuyPrice(selectedStock.symbol);
+    addTrade('Sell', selectedStock.symbol, owned, currentPrice, avgEntry);
+    delete portfolio[selectedStock.symbol];
+    saveProgress();
+    render();
+  });
+
+  document.querySelector('.cover-all-btn').addEventListener('click', () => {
+    const shorted = shortPositions[selectedStock.symbol] || 0;
+    if (shorted <= 0) return;
+    const cost = shorted * currentPrice;
+    if (cost > cash) return alert('Not enough cash');
+    cash -= cost;
+    const avgShort = getAverageShortPrice(selectedStock.symbol);
+    addTrade('Cover', selectedStock.symbol, shorted, currentPrice, avgShort);
+    delete shortPositions[selectedStock.symbol];
+    saveProgress();
+    render();
+  });
+
+  document.querySelectorAll('.order-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const type = button.getAttribute('data-type');
+      const amount = parseFloat(document.getElementById('order-amount').value);
+      const price = parseFloat(document.getElementById('order-price').value);
+      placeOrder(selectedStock.symbol, type, amount, price);
+    });
+  });
+
+  document.getElementById('detailed-chart-btn').addEventListener('click', () => {
+    openDetailedChart(selectedStock.symbol, selectedStock.name);
+  });
+
+  drawGraph(prices);
+}
+
+function renderInvestmentsList() {
+  let html = '<h2 class="section-title">Available Investments</h2><ul>';
+  investments.forEach(inv => {
+    const prices = priceHistories[inv.symbol];
+    const currentPrice = prices && prices.length > 0 ? prices[prices.length - 1].price : 'Loading...';
+    html += `<li class="investment-item" data-symbol="${inv.symbol}">${inv.name} (${inv.symbol}) - $${typeof currentPrice === 'number' ? currentPrice.toFixed(2) : currentPrice}</li>`;
+  });
+  html += '</ul>';
+  mainContent.innerHTML = html;
+
+  document.querySelectorAll('.investment-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const symbol = item.getAttribute('data-symbol');
+      selectedInvestment = investments.find(i => i.symbol === symbol);
+      render();
+    });
+  });
+}
+
+function renderPortfolio() {
+  let html = `<h2 class="section-title">Your Portfolio</h2>`;
+
+  // Portfolio summary
+  const ownedSymbols = Object.keys(portfolio).filter(sym => (portfolio[sym] || 0) > 0);
+  const shortSymbols = Object.keys(shortPositions).filter(sym => (shortPositions[sym] || 0) > 0);
+  const allSymbols = Array.from(new Set([...ownedSymbols, ...shortSymbols]));
+
+  let totalCurrentValue = 0;
+  let calculatedTotalGainLoss = 0;
+  let totalBasis = 0;
+
+  allSymbols.forEach(symbol => {
+    const owned = portfolio[symbol] || 0;
+    const short = shortPositions[symbol] || 0;
+    const prices = priceHistories[symbol];
+    if (!prices || prices.length === 0) return;
+    const currentPrice = prices[prices.length - 1].price;
+    
+    const avgBuy = getAverageBuyPrice(symbol) || currentPrice;
+    const avgShort = getAverageShortPrice(symbol) || currentPrice;
+
+    totalCurrentValue += (owned * currentPrice) - (short * currentPrice);
+    calculatedTotalGainLoss += (currentPrice - avgBuy) * owned;
+    calculatedTotalGainLoss += (avgShort - currentPrice) * short;
+    totalBasis += (owned * avgBuy) + (short * avgShort);
+  });
+
+  const totalGainLossColor = calculatedTotalGainLoss >= 0 ? 'positive' : 'negative';
+  const totalPercentChange = totalBasis > 0 ? (calculatedTotalGainLoss / totalBasis) * 100 : 0;
+
+  html += `<div class="portfolio-summary">
+    <div class="portfolio-value">Net Value: $${(cash + totalCurrentValue).toFixed(2)}</div>
+    <div class="portfolio-gain-loss ${totalGainLossColor}">Total Gain/Loss: ${calculatedTotalGainLoss >= 0 ? '+' : ''}$${Math.abs(calculatedTotalGainLoss).toFixed(2)} (${totalPercentChange.toFixed(2)}%)</div>
+    <div>Available Cash: $${cash.toFixed(2)}</div>
+  </div>`;
+
+  if (ownedSymbols.length === 0 && shortSymbols.length === 0 && orders.length === 0) {
+    html += '<p>You do not own any stocks or investments yet.</p>';
+  } else {
+    if (ownedSymbols.length > 0) {
+      html += '<h3 class="section-title">Owned Assets</h3>';
+      html += '<table><thead><tr><th>Asset</th><th>Shares</th><th>Value</th><th>Gain/Loss</th></tr></thead><tbody>';
+      ownedSymbols.forEach(symbol => {
+        const owned = portfolio[symbol];
+        const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+        const avgEntry = getAverageBuyPrice(symbol) || currentPrice;
+        const gainLoss = (currentPrice - avgEntry) * owned;
+        const gainLossColor = gainLoss >= 0 ? 'positive' : 'negative';
+        const stock = stocks.find(s => s.symbol === symbol);
+        const investment = investments.find(i => i.symbol === symbol);
+        const hasFullOwnership = stock && owned >= stock.supply;
+        
+        if (stock) {
+          html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}${hasFullOwnership ? ' ✓' : ''}</a></td><td>${owned.toFixed(3)}</td><td>$${(owned * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
+        } else if (investment) {
+          html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-investment-link" data-symbol="${symbol}">${investment.name}</a></td><td>${owned.toFixed(3)}</td><td>$${(owned * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
+        }
+      });
+      html += '</tbody></table>';
+    }
+
+    if (shortSymbols.length > 0) {
+      html += '<h3 class="section-title">Short Positions</h3>';
+      html += '<table><thead><tr><th>Asset</th><th>Shares</th><th>Liability</th><th>Gain/Loss</th></tr></thead><tbody>';
+      shortSymbols.forEach(symbol => {
+        const shorted = shortPositions[symbol];
+        const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+        const avgEntry = getAverageShortPrice(symbol) || currentPrice;
+        const gainLoss = (avgEntry - currentPrice) * shorted;
+        const gainLossColor = gainLoss >= 0 ? 'positive' : 'negative';
+        const stock = stocks.find(s => s.symbol === symbol);
+        const investment = investments.find(i => i.symbol === symbol);
+        
+        if (stock) {
+          html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}</a></td><td>${shorted.toFixed(3)}</td><td>$${(shorted * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
+        } else if (investment) {
+          html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-investment-link" data-symbol="${symbol}">${investment.name}</a></td><td>${shorted.toFixed(3)}</td><td>$${(shorted * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
+        }
+      });
+      html += '</tbody></table>';
+    }
+
+    if (orders.length > 0) {
+      html += '<h3 class="section-title">Active Orders</h3>';
+      html += '<table class="order-table"><thead><tr><th>Asset</th><th>Type</th><th>Amount</th><th>Price</th><th>Action</th></tr></thead><tbody>';
+      orders.forEach(order => {
+        html += `<tr><td>${order.symbol}</td><td>${order.type}</td><td>${order.amount}</td><td>$${order.price}</td><td><button class="btn btn-danger cancel-order-btn" data-id="${order.id}">Cancel</button></td></tr>`;
+      });
+      html += '</tbody></table>';
+    }
+  }
+  mainContent.innerHTML = html;
+
+  document.querySelectorAll('.portfolio-stock-link').forEach(link => {
+    link.onclick = (e) => {
+      e.preventDefault();
+      const sym = e.target.dataset.symbol;
+      selectedStock = stocks.find(s => s.symbol === sym) || investments.find(i => i.symbol === sym);
+      selectedInvestment = null;
+      currentPage = 'stocks';
+      render();
+    };
+  });
+
+  document.querySelectorAll('.portfolio-investment-link').forEach(link => {
+    link.onclick = (e) => {
+      e.preventDefault();
+      const sym = e.target.dataset.symbol;
+      selectedInvestment = investments.find(i => i.symbol === sym);
+      selectedStock = null;
+      currentPage = 'investments';
+      render();
+    };
+  });
+
+  document.querySelectorAll('.cancel-order-btn').forEach(btn => {
+    btn.onclick = (e) => cancelOrder(parseInt(e.target.dataset.id));
+  });
+}
+
+function renderMarketCap() {
+  let html = `<h2 class="section-title">Market Capitalization</h2>`;
+  
+  // Calculate current market cap
+  let currentMarketCap = 0;
+  stocks.forEach(stock => {
+    const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
+    currentMarketCap += currentPrice * stock.supply;
+  });
+  
+  // Calculate market cap 60 days ago
+  let pastMarketCap = marketCapHistory.length > 0 ? marketCapHistory[0].marketCap : currentMarketCap;
+  
+  // Calculate percentage change
+  const percentChange = ((currentMarketCap - pastMarketCap) / pastMarketCap) * 100;
+  const changeColor = percentChange >= 0 ? 'positive' : 'negative';
+  
+  html += `<div class="market-cap-info">
+    <div class="market-cap-value">Total Market Cap: $${currentMarketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
+    <div class="market-cap-change ${changeColor}">60-Day Change: ${percentChange >= 0 ? '+' : ''}${percentChange.toFixed(2)}%</div>
+  </div>`;
+  
+  html += `<div id="market-cap-graph"></div>`;
+  
+  mainContent.innerHTML = html;
+  
+  // Draw the market cap graph
+  drawMarketCapGraph();
+}
+
+function drawMarketCapGraph() {
+  const container = document.getElementById('market-cap-graph');
+  if (!container || marketCapHistory.length === 0) return;
+
+  const width = Math.min(container.clientWidth, 600);
+  const height = 200;
+  const padding = 40;
+  
+  const maxMarketCap = Math.max(...marketCapHistory.map(p => p.marketCap));
+  const minMarketCap = Math.min(...marketCapHistory.map(p => p.marketCap));
+  const marketCapRange = maxMarketCap - minMarketCap || 1;
+
+  const points = marketCapHistory.map((p, i) => {
+    const x = padding + (i / (marketCapHistory.length - 1)) * (width - 2 * padding);
+    const y = height - padding - ((p.marketCap - minMarketCap) / marketCapRange) * (height - 2 * padding);
+    return [x, y];
+  });
+
+  let pathD = '';
+  points.forEach((point, i) => {
+    pathD += (i === 0 ? 'M' : 'L') + point[0] + ' ' + point[1] + ' ';
+  });
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  // Background
+  const bg = document.createElementNS(svgNS, 'rect');
+  bg.setAttribute('x', 0);
+  bg.setAttribute('y', 0);
+  bg.setAttribute('width', width);
+  bg.setAttribute('height', height);
+  bg.setAttribute('fill', '#f8fafc');
+  svg.appendChild(bg);
+
+  // Grid lines
+  for (let i = 0; i <= 5; i++) {
+    const y = padding + (i / 5) * (height - 2 * padding);
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', padding);
+    line.setAttribute('x2', width - padding);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#e2e8f0');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+  }
+
+  // Path
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', pathD);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', graphLineColor);
+  path.setAttribute('stroke-width', '2');
+  svg.appendChild(path);
+
+  // Y axis labels
+  for (let i = 0; i <= 5; i++) {
+    const marketCap = maxMarketCap - (i / 5) * marketCapRange;
+    const y = padding + (i / 5) * (height - 2 * padding);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', padding - 10);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('font-size', '10');
+    text.setAttribute('fill', '#64748b');
+    text.setAttribute('text-anchor', 'end');
+    text.textContent = (marketCap / 10000).toFixed(1) + 'M';
+    svg.appendChild(text);
+  }
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+function renderSettings() {
+  let html = `<h2 class="section-title">Settings</h2>`;
+  html += `<label class="color-label" for="main-bg-color">Main Page Background Color:</label>`;
+  html += `<input type="color" id="main-bg-color" value="${colors.mainBg}" />`;
+
+  html += `<label class="color-label" for="header-color">Header and Button Color:</label>`;
+  html += `<input type="color" id="header-color" value="${colors.header}" />`;
+
+  html += `<label class="color-label" for="background-color">Page Background Color:</label>`;
+  html += `<input type="color" id="background-color" value="${colors.background}" />`;
+
+  html += `<label class="color-label" for="graph-line-color">Graph Line Color:</label>`;
+  html += `<input type="color" id="graph-line-color" value="${colors.graphLine}" />`;
+
+  html += `<button class="reset-btn" id="reset-profile-btn">Reset Profile</button>`;
+  html += `<button class="reset-btn" id="clear-save-data-btn">Clear All Save Data</button>`;
+
+  mainContent.innerHTML = html;
+
+  document.getElementById('main-bg-color').addEventListener('input', (e) => {
+    colors.mainBg = e.target.value;
+    applyColors();
+    saveProgress();
+  });
+  document.getElementById('header-color').addEventListener('input', (e) => {
+    colors.header = e.target.value;
+    applyColors();
+    saveProgress();
+  });
+  document.getElementById('background-color').addEventListener('input', (e) => {
+    colors.background = e.target.value;
+    applyColors();
+    saveProgress();
+  });
+  document.getElementById('graph-line-color').addEventListener('input', (e) => {
+    colors.graphLine = e.target.value;
+    applyColors();
+    saveProgress();
+  });
+
+  document.getElementById('reset-profile-btn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to reset your profile? This will erase all your stocks and reset cash and prices.')) {
+      resetProfile();
+    }
+  });
+  document.getElementById('clear-save-data-btn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all saved data? This will reset the entire game.')) {
+      localStorage.clear();
+      location.reload();
+    }
+  });
+}
+
+function renderTradeHistory() {
+  let html = `<h2 class="section-title">Trade History</h2>`;
+
+  if (tradeHistory.length === 0) {
+    html += '<p>No trades yet.</p>';
+    mainContent.innerHTML = html;
+    return;
+  }
+
+  html += `<table class="trade-history-table"><thead><tr><th>Date/Time</th><th>Type</th><th>Asset</th><th>Shares</th><th>Price</th><th>Result ($)</th><th>Result (%)</th></tr></thead><tbody>`;
+
+  tradeHistory.forEach(trade => {
+    const dateStr = new Date(trade.date).toLocaleString();
+    const symbol = trade.symbol;
+    const type = (trade.type || '').toLowerCase();
+    const shares = Number(trade.shares) || 0;
+    const price = Number(trade.price) || 0;
+    const entryPrice = trade.entryPrice != null ? Number(trade.entryPrice) : (
+      type.includes('sell') ? getAverageBuyPrice(symbol) :
+      type.includes('cover') ? getAverageShortPrice(symbol) : null
+    );
+
+    let resultDollar = '-';
+    let resultPercent = '-';
+    let color = '';
+
+    if ((type.includes('sell') || type.includes('cover')) && entryPrice != null && entryPrice !== 0 && shares > 0) {
+      let perSharePL = 0;
+      if (type.includes('sell')) {
+        perSharePL = price - entryPrice;
+      } else if (type.includes('cover')) {
+        perSharePL = entryPrice - price;
+      }
+      const diff = perSharePL * shares;
+      const pct = (perSharePL / entryPrice) * 100;
+
+      color = diff >= 0 ? 'positive' : 'negative';
+      resultDollar = (diff >= 0 ? '+' : '') + '$' + diff.toFixed(2);
+      resultPercent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+    }
+
+    html += `<tr>
+      <td>${dateStr}</td>
+      <td>${trade.type}</td>
+      <td>${symbol}</td>
+      <td>${shares.toFixed(3)}</td>
+      <td>$${price.toFixed(2)}</td>
+      <td class="${color}">${resultDollar}</td>
+      <td class="${color}">${resultPercent}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  mainContent.innerHTML = html;
+}
+
+function renderVegas() {
+  if (typeof vegasRender === 'function') {
+    vegasRender(mainContent, cash, updateCashFromVegas);
+  } else {
+    mainContent.innerHTML = '<div class="loading-message"><p>Loading Vegas games...</p></div>';
+  }
+}
+
+function updateCashFromVegas(newCash) {
+  cash = newCash;
+  saveProgress();
+  updateCashDisplay();
+}
+
+function resetProfile() {
+  cash = 10000;
+  portfolio = {};
+  shortPositions = {};
+  tradeHistory = [];
+  orders = [];
+
+  // Regenerate price histories
+  stocks.forEach(stock => {
+    priceHistories[stock.symbol] = generatePriceHistory(30, 10, 1500);
+    // Reset stock supplies
+    stock.supply = Math.floor(Math.random() * 750000) + 250000;
+  });
+  investments.forEach(inv => {
+    if (inv.type === 'metal') {
+      priceHistories[inv.symbol] = generatePriceHistory(60, 10, 1500);
+    } else if (inv.type === 'crypto') {
+      const base = inv.initialPrice || 100;
+      priceHistories[inv.symbol] = generatePriceHistory(60, base * 0.5, base * 1.5);
+    }
+  });
+
+  // Recalculate market cap history
+  calculateMarketCapHistory();
+
+  try {
+    localStorage.removeItem('vegasJackpot');
+    // Reset poker chips to 0 in localStorage
+    localStorage.setItem('pokerPlayerChips', '0');
+  } catch (e) {
+    console.warn('Failed to reset jackpot in localStorage.');
+  }
+
+  // Reset poker chips to 0
+  if (typeof resetPokerChips === 'function') {
+    resetPokerChips();
+  }
+
+  saveProgress();
+  currentPage = 'stocks';
+  selectedStock = null;
+  selectedInvestment = null;
+  applyColors();
+  updateNav();
+  render();
+
+  if (currentPage === 'vegas' && typeof vegasRender === 'function') {
+    vegasRender(mainContent, cash, updateCashFromVegas);
+  }
+}
+
+function drawGraph(prices) {
+  const container = document.getElementById('stock-graph');
+  if (!container) return;
+
+  const width = Math.min(container.clientWidth, 600);
+  const height = 200;
+  const padding = 40;
+  const maxPrice = Math.max(...prices.map(p => p.price));
+  const minPrice = Math.min(...prices.map(p => p.price));
+  const priceRange = maxPrice - minPrice || 1;
+
+  const points = prices.map((p, i) => {
+    const x = padding + (i / (prices.length - 1)) * (width - 2 * padding);
+    const y = height - padding - ((p.price - minPrice) / priceRange) * (height - 2 * padding);
+    return [x, y];
+  });
+
+  let pathD = '';
+  points.forEach((point, i) => {
+    pathD += (i === 0 ? 'M' : 'L') + point[0] + ' ' + point[1] + ' ';
+  });
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  // Background
+  const bg = document.createElementNS(svgNS, 'rect');
+  bg.setAttribute('x', 0);
+  bg.setAttribute('y', 0);
+  bg.setAttribute('width', width);
+  bg.setAttribute('height', height);
+  bg.setAttribute('fill', '#f8fafc');
+  svg.appendChild(bg);
+
+  // Grid lines
+  for (let i = 0; i <= 5; i++) {
+    const y = padding + (i / 5) * (height - 2 * padding);
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', padding);
+    line.setAttribute('x2', width - padding);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#e2e8f0');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+  }
+
+  // Path
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', pathD);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', graphLineColor);
+  path.setAttribute('stroke-width', '2');
+  svg.appendChild(path);
+
+  // Y axis labels
+  for (let i = 0; i <= 5; i++) {
+    const price = maxPrice - (i / 5) * priceRange;
+    const y = padding + (i / 5) * (height - 2 * padding);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', padding - 10);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('font-size', '10');
+    text.setAttribute('fill', '#64748b');
+    text.setAttribute('text-anchor', 'end');
+    text.textContent = price.toFixed(2);
+    svg.appendChild(text);
+  }
+
+  container.innerHTML = '';
+  container.appendChild(svg);
+}
+
+function groupPricesByTimeframe(prices, timeframe) {
+  if (timeframe === 'minute') {
+    const minuteData = [];
+    for (let i = 0; i < prices.length - 1; i++) {
+      const startPrice = prices[i].price;
+      const endPrice = prices[i+1].price;
+      for (let m = 0; m < 60; m++) {
+        const interpPrice = startPrice + (endPrice - startPrice) * (m / 60);
+        minuteData.push({
+          time: i * 60 + m,
+          price: interpPrice
+        });
+      }
+    }
+    return minuteData;
+  }
+  return prices.map((p, i) => ({ time: i, price: p.price }));
+}
+
+function drawDetailedChart(svg, data) {
+  const width = svg.clientWidth || 700;
+  const height = svg.clientHeight || 400;
+  svg.innerHTML = '';
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+  if (data.length === 0) return;
+
+  const maxPrice = Math.max(...data.map(d => d.price));
+  const minPrice = Math.min(...data.map(d => d.price));
+  const priceRange = maxPrice - minPrice || 1;
+
+  const padding = 50;
+  const usableWidth = width - 2 * padding;
+  const usableHeight = height - 2 * padding;
+
+  const points = data.map((d, i) => {
+    const x = padding + (i / (data.length - 1)) * usableWidth;
+    const y = height - padding - ((d.price - minPrice) / priceRange) * usableHeight;
+    return [x, y];
+  });
+
+  let pathD = '';
+  points.forEach((point, i) => {
+    pathD += (i === 0 ? 'M' : 'L') + point[0] + ' ' + point[1] + ' ';
+  });
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  // Background
+  const bg = document.createElementNS(svgNS, 'rect');
+  bg.setAttribute('x', 0);
+  bg.setAttribute('y', 0);
+  bg.setAttribute('width', width);
+  bg.setAttribute('height', height);
+  bg.setAttribute('fill', '#f8fafc');
+  svg.appendChild(bg);
+
+  // Grid lines
+  for (let i = 0; i <= 5; i++) {
+    const y = padding + (i / 5) * usableHeight;
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', padding);
+    line.setAttribute('x2', width - padding);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#e2e8f0');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+  }
+
+  // Path
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', pathD);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', graphLineColor);
+  path.setAttribute('stroke-width', '2');
+  svg.appendChild(path);
+
+  // Y axis labels
+  for (let i = 0; i <= 5; i++) {
+    const price = maxPrice - (i / 5) * priceRange;
+    const y = padding + (i / 5) * usableHeight;
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', padding - 10);
+    text.setAttribute('y', y + 4);
+    text.setAttribute('font-size', '12');
+    text.setAttribute('fill', '#64748b');
+    text.setAttribute('text-anchor', 'end');
+    text.textContent = price.toFixed(2);
+    svg.appendChild(text);
+  }
+
+  // X axis labels
+  const timeLabels = ['Start', 'Middle', 'End'];
+  timeLabels.forEach((label, i) => {
+    const x = padding + (i / (timeLabels.length - 1)) * usableWidth;
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', x);
+    text.setAttribute('y', height - 15);
+    text.setAttribute('font-size', '12');
+    text.setAttribute('fill', '#64748b');
+    text.setAttribute('text-anchor', 'middle');
+    text.textContent = label;
+    svg.appendChild(text);
+  });
+}
+
+function openDetailedChart(symbol, name) {
+  const modal = document.getElementById('detailed-chart-modal');
+  const title = document.getElementById('detailed-chart-title');
+  const svg = document.getElementById('detailed-chart-graph');
+  const timeframeButtons = document.querySelectorAll('#timeframe-buttons button');
+  const modalOrderPrice = document.getElementById('modal-order-price');
+  const modalOrderAmount = document.getElementById('modal-order-amount');
+  const modalOrdersTableBody = document.querySelector('#modal-orders-table tbody');
+
+  title.textContent = `Detailed Chart - ${name} (${symbol})`;
+
+  let currentTimeframe = 'daily';
+  let zoomLevel = 50;
+  let panOffset = 0;
+
+  let prices = priceHistories[symbol] || [];
+
+  function updateChart() {
+    let groupedData = groupPricesByTimeframe(prices, currentTimeframe);
+
+    const totalPoints = groupedData.length;
+    const visiblePoints = Math.max(10, Math.floor(totalPoints * (zoomLevel / 100)));
+    const startIndex = Math.max(0, Math.min(totalPoints - visiblePoints, panOffset));
+    const endIndex = Math.min(totalPoints, startIndex + visiblePoints);
+
+    const visibleData = groupedData.slice(startIndex, endIndex);
+    drawDetailedChart(svg, visibleData);
+  }
+
+  if (prices.length > 0) {
+    modalOrderPrice.value = prices[prices.length - 1].price.toFixed(2);
+  }
+
+  function renderOrders() {
+    modalOrdersTableBody.innerHTML = '';
+    const symbolOrders = orders.filter(o => o.symbol === symbol);
+    if (symbolOrders.length === 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="4">No active orders</td>';
+      modalOrdersTableBody.appendChild(tr);
+      return;
+    }
+
+    symbolOrders.forEach(order => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${order.type.charAt(0).toUpperCase() + order.type.slice(1)}</td>
+        <td>${order.amount.toFixed(3)}</td>
+        <td>$${order.price.toFixed(2)}</td>
+        <td><button class="btn btn-danger cancel-order-btn" data-id="${order.id}">Cancel</button></td>
+      `;
+      modalOrdersTableBody.appendChild(tr);
+    });
+
+    modalOrdersTableBody.querySelectorAll('.cancel-order-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const id = parseInt(e.target.getAttribute('data-id'), 10);
+        cancelOrder(id);
+        renderOrders();
+      });
+    });
+  }
+
+  renderOrders();
+  updateChart();
+
+  timeframeButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.timeframe === currentTimeframe);
+    btn.onclick = () => {
+      currentTimeframe = btn.dataset.timeframe;
+      timeframeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateChart();
+    };
+  });
+
+  document.getElementById('zoom-slider').oninput = (e) => {
+    zoomLevel = parseInt(e.target.value);
+    updateChart();
+  };
+
+  document.getElementById('pan-left').onclick = () => {
+    panOffset = Math.max(0, panOffset - 10);
+    updateChart();
+  };
+  document.getElementById('pan-right').onclick = () => {
+    const totalPoints = (priceHistories[symbol] || []).length;
+    const visiblePoints = Math.max(10, Math.floor(totalPoints * (zoomLevel / 100)));
+    panOffset = Math.min(totalPoints - visiblePoints, panOffset + 10);
+    updateChart();
+  };
+
+  document.getElementById('modal-buy-btn').onclick = () => {
+    const amount = parseFloat(modalOrderAmount.value);
+    const price = parseFloat(modalOrderPrice.value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
+    if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    const cost = amount * price;
+    if (cost > cash) return alert('Not enough cash to buy');
+    placeOrder(symbol, 'buy', amount, price);
+    renderOrders();
+  };
+
+  document.getElementById('modal-sell-btn').onclick = () => {
+    const amount = parseFloat(modalOrderAmount.value);
+    const price = parseFloat(modalOrderPrice.value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
+    const owned = portfolio[symbol] || 0;
+    if (amount > owned) return alert('You do not own enough units to sell');
+    if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    placeOrder(symbol, 'sell', amount, price);
+    renderOrders();
+  };
+
+  document.getElementById('modal-short-btn').onclick = () => {
+    const amount = parseFloat(modalOrderAmount.value);
+    const price = parseFloat(modalOrderPrice.value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
+    if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    const proceeds = amount * price;
+    if (proceeds > cash) return alert('Not enough cash for margin');
+    placeOrder(symbol, 'short', amount, price);
+    renderOrders();
+  };
+
+  document.getElementById('modal-cover-btn').onclick = () => {
+    const amount = parseFloat(modalOrderAmount.value);
+    const price = parseFloat(modalOrderPrice.value);
+    if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
+    const shorted = shortPositions[symbol] || 0;
+    if (shorted <= 0) return alert('You do not have any short position to cover');
+    if (amount > shorted) return alert('You cannot cover more than your short position');
+    if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    const cost = amount * price;
+    if (cost > cash) return alert('Not enough cash to place this cover order');
+    placeOrder(symbol, 'cover', amount, price);
+    renderOrders();
+  };
+
+  modal.style.display = 'flex';
+
+  document.getElementById('close-detailed-chart').onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+}
+
+
+
+
+
+
+(async () => {
+  await loadProgress();
+  render();
+})();
+
+setInterval(() => {
+  updatePrices();
+}, 15000);
+</script>
+</body>
+</html>
