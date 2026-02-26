@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Trading Sim 2.0</title>
 <style>
   :root {
@@ -21,13 +21,13 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     margin: 0;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     min-height: 100vh;
   }
   #app {
-    max-width: 480px;
+    max-width: 800px;
     width: 100%;
     background: white;
     border-radius: 12px;
@@ -40,7 +40,7 @@
   header {
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 15px 10px;
+    padding: 20px;
     text-align: center;
     position: relative;
   }
@@ -48,52 +48,48 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
   }
   .game-title {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 700;
-    flex: 1 1 60%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-  #cash-display {
-    font-size: 1rem;
+  #balance-display {
+    font-size: 1.2rem;
     font-weight: 600;
     background: rgba(255, 255, 255, 0.2);
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 20px;
     backdrop-filter: blur(5px);
-    flex: 1 1 35%;
-    text-align: right;
-    white-space: nowrap;
+    cursor: pointer;
+  }
+  #day-counter {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    margin-right: 10px;
   }
   nav {
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
   }
   nav button {
     background-color: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
-    padding: 8px 10px;
-    margin: 0 2px;
+    padding: 10px 16px;
+    margin: 0 4px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     transition: all 0.3s ease;
-    flex: 1 1 30%;
-    min-width: 90px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   nav button:hover {
     background-color: rgba(255, 255, 255, 0.3);
@@ -106,37 +102,35 @@
   }
   main {
     flex-grow: 1;
-    padding: 15px 10px;
+    padding: 25px;
     overflow-y: auto;
     background-color: #f8fafc;
   }
   footer {
     background-color: #f1f5f9;
-    padding: 10px 5px;
+    padding: 15px;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     color: #64748b;
     border-top: 1px solid var(--border-color);
   }
   ul {
     list-style: none;
     padding: 0;
-    margin: 0;
   }
   li.stock-item, li.investment-item {
-    padding: 12px 10px;
+    padding: 15px;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     color: var(--primary-color);
     transition: all 0.2s ease;
     border-radius: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     background: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
   }
   li.stock-item:hover, li.investment-item:hover {
     background-color: #eff6ff;
@@ -150,13 +144,11 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    font-size: 13px;
   }
   th, td {
-    padding: 8px 10px;
+    padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-    word-wrap: break-word;
   }
   th {
     background-color: #f1f5f9;
@@ -170,22 +162,22 @@
     background-color: #f8fafc;
   }
   input[type=number] {
-    width: 80px;
-    margin-left: 5px;
-    padding: 6px 8px;
+    width: 100px;
+    margin-left: 10px;
+    padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 14px;
   }
   .btn {
-    padding: 6px 12px;
+    padding: 8px 16px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease;
-    margin: 0 3px;
+    margin: 0 5px;
   }
   .btn-primary {
     background-color: var(--primary-color);
@@ -225,17 +217,15 @@
     color: white;
   }
   button.back-btn {
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     background-color: #f1f5f9;
     color: var(--dark-color);
-    font-size: 14px;
-    padding: 8px 12px;
   }
   #current-price {
     font-weight: 700;
-    font-size: 18px;
-    margin: 12px 0;
-    padding: 12px;
+    font-size: 22px;
+    margin: 15px 0;
+    padding: 15px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -245,18 +235,15 @@
     border: 1px solid var(--border-color);
     border-radius: 8px;
     display: block;
-    margin: 15px auto;
+    margin: 20px auto;
     background: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    max-width: 100%;
-    height: auto;
   }
   a.portfolio-stock-link, a.portfolio-investment-link {
     color: var(--primary-color);
     cursor: pointer;
     text-decoration: none;
     font-weight: 500;
-    font-size: 14px;
   }
   a.portfolio-stock-link:hover, a.portfolio-investment-link:hover {
     color: var(--secondary-color);
@@ -264,27 +251,58 @@
   }
   label.color-label {
     display: block;
-    margin: 12px 0 6px;
+    margin: 15px 0 8px;
     font-weight: 600;
     color: var(--dark-color);
-    font-size: 14px;
   }
   input[type=color] {
-    width: 100%;
-    height: 36px;
+    width: 120px;
+    height: 40px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
   }
+
+  .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pagination button:hover:not(.active) {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.6);
+}
+
+.pagination button.active {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.8);
+  cursor: default;
+}
+
   .reset-btn {
-    margin-top: 20px;
-    padding: 10px 16px;
+    margin-top: 25px;
+    padding: 12px 20px;
     background-color: var(--danger-color);
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     transition: all 0.3s ease;
     width: 100%;
@@ -295,8 +313,8 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
   .order-section {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 25px;
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 10px;
     background: white;
@@ -305,30 +323,29 @@
   .order-section h3 {
     margin-top: 0;
     color: var(--dark-color);
-    font-size: 16px;
   }
   .order-table {
-    margin-top: 10px;
+    margin-top: 15px;
     width: 100%;
   }
   .order-table th, .order-table td {
-    padding: 8px;
+    padding: 10px;
     text-align: center;
   }
   .cancel-order-btn {
     background-color: var(--danger-color);
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
   }
   .loading-message {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     color: #64748b;
-    font-size: 16px;
+    font-size: 18px;
   }
   .price-change {
     transition: color 0.3s ease;
@@ -350,45 +367,44 @@
   .section-title {
     color: var(--dark-color);
     border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 6px;
-    margin-top: 20px;
-    margin-bottom: 12px;
-    font-size: 18px;
+    padding-bottom: 8px;
+    margin-top: 25px;
+    margin-bottom: 15px;
   }
   .portfolio-summary {
     background: white;
-    padding: 15px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    font-size: 14px;
+    margin-bottom: 25px;
   }
   .portfolio-value {
-    font-size: 20px;
+    font-size: 24px;
+
+
     font-weight: 700;
     color: var(--dark-color);
   }
   .portfolio-gain-loss {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
-    margin-top: 4px;
+    margin-top: 5px;
   }
   .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 12px 0;
+    gap: 10px;
+    margin: 15px 0;
   }
   .action-group {
     display: flex;
     flex-direction: column;
-    margin: 8px 0;
+    margin: 10px 0;
   }
   .action-group label {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-weight: 500;
     color: var(--dark-color);
-    font-size: 14px;
   }
 
   /* Detailed Chart Modal Styles */
@@ -403,16 +419,15 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    padding: 10px;
   }
   #detailed-chart-content {
     background: white;
     border-radius: 12px;
-    width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
+    width: 95%;
+    max-width: 900px;
+    max-height: 90%;
     overflow-y: auto;
-    padding: 15px;
+    padding: 25px;
     box-sizing: border-box;
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
   }
@@ -420,16 +435,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   #detailed-chart-header h3 {
     margin: 0;
     color: var(--dark-color);
-    font-size: 18px;
+    font-size: 22px;
   }
   #close-detailed-chart {
     cursor: pointer;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     border: none;
     background: none;
@@ -440,22 +455,17 @@
     color: var(--danger-color);
   }
   #timeframe-buttons {
-    margin: 10px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
+    margin: 15px 0;
   }
   #timeframe-buttons button {
-    padding: 6px 12px;
+    margin-right: 10px;
+    padding: 8px 16px;
     background-color: #f1f5f9;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     transition: all 0.2s;
-    flex: 1 1 40%;
-    min-width: 80px;
   }
   #timeframe-buttons button.active {
     background-color: var(--primary-color);
@@ -464,31 +474,34 @@
   }
   #detailed-chart-graph {
     width: 100%;
-    height: 250px;
-    margin-top: 15px;
+    height: 400px;
+    margin-top: 20px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: #f8fafc;
   }
   .chart-controls {
-    margin-top: 15px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px;
   }
   .chart-controls input {
-    width: 100px;
-    margin: 0 5px;
-    padding: 6px 8px;
+    width: 120px;
+    margin: 0 8px;
+    padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    font-size: 13px;
+  }
+  .chart-controls button {
+    margin: 0 5px;
+    padding: 8px 16px;
   }
   .chart-order-section {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 30px;
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-radius: 10px;
     background: #f8fafc;
@@ -496,34 +509,30 @@
   .chart-order-section h4 {
     margin-top: 0;
     color: var(--dark-color);
-    font-size: 16px;
   }
   .chart-order-section input {
-    width: 80px;
-    margin: 0 5px;
-    padding: 6px 8px;
+    width: 100px;
+    margin: 0 8px;
+    padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    font-size: 13px;
   }
   .chart-order-section button {
-    margin-left: 6px;
-    padding: 6px 12px;
-    font-size: 13px;
+    margin-left: 8px;
+    padding: 8px 16px;
   }
   .active-orders-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 15px;
     background: white;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    font-size: 13px;
   }
   .active-orders-table th, .active-orders-table td {
     border: 1px solid var(--border-color);
-    padding: 8px;
+    padding: 12px;
     text-align: center;
   }
   .active-orders-table th {
@@ -531,7 +540,6 @@
   }
   .trade-history-table th, .trade-history-table td {
     text-align: right;
-    font-size: 13px;
   }
   .trade-history-table th:first-child, .trade-history-table td:first-child {
     text-align: left;
@@ -542,65 +550,172 @@
   .checkmark {
     color: var(--success-color);
     font-weight: bold;
-    margin-left: 8px;
-    font-size: 16px;
+    margin-left: 10px;
   }
   .market-cap-info {
     background: white;
-    padding: 15px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    font-size: 14px;
+    margin-bottom: 25px;
   }
   .market-cap-value {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--dark-color);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .market-cap-change {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
-    margin-top: 4px;
+    margin-top: 5px;
   }
-  /* Responsive tweaks */
-  @media (max-width: 480px) {
+  
+  /* Credit Payment Modal */
+  #credit-payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #credit-payment-content {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 500px;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
+  #credit-payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  #credit-payment-header h3 {
+    margin: 0;
+    color: var(--dark-color);
+    font-size: 22px;
+  }
+  #close-credit-payment {
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    color: #94a3b8;
+    transition: color 0.2s;
+  }
+  #close-credit-payment:hover {
+    color: var(--danger-color);
+  }
+  .payment-info {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 8px;
+  }
+  .payment-info p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .payment-info strong {
+    color: var(--dark-color);
+  }
+  .payment-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .payment-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+  .shorts-info {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fef3c7;
+    border-radius: 8px;
+    border: 1px solid #f59e0b;
+  }
+  .shorts-info h4 {
+    margin-top: 0;
+    color: #92400e;
+  }
+  .short-position {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #f59e0b33;
+  }
+  .short-position:last-child {
+    border-bottom: none;
+  }
+  .cover-short-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .cover-short-btn:hover {
+    background-color: var(--secondary-color);
+  }
+  .cover-loss-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .cover-loss-btn:hover {
+    background-color: #dc2626;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+    }
+    nav {
+      flex-direction: column;
+      align-items: center;
+    }
     nav button {
-      flex: 1 1 45%;
-      min-width: auto;
-      font-size: 11px;
-      padding: 6px 8px;
+      margin: 5px 0;
+      width: 90%;
     }
     .header-content {
       flex-direction: column;
-      align-items: flex-start;
+      gap: 15px;
     }
-    #cash-display {
-      text-align: left;
-      width: 100%;
-      margin-top: 5px;
-    }
-    input[type=number] {
-      width: 70px;
-      font-size: 12px;
-    }
-    .btn {
-      font-size: 12px;
-      padding: 5px 10px;
-      margin: 2px 0;
-      flex: 1 1 100%;
+    #balance-display {
+      font-size: 1rem;
     }
     .action-buttons {
       flex-direction: column;
-      gap: 6px;
     }
-    table, .active-orders-table, .trade-history-table {
-      font-size: 12px;
+    .action-buttons .btn {
+      width: 100%;
+      margin: 5px 0;
     }
-    #current-price {
-      font-size: 16px;
-      padding: 10px;
+    .payment-actions {
+      flex-direction: column;
+    }
+    .payment-actions .btn {
+      width: 100%;
     }
   }
 </style>
@@ -609,64 +724,59 @@
 <div id="app">
   <header>
     <div class="header-content">
-      <h1 class="game-title" title="Trading Sim 2.0">Trading Sim 2.0</h1>
-      <div id="cash-display" title="Cash Available">Cash: $10,000.00</div>
+      <h1 class="game-title">Trading Sim 2.0</h1>
+      <div style="display: flex; align-items: center;">
+        <div id="day-counter">Day: 0 (Monday)</div>
+        <div id="balance-display">Cash: $10,000.00 | Credit: $0.00</div>
+<div id="interest-countdown" style="margin-left: 15px; font-weight: 600; color: #b45309;"></div>
+      </div>
     </div>
     <nav>
-      <button id="nav-portfolio" title="Portfolio">Portfolio</button>
-      <button id="nav-stocks" class="active" title="Stocks">Stocks</button>
-      <button id="nav-market-cap" title="Market Cap">Market Cap</button>
-      <button id="nav-investments" title="Investments">Investments</button>
-      <button id="nav-trade-history" title="Trade History">Trade History</button>
-      <button id="nav-vegas" title="Vegas">Vegas</button>
-      <button id="nav-settings" title="Settings">Settings</button>
+      <button id="nav-portfolio">Portfolio</button>
+      <button id="nav-stocks" class="active">Stocks</button>
+      <button id="nav-market-cap">Market Cap</button>
+      <button id="nav-investments">Investments</button>
+      <button id="nav-trade-history">Trade History</button>
+      <button id="nav-vegas">Vegas</button>
+      <button id="nav-settings">Settings</button>
     </nav>
   </header>
-  <main id="main-content" tabindex="0" aria-live="polite" aria-atomic="true">
+  <main id="main-content">
     <!-- Content injected by JS -->
   </main>
-  <footer>© Trading Sim 2.0 - UPDATE: 0.0.4 - Made By Mr.SusBus</footer>
+  <footer>© Trading Sim 2.0 - UPDATE: 0.0.5 - Made By Mr.SusBus</footer>
 </div>
 
 <!-- Detailed Chart Modal -->
-<div id="detailed-chart-modal" role="dialog" aria-modal="true" aria-labelledby="detailed-chart-title" tabindex="-1">
+<div id="detailed-chart-modal">
   <div id="detailed-chart-content">
     <div id="detailed-chart-header">
       <h3 id="detailed-chart-title">Detailed Chart</h3>
-      <button id="close-detailed-chart" title="Close detailed chart" aria-label="Close detailed chart">×</button>
+      <button id="close-detailed-chart" title="Close">×</button>
     </div>
-    <div id="timeframe-buttons" role="group" aria-label="Select timeframe">
+    <div id="timeframe-buttons">
       <button data-timeframe="monthly">Monthly</button>
       <button data-timeframe="weekly">Weekly</button>
       <button data-timeframe="daily" class="active">Daily</button>
       <button data-timeframe="minute">Minute</button>
     </div>
-    <svg id="detailed-chart-graph" role="img" aria-label="Detailed price chart"></svg>
+    <svg id="detailed-chart-graph"></svg>
 
     <div class="chart-controls">
       <div>
-        <label for="zoom-slider">Zoom:</label>
-        <input type="range" id="zoom-slider" min="10" max="100" value="50" aria-valuemin="10" aria-valuemax="100" aria-valuenow="50" />
+        <label>Zoom: <input type="range" id="zoom-slider" min="10" max="100" value="50"></label>
       </div>
       <div>
-        <button id="pan-left" class="btn btn-outline" aria-label="Pan chart left">←</button>
-        <button id="pan-right" class="btn btn-outline" aria-label="Pan chart right">→</button>
+        <button id="pan-left" class="btn btn-outline">←</button>
+        <button id="pan-right" class="btn btn-outline">→</button>
       </div>
     </div>
 
     <div class="chart-order-section">
       <h4>Place Buy/Sell Order</h4>
       <div>
-        <label for="modal-order-amount">Amount:</label>
-        <input type="number" id="modal-order-amount" min="0.001" step="0.001" value="1" aria-describedby="modal-order-amount-desc" />
-        <span id="modal-order-amount-desc" class="sr-only">Enter amount to buy or sell</span>
-      </div>
-      <div>
-        <label for="modal-order-price">Price: $</label>
-        <input type="number" id="modal-order-price" min="0.01" step="0.01" value="0" aria-describedby="modal-order-price-desc" />
-        <span id="modal-order-price-desc" class="sr-only">Enter target price</span>
-      </div>
-      <div class="action-buttons" style="margin-top: 10px;">
+        <label>Amount: <input type="number" id="modal-order-amount" min="0.001" step="0.001" value="1" /></label>
+        <label>Price: $<input type="number" id="modal-order-price" min="0.01" step="0.01" value="0" /></label>
         <button id="modal-buy-btn" class="btn btn-success">Buy</button>
         <button id="modal-sell-btn" class="btn btn-danger">Sell</button>
         <button id="modal-short-btn" class="btn btn-warning">Short</button>
@@ -676,7 +786,7 @@
 
     <div class="chart-order-section">
       <h4>Active Orders</h4>
-      <table class="active-orders-table" id="modal-orders-table" aria-label="Active orders table">
+      <table class="active-orders-table" id="modal-orders-table">
         <thead>
           <tr><th>Type</th><th>Amount</th><th>Price</th><th>Action</th></tr>
         </thead>
@@ -685,6 +795,35 @@
     </div>
   </div>
 </div>
+
+<!-- Credit Payment Modal -->
+<div id="credit-payment-modal">
+  <div id="credit-payment-content">
+    <div id="credit-payment-header">
+      <h3>Credit Payment Due</h3>
+      <button id="close-credit-payment" title="Close">×</button>
+    </div>
+    <div class="payment-info">
+      <p id="credit-interest-countdown" style="font-weight: 600; color: #b45309;"></p>
+      <p><strong>Current Credit Balance:</strong> $<span id="credit-balance">0.00</span></p>
+      <p><strong>Minimum Payment Required:</strong> $<span id="min-payment">0.00</span></p>
+      <p><strong>Full Payment Required:</strong> $<span id="full-payment">0.00</span></p>
+      <p>If you don't pay at least the minimum, a 15% interest will be added to your credit balance EVERY WEEK.</p>
+      <p><strong>Interest Extension Weeks:</strong> <span id="extension-weeks">0</span>/6</p>
+    </div>
+    <div id="shorts-info-container" class="shorts-info" style="display: none;">
+      <h4>Short Positions</h4>
+      <div id="shorts-list"></div>
+    </div>
+    <div class="payment-actions">
+      <button id="pay-minimum-btn" class="btn btn-warning">Pay Minimum</button>
+      <button id="pay-full-btn" class="btn btn-success">Pay Full Amount</button>
+      <!-- <button id="skip-payment-btn" class="btn btn-danger">Skip Payment</button> -->
+    </div>
+  </div>
+</div>
+
+
 
 <script>
 // Stocks data with supply
@@ -872,6 +1011,7 @@ let selectedInvestment = null;
 let portfolio = {};
 let shortPositions = {};
 let cash = 10000;
+let credit = 0; // New credit balance for short selling
 let colors = {
   mainBg: '#ffff',
   header: '#2563eb',
@@ -881,6 +1021,14 @@ let colors = {
 let tradeHistory = [];
 let graphLineColor = colors.graphLine;
 
+// Game time tracking
+let gameDays = 0;
+let lastPaymentDay = 0;
+let paymentDue = false;
+let interestExtensionWeeks = 0; // Track interest extension weeks (max 6)
+const MAX_INTEREST_EXTENSION_WEEKS = 6;
+let lastDayIncrementTime = Date.now(); // Track when last day increment happened
+
 const mainContent = document.getElementById('main-content');
 const navStocks = document.getElementById('nav-stocks');
 const navPortfolio = document.getElementById('nav-portfolio');
@@ -889,7 +1037,8 @@ const navSettings = document.getElementById('nav-settings');
 const navTradeHistory = document.getElementById('nav-trade-history');
 const navInvestments = document.getElementById('nav-investments');
 const navVegas = document.getElementById('nav-vegas');
-const cashDisplay = document.getElementById('cash-display');
+const balanceDisplay = document.getElementById('balance-display');
+const dayCounter = document.getElementById('day-counter');
 
 navStocks.addEventListener('click', () => {
   currentPage = 'stocks';
@@ -941,6 +1090,11 @@ navVegas.addEventListener('click', () => {
   render();
 });
 
+// Add click event to balance display to open credit payment modal
+balanceDisplay.addEventListener('click', () => {
+  openCreditPaymentModal();
+});
+
 function updateNav() {
   navStocks.classList.toggle('active', currentPage === 'stocks');
   navPortfolio.classList.toggle('active', currentPage === 'portfolio');
@@ -951,12 +1105,24 @@ function updateNav() {
   navVegas.classList.toggle('active', currentPage === 'vegas');
 }
 
-function updateCashDisplay() {
-  cashDisplay.textContent = `Cash: $${cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+function updateBalanceDisplay() {
+  balanceDisplay.innerHTML = `
+    Cash: $${cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} | 
+    Credit: $${credit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+  `;
+  updateDayOfWeekDisplay();
+}
+
+// Update day of week display
+function updateDayOfWeekDisplay() {
+  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const dayOfWeek = dayNames[gameDays % 7];
+  dayCounter.textContent = `Day: ${gameDays} (${dayOfWeek})`;
 }
 
 function saveProgress() {
   localStorage.setItem('stockGameCash', cash.toFixed(2));
+  localStorage.setItem('stockGameCredit', credit.toFixed(2)); // Save credit balance
   localStorage.setItem('stockGamePortfolio', JSON.stringify(portfolio));
   localStorage.setItem('stockGameShorts', JSON.stringify(shortPositions));
   localStorage.setItem('stockGamePrices', JSON.stringify(priceHistories));
@@ -964,6 +1130,10 @@ function saveProgress() {
   localStorage.setItem('stockGameTradeHistory', JSON.stringify(tradeHistory));
   localStorage.setItem('stockGameOrders', JSON.stringify(orders));
   localStorage.setItem('stockGameMarketCapHistory', JSON.stringify(marketCapHistory));
+  // Save game time tracking
+  localStorage.setItem('stockGameDays', gameDays.toString());
+  localStorage.setItem('stockGameLastPaymentDay', lastPaymentDay.toString());
+  localStorage.setItem('stockGameInterestExtensionWeeks', interestExtensionWeeks.toString());
   // Save stock supplies
   const stockSupplies = {};
   stocks.forEach(stock => {
@@ -974,6 +1144,7 @@ function saveProgress() {
 
 async function loadProgress() {
   const savedCash = localStorage.getItem('stockGameCash');
+  const savedCredit = localStorage.getItem('stockGameCredit'); // Load credit balance
   const savedPortfolio = localStorage.getItem('stockGamePortfolio');
   const savedShorts = localStorage.getItem('stockGameShorts');
   const savedPrices = localStorage.getItem('stockGamePrices');
@@ -982,8 +1153,13 @@ async function loadProgress() {
   const savedOrders = localStorage.getItem('stockGameOrders');
   const savedMarketCapHistory = localStorage.getItem('stockGameMarketCapHistory');
   const savedSupplies = localStorage.getItem('stockGameSupplies');
+  // Load game time tracking
+  const savedGameDays = localStorage.getItem('stockGameDays');
+  const savedLastPaymentDay = localStorage.getItem('stockGameLastPaymentDay');
+  const savedInterestExtensionWeeks = localStorage.getItem('stockGameInterestExtensionWeeks');
 
   if (savedCash !== null) cash = parseFloat(savedCash);
+  if (savedCredit !== null) credit = parseFloat(savedCredit); // Load credit balance
   if (savedPortfolio !== null) portfolio = JSON.parse(savedPortfolio);
   if (savedShorts !== null) shortPositions = JSON.parse(savedShorts);
   if (savedPrices !== null) {
@@ -999,7 +1175,12 @@ async function loadProgress() {
   if (savedTradeHistory !== null) tradeHistory = JSON.parse(savedTradeHistory);
   if (savedOrders !== null) orders = JSON.parse(savedOrders);
   if (savedMarketCapHistory !== null) marketCapHistory = JSON.parse(savedMarketCapHistory);
-  
+
+  // Load game time tracking
+  if (savedGameDays !== null) gameDays = parseInt(savedGameDays);
+  if (savedLastPaymentDay !== null) lastPaymentDay = parseInt(savedLastPaymentDay);
+  if (savedInterestExtensionWeeks !== null) interestExtensionWeeks = parseInt(savedInterestExtensionWeeks);
+
   // Load stock supplies
   if (savedSupplies !== null) {
     const parsedSupplies = JSON.parse(savedSupplies);
@@ -1016,13 +1197,14 @@ async function loadProgress() {
       }
     });
   }
-  
+
   // Calculate market cap history if not found
   if (marketCapHistory.length === 0) {
     calculateMarketCapHistory();
   }
-  
+
   applyColors();
+  updateDayOfWeekDisplay();
 }
 
 function applyColors() {
@@ -1035,15 +1217,15 @@ function applyColors() {
   const root = document.documentElement;
   root.style.setProperty('--primary-color', colors.header);
   root.style.setProperty('--secondary-color', colors.header + 'dd'); // Slightly transparent for secondary
-  
+
   // Update body background (the gradient or solid color)
   document.body.style.background = colors.background;
-  
+
   // Update app container background
   const app = document.getElementById('app');
   if (app) app.style.backgroundColor = colors.mainBg;
 
-  updateCashDisplay();
+  updateBalanceDisplay();
   updateNav();
 }
 
@@ -1086,7 +1268,27 @@ function getAverageBuyPrice(symbol) {
   const totalCost = buys.reduce((sum, t) => sum + (t.shares * t.price), 0);
   return totalCost / totalShares;
 }
+function updateInterestCountdown() {
+  const countdownElement = document.getElementById('interest-countdown');
+  if (!countdownElement) return;
 
+  if (credit <= 0) {
+    countdownElement.textContent = '';
+    return;
+  }
+
+  const daysSinceLastPayment = gameDays - lastPaymentDay;
+  const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+
+  if (daysUntilInterest > 0) {
+    countdownElement.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+  } else {
+    countdownElement.textContent = 'Interest is due now!';
+  }
+}
+
+
+    updateInterestCountdown();
 // Helper to get average short entry price from history
 function getAverageShortPrice(symbol) {
   const shorts = tradeHistory.filter(t => t.symbol === symbol && t.type.toLowerCase() === 'short');
@@ -1129,20 +1331,34 @@ function checkOrders() {
         executedOrders.push(order);
       }
     } else if (order.type === 'short' && currentPrice >= orderPrice - TOLERANCE) {
+      // When shorting, player receives credit equal to (shares × short price)
       const proceeds = orderAmount * currentPrice;
-      cash += proceeds;
-      shortPositions[order.symbol] = (shortPositions[order.symbol] || 0) + orderAmount;
-      addTrade('Short', order.symbol, orderAmount, currentPrice);
-      executedOrders.push(order);
+      // Check if player has enough cash to cover the potential short (preventing infinite shorting)
+      if (proceeds <= cash) {
+        credit += proceeds;
+        shortPositions[order.symbol] = (shortPositions[order.symbol] || 0) + orderAmount;
+        addTrade('Short', order.symbol, orderAmount, currentPrice);
+        executedOrders.push(order);
+      }
     } else if (order.type === 'cover' && currentPrice <= orderPrice + TOLERANCE) {
       const shortAmt = shortPositions[order.symbol] || 0;
       if (shortAmt > 0 && orderAmount <= shortAmt) {
-        const cost = orderAmount * currentPrice;
-        if (cost <= cash) {
-          cash -= cost;
+        // Calculate average short price and profit/loss
+        const avgShort = getAverageShortPrice(order.symbol) || currentPrice;
+        const totalCreditForShort = avgShort * orderAmount;
+        const profitLoss = (avgShort - currentPrice) * orderAmount;
+
+        // Allow covering even with 0 credit if profitable
+        if (totalCreditForShort <= credit || profitLoss > 0) {
+          if (totalCreditForShort <= credit) {
+            credit -= totalCreditForShort;
+          }
+
+          // Add profit/loss to cash (not credit)
+          cash += profitLoss;
+
           shortPositions[order.symbol] = shortAmt - orderAmount;
           if (shortPositions[order.symbol] === 0) delete shortPositions[order.symbol];
-          const avgShort = getAverageShortPrice(order.symbol);
           addTrade('Cover', order.symbol, orderAmount, currentPrice, avgShort);
           executedOrders.push(order);
         }
@@ -1155,6 +1371,59 @@ function checkOrders() {
     saveProgress();
     if (currentPage === 'portfolio' || selectedStock || selectedInvestment) render();
     if (currentPage === 'tradeHistory') renderTradeHistory();
+  }
+}
+
+// Update game time (separate from price updates)
+  updateInterestCountdown();
+
+function updateGameTime() {
+  const now = Date.now();
+  // Increment game day every 30 seconds
+  if (now - lastDayIncrementTime >= 30000) {
+    gameDays++;
+    lastDayIncrementTime = now;
+    updateDayOfWeekDisplay();
+    
+    // Check if payment is due (every 30 days + extended weeks)
+    if (gameDays - lastPaymentDay >= 30 + (interestExtensionWeeks * 7) && credit > 0) {
+      paymentDue = true;
+      openCreditPaymentModal();
+    }
+    
+    // Apply weekly interest every 7 days, but skip if within extension period
+    if ((gameDays - lastPaymentDay) % 7 === 0 && credit > 0) {
+      const weeksSincePayment = Math.floor((gameDays - lastPaymentDay) / 7);
+      // Skip interest if within extension period
+      if (weeksSincePayment > interestExtensionWeeks) {
+        const interest = credit * 0.15;
+        credit += interest;
+        interestExtensionWeeks = 0; // Reset interest extension weeks on interest charge
+        saveProgress();
+        updateBalanceDisplay();
+      }
+    }
+
+// Update the interest countdown display
+function updateInterestCountdown() {
+  const countdownElement = document.getElementById('interest-countdown');
+  if (!countdownElement) return;
+
+  if (credit <= 0) {
+    countdownElement.textContent = '';
+    return;
+  }
+
+  const daysSinceLastPayment = gameDays - lastPaymentDay;
+  const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+
+  if (daysUntilInterest > 0) {
+    countdownElement.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+  } else {
+    countdownElement.textContent = 'Interest is due now!';
+  }
+}
+
   }
 }
 
@@ -1202,11 +1471,11 @@ async function updatePrices() {
 
   // Update market cap history
   updateMarketCapHistory();
-  
+
   checkOrders();
   saveProgress();
   updatePriceDisplays(previousPrices);
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function updateMarketCapHistory() {
@@ -1216,7 +1485,7 @@ function updateMarketCapHistory() {
     const currentPrice = history[history.length - 1].price;
     currentMarketCap += currentPrice * stock.supply;
   });
-  
+
   if (marketCapHistory.length >= 180) marketCapHistory.shift();
   marketCapHistory.push({
     day: marketCapHistory.length > 0 ? marketCapHistory[marketCapHistory.length - 1].day + 1 : 0,
@@ -1233,13 +1502,13 @@ function updatePriceDisplays(previousPrices) {
       const stock = stocks.find(s => s.symbol === symbol);
       const owned = portfolio[symbol] || 0;
       const hasFullOwnership = stock && owned >= stock.supply;
-      
+
       item.querySelector('.stock-info').innerHTML = `${stock.name} (${symbol}) - $${currentPrice.toFixed(2)}`;
       const checkmark = item.querySelector('.checkmark');
       if (checkmark) {
         checkmark.style.display = hasFullOwnership ? 'inline' : 'none';
       }
-      
+
       if (previousPrice) {
         if (currentPrice > previousPrice) {
           item.classList.add('price-up');
@@ -1332,30 +1601,34 @@ function renderPortfolioValues() {
       gainLossCell.className = gainLossColor;
     }
   });
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function addTrade(type, symbol, shares, price, entryPrice = null) {
   if (!Array.isArray(tradeHistory)) tradeHistory = [];
 
-  const trade = {
-    type: String(type || '').trim(),
-    symbol: String(symbol || '').trim(),
+  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const dayOfWeek = dayNames[gameDays % 7];
+
+  const t = {
+    type: String(type || ''),
+    symbol: String(symbol || ''),
     shares: Number(shares) || 0,
     price: Number(price) || 0,
     entryPrice: entryPrice != null ? Number(entryPrice) : null,
-    date: new Date().toISOString(),
+    gameDay: gameDays,
+    dayOfWeek: dayOfWeek
   };
 
-  tradeHistory.unshift(trade);
+  tradeHistory.unshift(t);
   if (tradeHistory.length > 125) tradeHistory.length = 125;
-
-  saveProgress();
-  if (currentPage === 'tradeHistory') renderTradeHistory();
+  // if your app calls saveProgress or rerender, call them here:
+  if (typeof saveProgress === 'function') saveProgress();
+  if (typeof renderTradeHistory === 'function') renderTradeHistory();
 }
 
 function render() {
-  updateCashDisplay();
+  updateBalanceDisplay();
   if (currentPage === 'stocks' && !selectedStock) renderStocksList();
   else if (currentPage === 'stocks' && selectedStock) renderStockDetails();
   else if (currentPage === 'portfolio') renderPortfolio();
@@ -1480,7 +1753,7 @@ function renderStocksList(page = 1) {
   const endIndex = startIndex + stocksPerPage;
   const paginatedStocks = stocks.slice(startIndex, endIndex);
   const totalPages = Math.ceil(stocks.length / stocksPerPage);
-  
+
   let html = '<h2 class="section-title">Available Stocks</h2><ul>';
   paginatedStocks.forEach(stock => {
     const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
@@ -1492,7 +1765,7 @@ function renderStocksList(page = 1) {
     </li>`;
   });
   html += '</ul>';
-  
+
   // Add pagination controls
   if (totalPages > 1) {
     html += '<div class="pagination">';
@@ -1507,9 +1780,9 @@ function renderStocksList(page = 1) {
     }
     html += '</div>';
   }
-  
+
   mainContent.innerHTML = html;
-  
+
   // Add event listeners for stock items
   document.querySelectorAll('.stock-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -1518,7 +1791,7 @@ function renderStocksList(page = 1) {
       render();
     });
   });
-  
+
   // Add event listeners for pagination buttons
   document.querySelectorAll('.page-btn').forEach(button => {
     button.addEventListener('click', (e) => {
@@ -1603,11 +1876,13 @@ function renderStockDetails() {
   document.querySelector('.short-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('buy-amount').value);
     if (isNaN(amount) || amount <= 0) return alert('Enter valid amount');
+    // When shorting, player receives credit equal to (shares × short price)
     const proceeds = amount * currentPrice;
-    if (proceeds > cash) return alert('Not enough cash for margin');
-    cash -= proceeds;
+    if (proceeds > cash) return alert('You cannot short for more money than you have in cash');
+    credit += proceeds;
     shortPositions[selectedStock.symbol] = (shortPositions[selectedStock.symbol] || 0) + amount;
     addTrade('Short', selectedStock.symbol, amount, currentPrice);
+    interestExtensionWeeks = 0; // Reset interest extension weeks on new short
     saveProgress();
     render();
   });
@@ -1629,15 +1904,29 @@ function renderStockDetails() {
     const amount = parseFloat(document.getElementById('sell-amount').value);
     const shorted = shortPositions[selectedStock.symbol] || 0;
     if (isNaN(amount) || amount <= 0 || amount > shorted) return alert('Invalid amount');
+
+    // When covering, player uses credit equal to (shares × cover price)
     const cost = amount * currentPrice;
-    if (cost > cash) return alert('Not enough cash');
-    cash -= cost;
-    shortPositions[selectedStock.symbol] -= amount;
-    if (shortPositions[selectedStock.symbol] === 0) delete shortPositions[selectedStock.symbol];
-    const avgShort = getAverageShortPrice(selectedStock.symbol);
-    addTrade('Cover', selectedStock.symbol, amount, currentPrice, avgShort);
-    saveProgress();
-    render();
+    const avgShort = getAverageShortPrice(selectedStock.symbol) || currentPrice;
+    const profitLoss = (avgShort - currentPrice) * amount;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      shortPositions[selectedStock.symbol] -= amount;
+      if (shortPositions[selectedStock.symbol] === 0) delete shortPositions[selectedStock.symbol];
+      addTrade('Cover', selectedStock.symbol, amount, currentPrice, avgShort);
+      saveProgress();
+      render();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   });
 
   document.querySelector('.sell-all-btn').addEventListener('click', () => {
@@ -1653,15 +1942,28 @@ function renderStockDetails() {
 
   document.querySelector('.cover-all-btn').addEventListener('click', () => {
     const shorted = shortPositions[selectedStock.symbol] || 0;
-    if (shorted <= 0) return;
+    if (shorted <= 0) return alert('You do not have any short position to cover');
+
     const cost = shorted * currentPrice;
-    if (cost > cash) return alert('Not enough cash');
-    cash -= cost;
-    const avgShort = getAverageShortPrice(selectedStock.symbol);
-    addTrade('Cover', selectedStock.symbol, shorted, currentPrice, avgShort);
-    delete shortPositions[selectedStock.symbol];
-    saveProgress();
-    render();
+    const avgShort = getAverageShortPrice(selectedStock.symbol) || currentPrice;
+    const profitLoss = (avgShort - currentPrice) * shorted;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      delete shortPositions[selectedStock.symbol];
+      addTrade('Cover', selectedStock.symbol, shorted, currentPrice, avgShort);
+      saveProgress();
+      render();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   });
 
   document.querySelectorAll('.order-btn').forEach(button => {
@@ -1717,7 +2019,7 @@ function renderPortfolio() {
     const prices = priceHistories[symbol];
     if (!prices || prices.length === 0) return;
     const currentPrice = prices[prices.length - 1].price;
-    
+
     const avgBuy = getAverageBuyPrice(symbol) || currentPrice;
     const avgShort = getAverageShortPrice(symbol) || currentPrice;
 
@@ -1731,9 +2033,9 @@ function renderPortfolio() {
   const totalPercentChange = totalBasis > 0 ? (calculatedTotalGainLoss / totalBasis) * 100 : 0;
 
   html += `<div class="portfolio-summary">
-    <div class="portfolio-value">Net Asset Value: $${(cash + totalCurrentValue).toFixed(2)}</div>
+    <div class="portfolio-value">Net Value: $${(cash + totalCurrentValue).toFixed(2)}</div>
     <div class="portfolio-gain-loss ${totalGainLossColor}">Total Gain/Loss: ${calculatedTotalGainLoss >= 0 ? '+' : ''}$${Math.abs(calculatedTotalGainLoss).toFixed(2)} (${totalPercentChange.toFixed(2)}%)</div>
-    <div>Available Cash: $${cash.toFixed(2)}</div>
+    <div>Cash: $${cash.toFixed(2)} | Credit: $${credit.toFixed(2)}</div>
   </div>`;
 
   if (ownedSymbols.length === 0 && shortSymbols.length === 0 && orders.length === 0) {
@@ -1751,7 +2053,7 @@ function renderPortfolio() {
         const stock = stocks.find(s => s.symbol === symbol);
         const investment = investments.find(i => i.symbol === symbol);
         const hasFullOwnership = stock && owned >= stock.supply;
-        
+
         if (stock) {
           html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}${hasFullOwnership ? ' ✓' : ''}</a></td><td>${owned.toFixed(3)}</td><td>$${(owned * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
         } else if (investment) {
@@ -1772,7 +2074,7 @@ function renderPortfolio() {
         const gainLossColor = gainLoss >= 0 ? 'positive' : 'negative';
         const stock = stocks.find(s => s.symbol === symbol);
         const investment = investments.find(i => i.symbol === symbol);
-        
+
         if (stock) {
           html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}</a></td><td>${shorted.toFixed(3)}</td><td>$${(shorted * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
         } else if (investment) {
@@ -1822,30 +2124,30 @@ function renderPortfolio() {
 
 function renderMarketCap() {
   let html = `<h2 class="section-title">Market Capitalization</h2>`;
-  
+
   // Calculate current market cap
   let currentMarketCap = 0;
   stocks.forEach(stock => {
     const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
     currentMarketCap += currentPrice * stock.supply;
   });
-  
+
   // Calculate market cap 60 days ago
   let pastMarketCap = marketCapHistory.length > 0 ? marketCapHistory[0].marketCap : currentMarketCap;
-  
+
   // Calculate percentage change
   const percentChange = ((currentMarketCap - pastMarketCap) / pastMarketCap) * 100;
   const changeColor = percentChange >= 0 ? 'positive' : 'negative';
-  
+
   html += `<div class="market-cap-info">
     <div class="market-cap-value">Total Market Cap: $${currentMarketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
     <div class="market-cap-change ${changeColor}">60-Day Change: ${percentChange >= 0 ? '+' : ''}${percentChange.toFixed(2)}%</div>
   </div>`;
-  
+
   html += `<div id="market-cap-graph"></div>`;
-  
+
   mainContent.innerHTML = html;
-  
+
   // Draw the market cap graph
   drawMarketCapGraph();
 }
@@ -1857,7 +2159,7 @@ function drawMarketCapGraph() {
   const width = Math.min(container.clientWidth, 600);
   const height = 200;
   const padding = 40;
-  
+
   const maxMarketCap = Math.max(...marketCapHistory.map(p => p.marketCap));
   const minMarketCap = Math.min(...marketCapHistory.map(p => p.marketCap));
   const marketCapRange = maxMarketCap - minMarketCap || 1;
@@ -1981,60 +2283,77 @@ function renderSettings() {
   });
 }
 
-function renderTradeHistory() {
-  let html = `<h2 class="section-title">Trade History</h2>`;
+function renderTradeHistory(page = 1) {
+  // adapt to how you render to the page; this uses an example container with id "trade-history-container"
+  const container = document.getElementById('trade-history-container') || document.getElementById('main-content');
+  if (!container) return;
 
-  if (tradeHistory.length === 0) {
-    html += '<p>No trades yet.</p>';
-    mainContent.innerHTML = html;
+  if (!Array.isArray(tradeHistory) || tradeHistory.length === 0) {
+    container.innerHTML = '<h2>Trade History</h2><p>No trades yet.</p>';
     return;
   }
 
-  html += `<table class="trade-history-table"><thead><tr><th>Date/Time</th><th>Type</th><th>Asset</th><th>Shares</th><th>Price</th><th>Result ($)</th><th>Result (%)</th></tr></thead><tbody>`;
+  const tradesPerPage = 10;
+  const totalPages = Math.ceil(tradeHistory.length / tradesPerPage);
+  // clamp page
+  page = Math.max(1, Math.min(page, totalPages));
+  const startIndex = (page - 1) * tradesPerPage;
+  const endIndex = startIndex + tradesPerPage;
+  const paginatedTrades = tradeHistory.slice(startIndex, endIndex);
 
-  tradeHistory.forEach(trade => {
-    const dateStr = new Date(trade.date).toLocaleString();
-    const symbol = trade.symbol;
-    const type = (trade.type || '').toLowerCase();
+  let html = '<h2>Trade History</h2><table class="trade-history-table"><thead><tr><th>Game Day</th><th>Day of Week</th><th>Type</th><th>Asset</th><th>Shares</th><th>Price</th><th>Result ($)</th><th>Result (%)</th></tr></thead><tbody>';
+  paginatedTrades.forEach(trade => {
+    const day = trade.gameDay != null ? trade.gameDay : '?';
+    const dayOfWeek = trade.dayOfWeek || '';
+    const type = trade.type || '';
+    const symbol = trade.symbol || '';
     const shares = Number(trade.shares) || 0;
     const price = Number(trade.price) || 0;
-    const entryPrice = trade.entryPrice != null ? Number(trade.entryPrice) : (
-      type.includes('sell') ? getAverageBuyPrice(symbol) :
-      type.includes('cover') ? getAverageShortPrice(symbol) : null
-    );
+    const entry = trade.entryPrice != null ? Number(trade.entryPrice) : null;
 
-    let resultDollar = '-';
-    let resultPercent = '-';
-    let color = '';
+    let resDollar = '-';
+    let resPct = '-';
+    let cls = '';
 
-    if ((type.includes('sell') || type.includes('cover')) && entryPrice != null && entryPrice !== 0 && shares > 0) {
+    if ((/sell|cover/i).test(type) && entry && entry !== 0 && shares > 0) {
       let perSharePL = 0;
-      if (type.includes('sell')) {
-        perSharePL = price - entryPrice;
-      } else if (type.includes('cover')) {
-        perSharePL = entryPrice - price;
-      }
+      if (/sell/i.test(type)) perSharePL = price - entry;
+      else if (/cover/i.test(type)) perSharePL = entry - price;
       const diff = perSharePL * shares;
-      const pct = (perSharePL / entryPrice) * 100;
-
-      color = diff >= 0 ? 'positive' : 'negative';
-      resultDollar = (diff >= 0 ? '+' : '') + '$' + diff.toFixed(2);
-      resultPercent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+      const pct = (perSharePL / entry) * 100;
+      cls = diff >= 0 ? 'positive' : 'negative';
+      resDollar = (diff >= 0 ? '+' : '') + '$' + diff.toFixed(2);
+      resPct = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
     }
 
-    html += `<tr>
-      <td>${dateStr}</td>
-      <td>${trade.type}</td>
-      <td>${symbol}</td>
-      <td>${shares.toFixed(3)}</td>
-      <td>$${price.toFixed(2)}</td>
-      <td class="${color}">${resultDollar}</td>
-      <td class="${color}">${resultPercent}</td>
-    </tr>`;
+    html += `<tr><td>Day ${day}</td><td>${dayOfWeek}</td><td>${type}</td><td>${symbol}</td><td>${shares.toFixed(3)}</td><td>$${price.toFixed(2)}</td><td class="${cls}">${resDollar}</td><td class="${cls}">${resPct}</td></tr>`;
   });
-
   html += '</tbody></table>';
-  mainContent.innerHTML = html;
+
+  // Add pagination controls (styled like Available Stocks)
+  if (totalPages > 1) {
+    html += '<div class="pagination">';
+    if (page > 1) {
+      html += `<button class="page-btn" data-page="${page - 1}">Previous</button>`;
+    }
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="page-btn ${i === page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+    }
+    if (page < totalPages) {
+      html += `<button class="page-btn" data-page="${page + 1}">Next</button>`;
+    }
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+
+  // Add event listeners for pagination buttons
+  container.querySelectorAll('.page-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const newPage = parseInt(e.target.getAttribute('data-page'), 10);
+      if (!isNaN(newPage)) renderTradeHistory(newPage);
+    });
+  });
 }
 
 function renderVegas() {
@@ -2048,15 +2367,20 @@ function renderVegas() {
 function updateCashFromVegas(newCash) {
   cash = newCash;
   saveProgress();
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function resetProfile() {
   cash = 10000;
+  credit = 0; // Reset credit balance
   portfolio = {};
   shortPositions = {};
   tradeHistory = [];
   orders = [];
+  gameDays = 0;
+  lastPaymentDay = 0;
+  paymentDue = false;
+  interestExtensionWeeks = 0; // Reset interest extension
 
   // Regenerate price histories
   stocks.forEach(stock => {
@@ -2408,8 +2732,12 @@ function openDetailedChart(symbol, name) {
     const price = parseFloat(modalOrderPrice.value);
     if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
     if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    // When shorting, player receives credit equal to (shares × short price)
     const proceeds = amount * price;
-    if (proceeds > cash) return alert('Not enough cash for margin');
+    if (proceeds > cash) return alert('You cannot short for more money than you have in cash');
+    credit += proceeds;
+    shortPositions[symbol] = (shortPositions[symbol] || 0) + amount;
+    addTrade('Short', symbol, amount, price);
     placeOrder(symbol, 'short', amount, price);
     renderOrders();
   };
@@ -2422,10 +2750,28 @@ function openDetailedChart(symbol, name) {
     if (shorted <= 0) return alert('You do not have any short position to cover');
     if (amount > shorted) return alert('You cannot cover more than your short position');
     if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+
     const cost = amount * price;
-    if (cost > cash) return alert('Not enough cash to place this cover order');
-    placeOrder(symbol, 'cover', amount, price);
-    renderOrders();
+    const avgShort = getAverageShortPrice(symbol) || price;
+    const profitLoss = (avgShort - price) * amount;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      shortPositions[symbol] = (shortPositions[symbol] || 0) - amount;
+      if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+      addTrade('Cover', symbol, amount, price, avgShort);
+      placeOrder(symbol, 'cover', amount, price);
+      renderOrders();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   };
 
   modal.style.display = 'flex';
@@ -2441,7 +2787,242 @@ function openDetailedChart(symbol, name) {
   };
 }
 
-// Vegas ----------------------------------------------
+// Credit Payment Modal Functions
+function openCreditPaymentModal() {
+  const modal = document.getElementById('credit-payment-modal');
+  const interestCountdown = document.getElementById('credit-interest-countdown');
+  if (interestCountdown) {
+    const daysSinceLastPayment = gameDays - lastPaymentDay;
+    const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+    if (daysUntilInterest > 0) {
+      interestCountdown.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+    } else {
+      interestCountdown.textContent = 'Interest is due now!';
+    }
+  }
+  const creditBalance = document.getElementById('credit-balance');
+  const minPayment = document.getElementById('min-payment');
+  const fullPayment = document.getElementById('full-payment');
+  const shortsInfoContainer = document.getElementById('shorts-info-container');
+  const shortsList = document.getElementById('shorts-list');
+  const extensionWeeks = document.getElementById('extension-weeks');
+  
+  // Ensure credit is treated as a number
+  const currentCredit = Number(credit) || 0;
+
+  // Calculate 10% minimum, but ensure it's at least $0.01 if credit exists
+  let minAmount = currentCredit * 0.1;
+  if (currentCredit > 0 && minAmount < 0.01) minAmount = currentCredit;
+
+  // Update the UI text
+  creditBalance.textContent = currentCredit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  minPayment.textContent = minAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  fullPayment.textContent = currentCredit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  extensionWeeks.textContent = interestExtensionWeeks;
+  
+  // Check for short positions
+  const allShorts = [];
+  for (const symbol in shortPositions) {
+    if (shortPositions[symbol] > 0) {
+      const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+      const avgShortPrice = getAverageShortPrice(symbol) || currentPrice;
+      
+      // Calculate profit/loss for the entire position
+      const profitLoss = (avgShortPrice - currentPrice) * shortPositions[symbol];
+      
+      allShorts.push({
+        symbol,
+        amount: shortPositions[symbol],
+        avgPrice: avgShortPrice,
+        currentPrice,
+        profitLoss
+      });
+    }
+  }
+  
+  // Display short positions info if any exist
+  if (allShorts.length > 0) {
+    shortsInfoContainer.style.display = 'block';
+    let shortsHtml = '';
+    allShorts.forEach(short => {
+      const isProfitable = short.profitLoss > 0;
+      const buttonText = isProfitable 
+        ? `Cover for $${short.profitLoss.toFixed(2)} profit` 
+        : `Cover for $${Math.abs(short.profitLoss).toFixed(2)} loss`;
+      
+      const buttonClass = isProfitable ? 'cover-short-btn' : 'cover-loss-btn';
+      
+      shortsHtml += `
+        <div class="short-position">
+          <div>${short.symbol}: ${short.amount.toFixed(3)} shares</div>
+          <div>
+            <button class="${buttonClass}" data-symbol="${short.symbol}" data-amount="${short.amount}">
+              ${buttonText}
+            </button>
+          </div>
+        </div>
+      `;
+    });
+    shortsList.innerHTML = shortsHtml;
+    
+    // Add event listeners to cover buttons
+    document.querySelectorAll('.cover-short-btn, .cover-loss-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const symbol = e.target.dataset.symbol;
+        const amount = parseFloat(e.target.dataset.amount);
+        coverShortPosition(symbol, amount);
+      });
+    });
+  } else {
+    shortsInfoContainer.style.display = 'none';
+  }
+  
+  modal.style.display = 'flex';
+}
+
+function closeCreditPaymentModal() {
+  const modal = document.getElementById('credit-payment-modal');
+  modal.style.display = 'none';
+}
+
+// Function to cover a short position
+function coverShortPosition(symbol, amount) {
+  const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+  const avgShort = getAverageShortPrice(symbol) || currentPrice;
+  const profitLoss = (avgShort - currentPrice) * amount;
+  
+  // When covering, player uses credit equal to (shares × avg short price)
+  const cost = avgShort * amount; // Use avg short price, not current price
+  
+  // For profitable shorts, we can cover even with 0 credit
+  // For losing shorts, we need to use cash instead of credit
+  if (profitLoss > 0) {
+    // Profitable short - can cover even with 0 credit
+    if (cost <= credit) {
+      credit -= cost;
+    }
+    
+    // Add profit to cash (not credit)
+    cash += profitLoss;
+    
+    shortPositions[symbol] -= amount;
+    if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+    
+    addTrade('Cover', symbol, amount, currentPrice, avgShort);
+    saveProgress();
+    updateBalanceDisplay();
+    
+    // Refresh the modal to update the UI
+    openCreditPaymentModal();
+    
+    alert(`Covered ${amount.toFixed(3)} shares of ${symbol} for a profit of $${profitLoss.toFixed(2)}.`);
+  } else {
+    // Losing short - use cash instead of credit
+    const loss = Math.abs(profitLoss);
+    if (cash >= loss) {
+      cash -= loss;
+      
+      shortPositions[symbol] -= amount;
+      if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+      
+      addTrade('Cover', symbol, amount, currentPrice, avgShort);
+      saveProgress();
+      updateBalanceDisplay();
+      
+      // Refresh the modal to update the UI
+      openCreditPaymentModal();
+      
+      alert(`Covered ${amount.toFixed(3)} shares of ${symbol} for a loss of $${loss.toFixed(2)} using cash.`);
+    } else {
+      alert('Not enough cash to cover this losing position.');
+    }
+  }
+}
+
+// Event listeners for credit payment modal
+const closeCreditPaymentBtn = document.getElementById('close-credit-payment');
+if (closeCreditPaymentBtn) {
+  closeCreditPaymentBtn.addEventListener('click', closeCreditPaymentModal);
+}
+
+const payMinimumBtn = document.getElementById('pay-minimum-btn');
+if (payMinimumBtn) {
+  payMinimumBtn.addEventListener('click', () => {
+    // Re-calculate the exact same 10% logic used in the modal
+    const currentCredit = Number(credit) || 0;
+    let minAmount = currentCredit * 0.1;
+    
+    // If credit is very small, just pay the whole thing
+    if (minAmount < 0.01) minAmount = currentCredit;
+
+    if (cash >= minAmount) {
+      cash -= minAmount;
+      credit -= minAmount;
+      
+      // Extend interest deferral by 1 week, max 6 weeks
+      if (interestExtensionWeeks < MAX_INTEREST_EXTENSION_WEEKS) {
+        interestExtensionWeeks++;
+      }
+      
+      // Reset the payment timer
+      lastPaymentDay = gameDays;
+      paymentDue = false;
+      
+      saveProgress();
+      updateBalanceDisplay();
+      closeCreditPaymentModal();
+      alert(`Minimum payment of $${minAmount.toFixed(2)} successful. Interest deferred by ${interestExtensionWeeks} week(s).`);
+    } else {
+      alert(`You need $${minAmount.toFixed(2)} in cash to make the minimum payment.`);
+    }
+  });
+}
+
+const payFullBtn = document.getElementById('pay-full-btn');
+if (payFullBtn) {
+  payFullBtn.addEventListener('click', () => {
+    if (cash >= credit) {
+      cash -= credit;
+      credit = 0;
+      lastPaymentDay = gameDays;
+      paymentDue = false;
+      interestExtensionWeeks = 0; // Reset extension when paying full
+      saveProgress();
+      updateBalanceDisplay();
+      closeCreditPaymentModal();
+      alert('Paid off your entire credit balance!');
+    } else {
+      alert('Not enough cash to pay off your credit balance.');
+    }
+  });
+}
+
+const skipPaymentBtn = document.getElementById('skip-payment-btn');
+if (skipPaymentBtn) {
+  skipPaymentBtn.addEventListener('click', () => {
+    // Apply 15% interest to credit balance
+    const interest = credit * 0.15;
+    credit += interest;
+    saveProgress();
+    updateBalanceDisplay();
+    closeCreditPaymentModal();
+    alert(`15% interest ($${interest.toFixed(2)}) has been added to your credit balance.`);
+  });
+}
+
+// Close modals when clicking outside
+const creditPaymentModal = document.getElementById('credit-payment-modal');
+if (creditPaymentModal) {
+  creditPaymentModal.addEventListener('click', (e) => {
+    if (e.target === creditPaymentModal) {
+      closeCreditPaymentModal();
+    }
+  });
+}
+
+
+
+
 
 function vegasRender(container, cash, updateCash) {
   // Global jackpot settings
@@ -2489,7 +3070,7 @@ function vegasRender(container, cash, updateCash) {
       <div class="game-menu">
         <h2>Select a Game</h2>
         <div class="games-grid">`;
-    
+
     games.forEach(game => {
       html += `
         <button class="game-card" data-game-id="${game.id}">
@@ -2497,11 +3078,11 @@ function vegasRender(container, cash, updateCash) {
           <div class="game-name">${game.name.substring(2)}</div>
         </button>`;
     });
-    
+
     html += `
         </div>
       </div>
-      
+
       <style>
         .casino-header {
           text-align: center;
@@ -2511,69 +3092,28 @@ function vegasRender(container, cash, updateCash) {
           margin-bottom: 20px;
           box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
-        
+
         .casino-header h1 {
           color: gold;
           font-size: 2.5rem;
           margin: 0;
           text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
-        
+
         .cash-display {
           font-size: 1.5rem;
           color: white;
           font-weight: bold;
-  @media (max-width: 480px) {
-    .casino-header {
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      max-width: 480px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .casino-header h1 {
-      font-size: 1.8rem;
-    }
-    .cash-display {
-      font-size: 1.2rem;
-      margin-top: 8px;
-    }
-    .game-menu h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-    .games-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 0 10px;
-    }
-    .game-card {
-      border-radius: 10px;
-      padding: 20px 10px;
-      width: 100%;
-    }
-    .game-icon {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    .game-name {
-      font-size: 1.2rem;
-    }
-  }
-
           margin-top: 10px;
         }
-        
+
         .game-menu h2 {
           text-align: center;
           color: #fff;
           font-size: 2rem;
           margin-bottom: 30px;
         }
-        
+
         .games-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -2581,7 +3121,7 @@ function vegasRender(container, cash, updateCash) {
           max-width: 800px;
           margin: 0 auto;
         }
-        
+
         .game-card {
           background: linear-gradient(135deg, #2c3e50, #4a6491);
           border: none;
@@ -2595,25 +3135,25 @@ function vegasRender(container, cash, updateCash) {
           align-items: center;
           color: white;
         }
-        
+
         .game-card:hover {
           transform: translateY(-10px);
           box-shadow: 0 12px 20px rgba(0,0,0,0.4);
           background: linear-gradient(135deg, #3498db, #8e44ad);
         }
-        
+
         .game-icon {
           font-size: 3rem;
           margin-bottom: 15px;
         }
-        
+
         .game-name {
           font-size: 1.4rem;
           font-weight: bold;
         }
       </style>
     `;
-    
+
     container.innerHTML = html;
 
     container.querySelectorAll('.game-card').forEach(btn => {
@@ -2634,536 +3174,593 @@ function vegasRender(container, cash, updateCash) {
     }
   }
 
-
-
   // Add this inside vegasRender, alongside other games in the games array:
-games.push({ id: 'poker', name: '🃏 Poker', render: renderPokerGame });
+  games.push({ id: 'poker', name: '🃏 Poker', render: renderPokerGame });
 
-// Add this function inside vegasRender, alongside renderBlackjackGame, renderSlotsGame, etc.
-function renderPokerGame() {
-  container.innerHTML = `
-    <style>
-      #poker-game {
-        max-width: 900px;
-        margin: 0 auto;
-        font-family: Arial, sans-serif;
-        color: white;
-        background: #006400;
-        padding: 10px;
-        border-radius: 10px;
-      }
-      #community-cards {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin: 20px 0;
-      }
-      .player-area {
-        border: 1px solid #444;
-        padding: 10px;
-        margin: 10px 0;
-        background: #013220;
-        border-radius: 8px;
-      }
-      .player-name {
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-      .cards {
-        display: flex;
-        gap: 5px;
-        margin-bottom: 5px;
-        perspective: 600px;
-        position: relative;
-        height: 70px;
-      }
-      .card {
-        width: 50px;
-        height: 70px;
-        border-radius: 5px;
-        font-weight: bold;
-        font-size: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        backface-visibility: hidden;
-        transition: transform 0.6s;
-        position: absolute;
-        top: 0;
-        left: 0;
-        box-shadow: 0 0 5px #000;
-      }
-      .card.front {
-        background: white;
-        color: black;
-        z-index: 2;
-      }
-      .card.back {
-        background: #004400;
-        color: transparent;
-        border: 1px solid #002200;
-        transform: rotateY(180deg);
-        z-index: 1;
-      }
-      .card.flipped {
-        transform: rotateY(180deg);
-      }
-      #betting-controls {
-        margin-top: 20px;
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-      }
-      button:disabled {
-        background: #555;
-        cursor: not-allowed;
-      }
-      #log {
-        background: #002200;
-        padding: 10px;
-        height: 150px;
-        overflow-y: auto;
-        border-radius: 8px;
-        margin-top: 20px;
-        font-size: 14px;
-      }
-      #cash-display {
-        font-weight: bold;
-        font-size: 18px;
-        text-align: center;
-        margin: 10px 0;
-      }
-      #pot-display {
-        font-weight: bold;
-        font-size: 18px;
-        margin-top: 10px;
-        text-align: center;
-      }
-      #winner-display {
-        position: fixed;
-        top: 20%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: gold;
-        padding: 20px;
-        border-radius: 10px;
-        font-size: 24px;
-        font-weight: bold;
-        z-index: 100;
-        display: none;
-        text-align: center;
-        box-shadow: 0 0 20px gold;
-      }
-      #custom-bet-input {
-        width: 120px;
-        padding: 5px;
-        border-radius: 5px;
-        border: none;
-        font-size: 16px;
-        text-align: center;
-      }
-    </style>
-    <div id="poker-game">
-      <h1>Poker Game: You vs 4 Bots</h1>
-      <div id="cash-display">Balance: $<span id="player-cash-display">0</span></div>
-      <button id="btn-start-game">Start Game</button>
-      <div id="community-cards"></div>
-      <div id="players"></div>
-      <div id="pot-display">Pot: $0</div>
-      <div id="betting-controls" style="display:none;">
-        <input type="number" id="custom-bet-input" min="1" placeholder="Enter bet amount" step="0.01" />
-        <button id="btn-check">Check</button>
-        <button id="btn-bet">Bet/Raise</button>
-        <button id="btn-fold">Fold</button>
+  // Add this function inside vegasRender, alongside renderBlackjackGame, renderSlotsGame, etc.
+  function renderPokerGame() {
+    container.innerHTML = `
+      <style>
+        #poker-game {
+          max-width: 900px;
+          margin: 0 auto;
+          font-family: Arial, sans-serif;
+          color: white;
+          background: #006400;
+          padding: 10px;
+          border-radius: 10px;
+        }
+        #community-cards {
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+          margin: 20px 0;
+        }
+        .player-area {
+          border: 1px solid #444;
+          padding: 10px;
+          margin: 10px 0;
+          background: #013220;
+          border-radius: 8px;
+        }
+        .player-name {
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        .cards {
+          display: flex;
+          gap: 5px;
+          margin-bottom: 5px;
+          perspective: 600px;
+          position: relative;
+          height: 70px;
+        }
+        .card {
+          width: 50px;
+          height: 70px;
+          border-radius: 5px;
+          font-weight: bold;
+          font-size: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          backface-visibility: hidden;
+          transition: transform 0.6s;
+          position: absolute;
+          top: 0;
+          left: 0;
+          box-shadow: 0 0 5px #000;
+        }
+        .card.front {
+          background: white;
+          color: black;
+          z-index: 2;
+        }
+        .card.back {
+          background: #004400;
+          color: transparent;
+          border: 1px solid #002200;
+          transform: rotateY(180deg);
+          z-index: 1;
+        }
+        .card.flipped {
+          transform: rotateY(180deg);
+        }
+        #betting-controls {
+          margin-top: 20px;
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          border-radius: 5px;
+          border: none;
+          cursor: pointer;
+        }
+        button:disabled {
+          background: #555;
+          cursor: not-allowed;
+        }
+        #log {
+          background: #002200;
+          padding: 10px;
+          height: 150px;
+          overflow-y: auto;
+          border-radius: 8px;
+          margin-top: 20px;
+          font-size: 14px;
+        }
+        #cash-display {
+          font-weight: bold;
+          font-size: 18px;
+          text-align: center;
+          margin: 10px 0;
+        }
+        #pot-display {
+          font-weight: bold;
+          font-size: 18px;
+          margin-top: 10px;
+          text-align: center;
+        }
+        #winner-display {
+          position: fixed;
+          top: 20%;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.8);
+          color: gold;
+          padding: 20px;
+          border-radius: 10px;
+          font-size: 24px;
+          font-weight: bold;
+          z-index: 100;
+          display: none;
+          text-align: center;
+          box-shadow: 0 0 20px gold;
+        }
+        #custom-bet-input {
+          width: 120px;
+          padding: 5px;
+          border-radius: 5px;
+          border: none;
+          font-size: 16px;
+          text-align: center;
+        }
+        #entry-fee {
+          text-align: center;
+          margin: 10px 0;
+          font-size: 16px;
+          color: #FFD700;
+        }
+      </style>
+      <div id="poker-game">
+        <h1>Poker Game: You vs 4 Bots</h1>
+        <div id="cash-display">Balance: $<span id="player-cash-display">0</span></div>
+        <div id="entry-fee">Entry Fee: $150</div>
+        <button id="btn-start-game">Start Game ($150)</button>
+        <div id="community-cards"></div>
+        <div id="players"></div>
+        <div id="pot-display">Pot: $0</div>
+        <div id="betting-controls" style="display:none;">
+          <input type="number" id="custom-bet-input" min="1" placeholder="Enter bet amount" step="0.01" />
+          <button id="btn-check">Check</button>
+          <button id="btn-bet">Bet/Raise</button>
+          <button id="btn-fold">Fold</button>
+        </div>
+        <div id="log"></div>
+        <button id="btn-back" style="margin-top:10px;">Back to Casino</button>
+        <div id="winner-display"></div>
       </div>
-      <div id="log"></div>
-      <button id="btn-back" style="margin-top:10px;">Back to Casino</button>
-      <div id="winner-display"></div>
-    </div>
-  `;
+    `;
 
-  let playerCash = cash; 
+    let playerCash = cash;
 
-  function updateDisplays() {
-    playerCashDisplay.textContent = playerCash.toFixed(2);
-    potDisplay.textContent = `Pot: $${pot.toFixed(2)}`;
-  }
-
-  function showWinner(winnerName, winnings) {
-    winnerDisplay.textContent = `${winnerName} wins $${winnings.toFixed(2)}!`;
-    winnerDisplay.style.display = 'block';
-    setTimeout(() => {
-      winnerDisplay.style.display = 'none';
-    }, 5000);
-  }
-
-  class Card {
-    constructor(suit, rank) {
-      this.suit = suit;
-      this.rank = rank;
+    function updateDisplays() {
+      playerCashDisplay.textContent = playerCash.toFixed(2);
+      potDisplay.textContent = `Pot: $${pot.toFixed(2)}`;
     }
-    toString() {
-      const rankNames = {11: 'J', 12: 'Q', 13: 'K', 14: 'A'};
-      const suitSymbols = { 'hearts': '♥', 'diamonds': '♦', 'clubs': '♣', 'spades': '♠' };
-      const rankStr = rankNames[this.rank] || this.rank;
-      return rankStr + suitSymbols[this.suit];
-    }
-  }
 
-  class Deck {
-    constructor() {
-      this.cards = [];
-      const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-      for (let suit of suits) {
-        for (let rank = 2; rank <= 14; rank++) {
-          this.cards.push(new Card(suit, rank));
+    function showWinner(winnerName, winnings) {
+      winnerDisplay.textContent = `${winnerName} wins $${winnings.toFixed(2)}!`;
+      winnerDisplay.style.display = 'block';
+      setTimeout(() => {
+        winnerDisplay.style.display = 'none';
+      }, 5000);
+    }
+
+    class Card {
+      constructor(suit, rank) {
+        this.suit = suit;
+        this.rank = rank;
+      }
+      toString() {
+        const rankNames = {11: 'J', 12: 'Q', 13: 'K', 14: 'A'};
+        const suitSymbols = { 'hearts': '♥', 'diamonds': '♦', 'clubs': '♣', 'spades': '♠' };
+        const rankStr = rankNames[this.rank] || this.rank;
+        return rankStr + suitSymbols[this.suit];
+      }
+    }
+
+    class Deck {
+      constructor() {
+        this.cards = [];
+        const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+        for (let suit of suits) {
+          for (let rank = 2; rank <= 14; rank++) {
+            this.cards.push(new Card(suit, rank));
+          }
+        }
+      }
+      shuffle() {
+        for (let i = this.cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+        }
+      }
+      deal() {
+        return this.cards.pop();
+      }
+    }
+
+    class Player {
+      constructor(name, balance, isBot = false) {
+        this.name = name;
+        this.isBot = isBot;
+        this.hand = [];
+        this.folded = false;
+        this.balance = balance;
+        this.currentBet = 0;
+        this.totalBet = 0;
+      }
+      resetForRound() {
+        this.hand = [];
+        this.folded = false;
+        this.currentBet = 0;
+        this.totalBet = 0;
+      }
+
+      placeBet(amount) {
+        const actualBet = Math.min(amount, this.balance);
+        this.balance -= actualBet;
+        this.currentBet += actualBet;
+        this.totalBet += actualBet;
+        return actualBet;
+      }
+
+      collectWinnings(amount) {
+        this.balance += amount;
+      }
+    }
+
+    const communityCardsElement = container.querySelector('#community-cards');
+    const playersElement = container.querySelector('#players');
+    const logElement = container.querySelector('#log');
+    const btnCheck = container.querySelector('#btn-check');
+    const btnBet = container.querySelector('#btn-bet');
+    const btnFold = container.querySelector('#btn-fold');
+    const btnBack = container.querySelector('#btn-back');
+    const btnStartGame = container.querySelector('#btn-start-game');
+    const bettingControls = container.querySelector('#betting-controls');
+    const customBetInput = container.querySelector('#custom-bet-input');
+    const playerCashDisplay = container.querySelector('#player-cash-display');
+    const potDisplay = container.querySelector('#pot-display');
+    const winnerDisplay = container.querySelector('#winner-display');
+
+    let deck, players, communityCards, pot, currentBet, currentPlayerIndex, bettingRound;
+
+    function log(message) {
+      logElement.innerHTML += message + '<br>';
+      logElement.scrollTop = logElement.scrollHeight;
+    }
+
+    function startNewRound() {
+      // Check if player has enough money to pay the entry fee
+      if (playerCash < 150) {
+        alert("You don't have enough money to start a game! You need $150.");
+        return;
+      }
+
+      // Deduct entry fee immediately
+      playerCash -= 150;
+      cash = playerCash;
+      updateCash(cash);
+      updateCashDisplay();
+
+      log('<b>Starting new round (Entry fee: $150 deducted)</b>');
+      deck = new Deck();
+      deck.shuffle();
+      communityCards = [];
+      pot = 0;
+      currentBet = 0;
+      bettingRound = 0;
+      currentPlayerIndex = 0;
+
+      players = [
+        new Player('You', playerCash),
+        new Player('Bot 1', playerCash, true),
+        new Player('Bot 2', playerCash, true),
+        new Player('Bot 3', playerCash, true),
+        new Player('Bot 4', playerCash, true),
+      ];
+
+      players.forEach(p => p.resetForRound());
+      dealHoleCards();
+      updateUI();
+      log('Dealt hole cards to all players.');
+      bettingControls.style.display = 'flex';
+      btnStartGame.style.display = 'none';
+      updateDisplays();
+      if (players[currentPlayerIndex].isBot) {
+        setTimeout(botTurn, 1000);
+      }
+    }
+
+    function dealHoleCards() {
+      for (let i = 0; i < 2; i++) {
+        for (let player of players) {
+          player.hand.push(deck.deal());
         }
       }
     }
-    shuffle() {
-      for (let i = this.cards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+
+    function createCardElement(card, faceUp = true, index = 0) {
+      const cardContainer = document.createElement('div');
+      cardContainer.className = 'card-container';
+      cardContainer.style.position = 'relative';
+      cardContainer.style.width = '50px';
+      cardContainer.style.height = '70px';
+      cardContainer.style.perspective = '600px';
+      cardContainer.style.left = `${index * 30}px`;
+
+      const front = document.createElement('div');
+      front.className = 'card front';
+      front.textContent = card.toString();
+
+      const back = document.createElement('div');
+      back.className = 'card back';
+      back.textContent = '🂠';
+
+      cardContainer.appendChild(front);
+      cardContainer.appendChild(back);
+
+      if (!faceUp) {
+        front.style.transform = 'rotateY(180deg)';
+        back.style.transform = 'rotateY(0deg)';
       }
-    }
-    deal() {
-      return this.cards.pop();
-    }
-  }
 
-  class Player {
-    constructor(name, balance, isBot = false) {
-      this.name = name;
-      this.isBot = isBot;
-      this.hand = [];
-      this.folded = false;
-      this.balance = balance;
-      this.currentBet = 0;
-      this.totalBet = 0; 
-    }
-    resetForRound() {
-      this.hand = [];
-      this.folded = false;
-      this.currentBet = 0;
-      this.totalBet = 0;
-    }
-    
-    placeBet(amount) {
-      const actualBet = Math.min(amount, this.balance);
-      this.balance -= actualBet;
-      this.currentBet += actualBet;
-      this.totalBet += actualBet;
-      return actualBet;
-    }
-    
-    collectWinnings(amount) {
-      this.balance += amount;
-    }
-  }
-
-  const communityCardsElement = container.querySelector('#community-cards');
-  const playersElement = container.querySelector('#players');
-  const logElement = container.querySelector('#log');
-  const btnCheck = container.querySelector('#btn-check');
-  const btnBet = container.querySelector('#btn-bet');
-  const btnFold = container.querySelector('#btn-fold');
-  const btnBack = container.querySelector('#btn-back');
-  const btnStartGame = container.querySelector('#btn-start-game');
-  const bettingControls = container.querySelector('#betting-controls');
-  const customBetInput = container.querySelector('#custom-bet-input');
-  const playerCashDisplay = container.querySelector('#player-cash-display');
-  const potDisplay = container.querySelector('#pot-display');
-  const winnerDisplay = container.querySelector('#winner-display');
-
-  let deck, players, communityCards, pot, currentBet, currentPlayerIndex, bettingRound;
-
-  function log(message) {
-    logElement.innerHTML += message + '<br>';
-    logElement.scrollTop = logElement.scrollHeight;
-  }
-
-  function startNewRound() {
-    if (playerCash <= 0) {
-      alert("You're out of money!");
-      return;
-    }
-    
-    log('<b>Starting new round</b>');
-    deck = new Deck();
-    deck.shuffle();
-    communityCards = [];
-    pot = 0;
-    currentBet = 0;
-    bettingRound = 0;
-    currentPlayerIndex = 0;
-    
-    players = [
-      new Player('You', playerCash),
-      new Player('Bot 1', playerCash, true),
-      new Player('Bot 2', playerCash, true),
-      new Player('Bot 3', playerCash, true),
-      new Player('Bot 4', playerCash, true),
-    ];
-    
-    players.forEach(p => p.resetForRound());
-    dealHoleCards();
-    updateUI();
-    log('Dealt hole cards to all players.');
-    bettingControls.style.display = 'flex';
-    btnStartGame.style.display = 'none';
-    updateDisplays();
-    if (players[currentPlayerIndex].isBot) {
-      setTimeout(botTurn, 1000);
-    }
-  }
-
-  function dealHoleCards() {
-    for (let i = 0; i < 2; i++) {
-      for (let player of players) {
-        player.hand.push(deck.deal());
-      }
-    }
-  }
-
-  function createCardElement(card, faceUp = true, index = 0) {
-    const cardContainer = document.createElement('div');
-    cardContainer.className = 'card-container';
-    cardContainer.style.position = 'relative';
-    cardContainer.style.width = '50px';
-    cardContainer.style.height = '70px';
-    cardContainer.style.perspective = '600px';
-    cardContainer.style.left = `${index * 30}px`;
-
-    const front = document.createElement('div');
-    front.className = 'card front';
-    front.textContent = card.toString();
-
-    const back = document.createElement('div');
-    back.className = 'card back';
-    back.textContent = '🂠';
-
-    cardContainer.appendChild(front);
-    cardContainer.appendChild(back);
-
-    if (!faceUp) {
-      front.style.transform = 'rotateY(180deg)';
-      back.style.transform = 'rotateY(0deg)';
+      return { container: cardContainer, front, back };
     }
 
-    return { container: cardContainer, front, back };
-  }
+    function flipCard(cardElements) {
+      cardElements.front.style.transform = 'rotateY(180deg)';
+      cardElements.back.style.transform = 'rotateY(0deg)';
+    }
 
-  function flipCard(cardElements) {
-    cardElements.front.style.transform = 'rotateY(180deg)';
-    cardElements.back.style.transform = 'rotateY(0deg)';
-  }
-
-  function updateUI(showdownReveal = false, winningPlayer = null) {
-    communityCardsElement.innerHTML = '';
-    communityCards.forEach((card, idx) => {
-      const cardElements = createCardElement(card, true, idx);
-      communityCardsElement.appendChild(cardElements.container);
-    });
-
-    playersElement.innerHTML = '';
-    for (let i = 0; i < players.length; i++) {
-      const player = players[i];
-      const playerDiv = document.createElement('div');
-      playerDiv.className = 'player-area';
-      if (player.folded) playerDiv.style.opacity = '0.5';
-      
-      const nameDiv = document.createElement('div');
-      nameDiv.className = 'player-name';
-      nameDiv.textContent = `${player.name} - Balance: $${player.balance.toFixed(2)} - Bet: $${player.currentBet.toFixed(2)}`;
-      playerDiv.appendChild(nameDiv);
-
-      const cardsDiv = document.createElement('div');
-      cardsDiv.className = 'cards';
-      cardsDiv.style.position = 'relative';
-      cardsDiv.style.height = '70px';
-
-      player.hand.forEach((card, idx) => {
-        const isPlayer = !player.isBot;
-        const showFaceUp = isPlayer || bettingRound > 3 || player.folded || (showdownReveal && player === winningPlayer);
-        const cardElements = createCardElement(card, showFaceUp, idx);
-        cardsDiv.appendChild(cardElements.container);
-        if (showFaceUp && showdownReveal && player === winningPlayer) {
-          setTimeout(() => flipCard(cardElements), 100 + idx * 300);
-        }
+    function updateUI(showdownReveal = false, winningPlayer = null) {
+      communityCardsElement.innerHTML = '';
+      communityCards.forEach((card, idx) => {
+        const cardElements = createCardElement(card, true, idx);
+        communityCardsElement.appendChild(cardElements.container);
       });
 
-      playerDiv.appendChild(cardsDiv);
-      playersElement.appendChild(playerDiv);
+      playersElement.innerHTML = '';
+      for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player-area';
+        if (player.folded) playerDiv.style.opacity = '0.5';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'player-name';
+        nameDiv.textContent = `${player.name} - Balance: $${player.balance.toFixed(2)} - Bet: $${player.currentBet.toFixed(2)}`;
+        playerDiv.appendChild(nameDiv);
+
+        const cardsDiv = document.createElement('div');
+        cardsDiv.className = 'cards';
+        cardsDiv.style.position = 'relative';
+        cardsDiv.style.height = '70px';
+
+        player.hand.forEach((card, idx) => {
+          const isPlayer = !player.isBot;
+          const showFaceUp = isPlayer || bettingRound > 3 || player.folded || (showdownReveal && player === winningPlayer);
+          const cardElements = createCardElement(card, showFaceUp, idx);
+          cardsDiv.appendChild(cardElements.container);
+          if (showFaceUp && showdownReveal && player === winningPlayer) {
+            setTimeout(() => flipCard(cardElements), 100 + idx * 300);
+          }
+        });
+
+        playerDiv.appendChild(cardsDiv);
+        playersElement.appendChild(playerDiv);
+      }
+
+      const currentPlayer = players[currentPlayerIndex];
+      if (currentPlayer.isBot || currentPlayer.folded) {
+        btnCheck.disabled = true;
+        btnBet.disabled = true;
+        btnFold.disabled = true;
+        customBetInput.disabled = true;
+      } else {
+        btnCheck.disabled = false;
+        btnBet.disabled = false;
+        btnFold.disabled = false;
+        customBetInput.disabled = false;
+        customBetInput.min = (currentBet - currentPlayer.currentBet + 0.01).toFixed(2);
+        customBetInput.value = (currentBet - currentPlayer.currentBet + 1).toFixed(2);
+      }
+      updateDisplays();
     }
 
-    const currentPlayer = players[currentPlayerIndex];
-    if (currentPlayer.isBot || currentPlayer.folded) {
-      btnCheck.disabled = true;
-      btnBet.disabled = true;
-      btnFold.disabled = true;
-      customBetInput.disabled = true;
-    } else {
-      btnCheck.disabled = false;
-      btnBet.disabled = false;
-      btnFold.disabled = false;
-      customBetInput.disabled = false;
-      customBetInput.min = (currentBet - currentPlayer.currentBet + 0.01).toFixed(2);
-      customBetInput.value = (currentBet - currentPlayer.currentBet + 1).toFixed(2);
-    }
-    updateDisplays();
-  }
+    function playerAction(action) {
+      const player = players[currentPlayerIndex];
+      if (player.folded) return;
 
-  function playerAction(action) {
-    const player = players[currentPlayerIndex];
-    if (player.folded) return;
+      if (action === 'fold') {
+        player.folded = true;
+        pot += player.currentBet;
+        log(`${player.name} folds.`);
 
-    if (action === 'fold') {
-      player.folded = true;
-      pot += player.currentBet;
-      log(`${player.name} folds.`);
-      
-      const activePlayers = players.filter(p => !p.folded);
-      if (activePlayers.length === 1) {
-        const winner = activePlayers[0];
-        log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
-        winner.collectWinnings(pot);
-        
-        if (winner.name === 'You') {
-          playerCash = winner.balance;
-          updateCash(playerCash);
-          updateDisplays();
-          showWinner(winner.name, pot);
+        const activePlayers = players.filter(p => !p.folded);
+        if (activePlayers.length === 1) {
+          const winner = activePlayers[0];
+          log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
+          winner.collectWinnings(pot);
+
+          if (winner.name === 'You') {
+            playerCash = winner.balance;
+            cash = playerCash;
+            updateCash(cash);
+            updateDisplays();
+            showWinner(winner.name, pot);
+          }
+
+          updateUI(true, winner);
+
+          setTimeout(() => {
+            bettingControls.style.display = 'none';
+            btnStartGame.style.display = 'inline-block';
+          }, 3000);
+          return;
         }
-        
-        updateUI(true, winner);
-        
-        setTimeout(() => {
-          bettingControls.style.display = 'none';
-          btnStartGame.style.display = 'inline-block';
-        }, 3000);
-        return;
+      } else if (action === 'check') {
+        if (player.currentBet < currentBet) {
+          log(`You must call or raise the current bet.`);
+          return;
+        }
+        log(`${player.name} checks.`);
+      } else if (action === 'bet') {
+        let betAmount = parseFloat(customBetInput.value);
+        if (isNaN(betAmount) || betAmount <= (currentBet - player.currentBet)) {
+          log(`Bet must be greater than current bet ($${(currentBet - player.currentBet).toFixed(2)}).`);
+          return;
+        }
+        if (betAmount > player.balance + player.currentBet) {
+          log(`You don't have enough money to bet that amount.`);
+          return;
+        }
+
+        const raiseAmount = betAmount - player.currentBet;
+        player.placeBet(raiseAmount);
+        pot += raiseAmount;
+        currentBet = betAmount;
+        log(`${player.name} bets $${betAmount.toFixed(2)}.`);
       }
-    } else if (action === 'check') {
-      if (player.currentBet < currentBet) {
-        log(`You must call or raise the current bet.`);
-        return;
-      }
-      log(`${player.name} checks.`);
-    } else if (action === 'bet') {
-      let betAmount = parseFloat(customBetInput.value);
-      if (isNaN(betAmount) || betAmount <= (currentBet - player.currentBet)) {
-        log(`Bet must be greater than current bet ($${(currentBet - player.currentBet).toFixed(2)}).`);
-        return;
-      }
-      if (betAmount > player.balance + player.currentBet) {
-        log(`You don't have enough money to bet that amount.`);
-        return;
-      }
-      
-      const raiseAmount = betAmount - player.currentBet;
-      player.placeBet(raiseAmount);
-      pot += raiseAmount;
-      currentBet = betAmount;
-      log(`${player.name} bets $${betAmount.toFixed(2)}.`);
+
+      nextPlayer();
     }
 
-    nextPlayer();
-  }
+    function nextPlayer() {
+      do {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+      } while (players[currentPlayerIndex].folded);
 
-  function nextPlayer() {
-    do {
-      currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-    } while (players[currentPlayerIndex].folded);
+      if (currentPlayerIndex === 0) {
+        advanceRound();
+      } else {
+        updateUI();
+        if (players[currentPlayerIndex].isBot) {
+          setTimeout(botTurn, 1000);
+        }
+      }
+    }
 
-    if (currentPlayerIndex === 0) {
-      advanceRound();
-    } else {
+    function advanceRound() {
+      log('<b>Advancing round</b>');
+      players.forEach(p => {
+        pot += p.currentBet;
+        p.currentBet = 0;
+      });
+      currentBet = 0;
+      bettingRound++;
+
+      if (bettingRound === 1) {
+        communityCards.push(deck.deal(), deck.deal(), deck.deal());
+        log('Flop dealt.');
+      } else if (bettingRound === 2) {
+        communityCards.push(deck.deal());
+        log('Turn dealt.');
+      } else if (bettingRound === 3) {
+        communityCards.push(deck.deal());
+        log('River dealt.');
+      } else {
+        showdown();
+        return;
+      }
+
+      currentPlayerIndex = 0;
+      while (players[currentPlayerIndex].folded) currentPlayerIndex++;
       updateUI();
       if (players[currentPlayerIndex].isBot) {
         setTimeout(botTurn, 1000);
       }
     }
-  }
 
-  function advanceRound() {
-    log('<b>Advancing round</b>');
-    players.forEach(p => {
-      pot += p.currentBet;
-      p.currentBet = 0;
-    });
-    currentBet = 0;
-    bettingRound++;
-    
-    if (bettingRound === 1) {
-      communityCards.push(deck.deal(), deck.deal(), deck.deal());
-      log('Flop dealt.');
-    } else if (bettingRound === 2) {
-      communityCards.push(deck.deal());
-      log('Turn dealt.');
-    } else if (bettingRound === 3) {
-      communityCards.push(deck.deal());
-      log('River dealt.');
-    } else {
-      showdown();
-      return;
-    }
-    
-    currentPlayerIndex = 0;
-    while (players[currentPlayerIndex].folded) currentPlayerIndex++;
-    updateUI();
-    if (players[currentPlayerIndex].isBot) {
-      setTimeout(botTurn, 1000);
-    }
-  }
+    function botTurn() {
+      const bot = players[currentPlayerIndex];
+      if (bot.folded) { nextPlayer(); return; }
 
-  function botTurn() {
-    const bot = players[currentPlayerIndex];
-    if (bot.folded) { nextPlayer(); return; }
+      const handStrength = evaluateHandStrength(bot.hand, communityCards);
+      const bluffChance = Math.random();
+      const callCost = Math.max(0, currentBet - bot.currentBet);
+      const potIfCalled = pot + callCost;
+      const potOdds = callCost > 0 ? callCost / potIfCalled : 0;
 
-    const handStrength = evaluateHandStrength(bot.hand, communityCards);
-    const bluffChance = Math.random();
-    const callCost = Math.max(0, currentBet - bot.currentBet);
-    const potIfCalled = pot + callCost;
-    const potOdds = callCost > 0 ? callCost / potIfCalled : 0;
-
-    if (handStrength >= 0.65 && bot.balance + bot.currentBet > currentBet) {
-      let raiseSize = Math.max(10, Math.floor(pot * 0.25));
-      let betAmount = currentBet + raiseSize;
-      betAmount = Math.min(betAmount, bot.balance + bot.currentBet);
-      const raiseAmount = betAmount - bot.currentBet;
-      bot.placeBet(raiseAmount);
-      pot += raiseAmount;
-      currentBet = Math.max(currentBet, bot.currentBet);
-      log(`${bot.name} raises to $${betAmount.toFixed(2)}.`);
-      nextPlayer();
-      return;
-    }
-
-    if (handStrength >= 0.35) {
-      if (callCost === 0) {
-        log(`${bot.name} checks.`);
+      if (handStrength >= 0.65 && bot.balance + bot.currentBet > currentBet) {
+        let raiseSize = Math.max(10, Math.floor(pot * 0.25));
+        let betAmount = currentBet + raiseSize;
+        betAmount = Math.min(betAmount, bot.balance + bot.currentBet);
+        const raiseAmount = betAmount - bot.currentBet;
+        bot.placeBet(raiseAmount);
+        pot += raiseAmount;
+        currentBet = Math.max(currentBet, bot.currentBet);
+        log(`${bot.name} raises to $${betAmount.toFixed(2)}.`);
         nextPlayer();
         return;
       }
-      if (potOdds < 0.7 || handStrength > 0.5) {
-        const callAmount = Math.min(callCost, bot.balance);
-        bot.placeBet(callAmount);
-        pot += callAmount;
-        currentBet = Math.max(currentBet, bot.currentBet);
-        log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
-        nextPlayer();
-        return;
+
+      if (handStrength >= 0.35) {
+        if (callCost === 0) {
+          log(`${bot.name} checks.`);
+          nextPlayer();
+          return;
+        }
+        if (potOdds < 0.7 || handStrength > 0.5) {
+          const callAmount = Math.min(callCost, bot.balance);
+          bot.placeBet(callAmount);
+          pot += callAmount;
+          currentBet = Math.max(currentBet, bot.currentBet);
+          log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
+          nextPlayer();
+          return;
+        } else {
+          bot.folded = true;
+          pot += bot.currentBet;
+          log(`${bot.name} folds.`);
+          nextPlayer();
+          return;
+        }
+      }
+
+      if (callCost === 0) {
+        if (bluffChance < 0.15 && bot.balance >= 10) {
+          let betAmount = Math.min(currentBet + 10, bot.balance + bot.currentBet);
+          const raiseAmount = betAmount - bot.currentBet;
+          bot.placeBet(raiseAmount);
+          pot += raiseAmount;
+          currentBet = Math.max(currentBet, bot.currentBet);
+          log(`${bot.name} bets $${betAmount.toFixed(2)}.`);
+          nextPlayer();
+          return;
+        } else {
+          log(`${bot.name} checks.`);
+          nextPlayer();
+          return;
+        }
       } else {
+        if (callCost <= Math.max(1, Math.floor(pot * 0.1))) {
+          const callAmount = Math.min(callCost, bot.balance);
+          bot.placeBet(callAmount);
+          pot += callAmount;
+          currentBet = Math.max(currentBet, bot.currentBet);
+          log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
+          nextPlayer();
+          return;
+        }
+
+        if (bluffChance < 0.08) {
+          const callAmount = Math.min(callCost, bot.balance);
+          bot.placeBet(callAmount);
+          pot += callAmount;
+          currentBet = Math.max(currentBet, bot.currentBet);
+          log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
+          nextPlayer();
+          return;
+        }
+
         bot.folded = true;
         pot += bot.currentBet;
         log(`${bot.name} folds.`);
@@ -3172,177 +3769,140 @@ function renderPokerGame() {
       }
     }
 
-    if (callCost === 0) {
-      if (bluffChance < 0.15 && bot.balance >= 10) {
-        let betAmount = Math.min(currentBet + 10, bot.balance + bot.currentBet);
-        const raiseAmount = betAmount - bot.currentBet;
-        bot.placeBet(raiseAmount);
-        pot += raiseAmount;
-        currentBet = Math.max(currentBet, bot.currentBet);
-        log(`${bot.name} bets $${betAmount.toFixed(2)}.`);
-        nextPlayer();
-        return;
+    function evaluateHandStrength(hand, communityCards) {
+      const all = hand.concat(communityCards);
+      if (all.length === 0) return 0;
+
+      const rankCounts = {};
+      const suitCounts = {};
+      for (let c of all) {
+        rankCounts[c.rank] = (rankCounts[c.rank] || 0) + 1;
+        suitCounts[c.suit] = (suitCounts[c.suit] || 0) + 1;
+      }
+
+      const counts = Object.values(rankCounts).sort((a,b)=>b-a);
+      const maxCount = counts.length ? counts[0] : 0;
+      const pairs = counts.filter(v=>v===2).length;
+
+      const uniqueRanks = Object.keys(rankCounts).map(r=>parseInt(r)).sort((a,b)=>a-b);
+      let straight = false;
+      if (uniqueRanks.length >= 5) {
+        for (let i = 0; i <= uniqueRanks.length - 5; i++) {
+          let ok = true;
+          for (let j = 1; j < 5; j++) {
+            if (uniqueRanks[i+j] !== uniqueRanks[i] + j) { ok = false; break; }
+          }
+          if (ok) { straight = true; break; }
+        }
+        if (!straight && uniqueRanks.includes(14)) {
+          const wheel = [2,3,4,5];
+          if (wheel.every(r=>uniqueRanks.includes(r))) straight = true;
+        }
+      }
+
+      const flush = Object.values(suitCounts).some(v=>v >= 5);
+
+      let score = 0;
+      if (maxCount >= 4) score = 0.95;
+      else if (maxCount === 3 && pairs >= 1) score = 0.88;
+      else if (flush) score = 0.80;
+      else if (straight) score = 0.75;
+      else if (maxCount === 3) score = 0.60;
+      else if (pairs >= 2) score = 0.50;
+      else if (pairs === 1) score = 0.35;
+      else {
+        const maxRank = Math.max(...uniqueRanks);
+        score = (maxRank / 14) * 0.3;
+      }
+
+      const revealed = communityCards.length;
+      score = Math.min(1, score + revealed * 0.03);
+
+      return score;
+    }
+
+    function showdown() {
+      log('<b>Showdown!</b>');
+
+      players.forEach(p => {
+        pot += p.currentBet;
+        p.currentBet = 0;
+      });
+
+      const activePlayers = players.filter(p => !p.folded);
+      let winner, winnings;
+
+      if (activePlayers.length === 1) {
+        winner = activePlayers[0];
+        winnings = pot;
+        log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
+        winner.collectWinnings(pot);
+
+        if (winner.name === 'You') {
+          playerCash = winner.balance;
+          cash = playerCash;
+          updateCash(cash);
+          updateDisplays();
+        }
       } else {
-        log(`${bot.name} checks.`);
-        nextPlayer();
-        return;
-      }
-    } else {
-      if (callCost <= Math.max(1, Math.floor(pot * 0.1))) {
-        const callAmount = Math.min(callCost, bot.balance);
-        bot.placeBet(callAmount);
-        pot += callAmount;
-        currentBet = Math.max(currentBet, bot.currentBet);
-        log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
-        nextPlayer();
-        return;
-      }
+        let bestPlayer = activePlayers[0];
+        let bestStrength = evaluateHandStrength(bestPlayer.hand, communityCards);
 
-      if (bluffChance < 0.08) {
-        const callAmount = Math.min(callCost, bot.balance);
-        bot.placeBet(callAmount);
-        pot += callAmount;
-        currentBet = Math.max(currentBet, bot.currentBet);
-        log(`${bot.name} calls $${callAmount.toFixed(2)}.`);
-        nextPlayer();
-        return;
-      }
-
-      bot.folded = true;
-      pot += bot.currentBet;
-      log(`${bot.name} folds.`);
-      nextPlayer();
-      return;
-    }
-  }
-
-  function evaluateHandStrength(hand, communityCards) {
-    const all = hand.concat(communityCards);
-    if (all.length === 0) return 0;
-
-    const rankCounts = {};
-    const suitCounts = {};
-    for (let c of all) {
-      rankCounts[c.rank] = (rankCounts[c.rank] || 0) + 1;
-      suitCounts[c.suit] = (suitCounts[c.suit] || 0) + 1;
-    }
-
-    const counts = Object.values(rankCounts).sort((a,b)=>b-a);
-    const maxCount = counts.length ? counts[0] : 0;
-    const pairs = counts.filter(v=>v===2).length;
-
-    const uniqueRanks = Object.keys(rankCounts).map(r=>parseInt(r)).sort((a,b)=>a-b);
-    let straight = false;
-    if (uniqueRanks.length >= 5) {
-      for (let i = 0; i <= uniqueRanks.length - 5; i++) {
-        let ok = true;
-        for (let j = 1; j < 5; j++) {
-          if (uniqueRanks[i+j] !== uniqueRanks[i] + j) { ok = false; break; }
+        for (let i = 1; i < activePlayers.length; i++) {
+          const strength = evaluateHandStrength(activePlayers[i].hand, communityCards);
+          if (strength > bestStrength) {
+            bestPlayer = activePlayers[i];
+            bestStrength = strength;
+          }
         }
-        if (ok) { straight = true; break; }
-      }
-      if (!straight && uniqueRanks.includes(14)) {
-        const wheel = [2,3,4,5];
-        if (wheel.every(r=>uniqueRanks.includes(r))) straight = true;
-      }
-    }
 
-    const flush = Object.values(suitCounts).some(v=>v >= 5);
+        winner = bestPlayer;
+        winnings = pot;
+        log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
+        winner.collectWinnings(pot);
 
-    let score = 0;
-    if (maxCount >= 4) score = 0.95;
-    else if (maxCount === 3 && pairs >= 1) score = 0.88;
-    else if (flush) score = 0.80;
-    else if (straight) score = 0.75;
-    else if (maxCount === 3) score = 0.60;
-    else if (pairs >= 2) score = 0.50;
-    else if (pairs === 1) score = 0.35;
-    else {
-      const maxRank = Math.max(...uniqueRanks);
-      score = (maxRank / 14) * 0.3;
-    }
-
-    const revealed = communityCards.length;
-    score = Math.min(1, score + revealed * 0.03);
-
-    return score;
-  }
-
-  function showdown() {
-    log('<b>Showdown!</b>');
-    
-    players.forEach(p => {
-      pot += p.currentBet;
-      p.currentBet = 0;
-    });
-    
-    const activePlayers = players.filter(p => !p.folded);
-    let winner, winnings;
-    
-    if (activePlayers.length === 1) {
-      winner = activePlayers[0];
-      winnings = pot;
-      log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
-      winner.collectWinnings(pot);
-      
-      if (winner.name === 'You') {
-        playerCash = winner.balance;
-        updateCash(playerCash);
-        updateDisplays();
-      }
-    } else {
-      let bestPlayer = activePlayers[0];
-      let bestStrength = evaluateHandStrength(bestPlayer.hand, communityCards);
-      
-      for (let i = 1; i < activePlayers.length; i++) {
-        const strength = evaluateHandStrength(activePlayers[i].hand, communityCards);
-        if (strength > bestStrength) {
-          bestPlayer = activePlayers[i];
-          bestStrength = strength;
+        if (winner.name === 'You') {
+          playerCash = winner.balance;
+          cash = playerCash;
+          updateCash(cash);
+          updateDisplays();
         }
       }
-      
-      winner = bestPlayer;
-      winnings = pot;
-      log(`${winner.name} wins the pot of $${pot.toFixed(2)}!`);
-      winner.collectWinnings(pot);
-      
+
+      showWinner(winner.name, winnings);
+      updateUI(true, winner);
+
+      pot = 0;
+      bettingRound = 0;
+
       if (winner.name === 'You') {
-        playerCash = winner.balance;
-        updateCash(playerCash);
-        updateDisplays();
+        for (let i = 1; i < players.length; i++) {
+          players[i].balance = playerCash;
+        }
+      } else {
+        playerCash = players[0].balance;
+        cash = playerCash;
+        updateCash(cash);
       }
+
+      setTimeout(() => {
+        bettingControls.style.display = 'none';
+        btnStartGame.style.display = 'inline-block';
+      }, 3000);
     }
-    
-    showWinner(winner.name, winnings);
-    updateUI(true, winner);
-    
-    pot = 0;
-    bettingRound = 0;
-    
-    if (winner.name === 'You') {
-      for (let i = 1; i < players.length; i++) {
-        players[i].balance = playerCash;
-      }
-    } else {
-      playerCash = players[0].balance;
+
+    btnCheck.onclick = () => playerAction('check');
+    btnBet.onclick = () => playerAction('bet');
+    btnFold.onclick = () => playerAction('fold');
+    btnBack.onclick = () => {
       updateCash(playerCash);
-    }
-    
-    setTimeout(() => {
-      bettingControls.style.display = 'none';
-      btnStartGame.style.display = 'inline-block';
-    }, 3000);
+      showGameMenu();
+    };
+    btnStartGame.onclick = () => startNewRound();
+
+    updateDisplays();
   }
 
-  btnCheck.onclick = () => playerAction('check');
-  btnBet.onclick = () => playerAction('bet');
-  btnFold.onclick = () => playerAction('fold');
-  btnBack.onclick = () => showGameMenu();
-  btnStartGame.onclick = () => startNewRound();
-
-  updateDisplays();
-}
   // Blackjack game implementation
   function renderBlackjackGame() {
     container.innerHTML = `
@@ -3357,7 +3917,7 @@ function renderPokerGame() {
           margin: 0 auto;
           box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
-        
+
         .game-header {
           display: flex;
           justify-content: space-between;
@@ -3366,43 +3926,43 @@ function renderPokerGame() {
           padding-bottom: 15px;
           border-bottom: 2px solid rgba(255,255,255,0.2);
         }
-        
+
         .game-title {
           font-size: 2rem;
           margin: 0;
           color: gold;
           text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
-        
+
         .cash-info {
           font-size: 1.2rem;
           font-weight: bold;
         }
-        
+
         .hand-container {
           margin: 20px 0;
         }
-        
+
         .hand-title {
           font-size: 1.4rem;
           margin-bottom: 10px;
           display: flex;
           justify-content: space-between;
         }
-        
+
         .hand {
           background: rgba(0, 0, 0, 0.2);
           border-radius: 10px;
           padding: 15px;
           min-height: 120px;
         }
-        
+
         .cards {
           display: flex;
           gap: 15px;
           flex-wrap: wrap;
         }
-        
+
         .card {
           width: 80px;
           height: 110px;
@@ -3418,11 +3978,11 @@ function renderPokerGame() {
           position: relative;
           transition: transform 0.3s;
         }
-        
+
         .card.red {
           color: #d32f2f;
         }
-        
+
         .card-back {
           background: linear-gradient(135deg, #b71c1c, #4a0000);
           color: white;
@@ -3431,16 +3991,16 @@ function renderPokerGame() {
           justify-content: center;
           font-size: 2rem;
         }
-        
+
         .card-value {
           font-size: 1.5rem;
         }
-        
+
         .card-suit {
           font-size: 2rem;
           align-self: center;
         }
-        
+
         .controls {
           display: flex;
           flex-wrap: wrap;
@@ -3448,7 +4008,7 @@ function renderPokerGame() {
           margin-top: 25px;
           justify-content: center;
         }
-        
+
         .btn {
           padding: 12px 25px;
           font-size: 1.1rem;
@@ -3459,37 +4019,37 @@ function renderPokerGame() {
           transition: all 0.2s;
           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        
+
         .btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
         }
-        
+
         .btn-primary {
           background: linear-gradient(to bottom, #4CAF50, #2E7D32);
           color: white;
         }
-        
+
         .btn-secondary {
           background: linear-gradient(to bottom, #2196F3, #0D47A1);
           color: white;
         }
-        
+
         .btn-warning {
           background: linear-gradient(to bottom, #FF9800, #E65100);
           color: white;
         }
-        
+
         .btn-danger {
           background: linear-gradient(to bottom, #F44336, #B71C1C);
           color: white;
         }
-        
+
         .btn:hover:not(:disabled) {
           transform: translateY(-3px);
           box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
-        
+
         .bet-controls {
           display: flex;
           align-items: center;
@@ -3500,7 +4060,7 @@ function renderPokerGame() {
           padding: 15px;
           border-radius: 10px;
         }
-        
+
         .bet-input {
           padding: 10px;
           border-radius: 5px;
@@ -3510,7 +4070,7 @@ function renderPokerGame() {
           font-size: 1.1rem;
           font-weight: bold;
         }
-        
+
         #blackjack-result {
           text-align: center;
           font-size: 1.5rem;
@@ -3521,35 +4081,35 @@ function renderPokerGame() {
           border-radius: 10px;
           background: rgba(0,0,0,0.3);
         }
-        
+
         .win {
           color: #4CAF50;
           text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
-        
+
         .lose {
           color: #F44336;
           text-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
         }
-        
+
         .push {
           color: #FFC107;
           text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
         }
       </style>
-      
+
       <div class="blackjack-container">
         <div class="game-header">
           <h2 class="game-title">🃏 BLACKJACK</h2>
           <div class="cash-info">💰 Cash: $<span id="blackjack-cash">${cash.toFixed(2)}</span></div>
         </div>
-        
+
         <div class="bet-controls">
           <label for="blackjack-bet">Bet Amount: $</label>
           <input type="number" id="blackjack-bet" class="bet-input" min="1" step="1" value="10" />
           <button id="blackjack-deal" class="btn btn-primary"> DEAL CARDS </button>
         </div>
-        
+
         <div class="hand-container">
           <div class="hand-title">
             <span>Dealer Hand (<span id="dealer-score">0</span>)</span>
@@ -3558,7 +4118,7 @@ function renderPokerGame() {
             <div class="cards" id="dealer-cards"></div>
           </div>
         </div>
-        
+
         <div class="hand-container">
           <div class="hand-title">
             <span>Your Hand (<span id="player-score">0</span>)</span>
@@ -3567,9 +4127,9 @@ function renderPokerGame() {
             <div class="cards" id="player-cards"></div>
           </div>
         </div>
-        
+
         <div id="blackjack-result"></div>
-        
+
         <div class="controls">
           <button id="blackjack-hit" class="btn btn-primary" disabled>HIT</button>
           <button id="blackjack-stand" class="btn btn-warning" disabled>STAND</button>
@@ -3638,23 +4198,23 @@ function renderPokerGame() {
     function renderCard(card, isHidden = false) {
       const cardDiv = document.createElement('div');
       cardDiv.classList.add('card');
-      
+
       if (isHidden) {
         cardDiv.classList.add('card-back');
         cardDiv.textContent = '🂠';
         return cardDiv;
       }
-      
+
       if (card.suit === '♥' || card.suit === '♦') {
         cardDiv.classList.add('red');
       }
-      
+
       cardDiv.innerHTML = `
         <div class="card-value">${card.rank}</div>
         <div class="card-suit">${card.suit}</div>
         <div class="card-value" style="transform: rotate(180deg); align-self: flex-end;">${card.rank}</div>
       `;
-      
+
       return cardDiv;
     }
 
@@ -3693,7 +4253,7 @@ function renderPokerGame() {
       } else if (won === false) {
         cash -= bet;
       }
-      
+
       cashSpan.textContent = cash.toFixed(2);
       updateCash(cash);
       updateScores();
@@ -3714,7 +4274,7 @@ function renderPokerGame() {
       renderHand(playerCardsDiv, playerHand);
       updateScores();
       const playerScore = calculateScore(playerHand);
-      
+
       if (playerScore === 21) {
         standBtn.click();
       } else if (playerScore > 21) {
@@ -3754,6 +4314,11 @@ function renderPokerGame() {
         return;
       }
 
+      // Deduct bet immediately
+      cash -= bet;
+      cashSpan.textContent = cash.toFixed(2);
+      updateCash(cash);
+
       deck = createDeck();
       shuffleDeck(deck);
       playerHand = [deck.pop(), deck.pop()];
@@ -3785,7 +4350,7 @@ function renderPokerGame() {
           user-select: none;
           text-align: center;
         }
-        
+
         .slot-header {
           background: linear-gradient(180deg,#ffdd66,#ffb400);
           border-top-left-radius: 14px;
@@ -3796,7 +4361,7 @@ function renderPokerGame() {
           box-shadow: 0 10px 20px rgba(0,0,0,0.35), inset 0 -6px 12px rgba(0,0,0,0.08);
           margin-bottom: 0;
         }
-        
+
         .slot-header h2 {
           margin: 0;
           font-size: 24px;
@@ -3804,7 +4369,7 @@ function renderPokerGame() {
           color: #3a1600;
           text-shadow: 0 1px 0 rgba(255,255,255,0.6);
         }
-        
+
         .bulb-row {
           position: absolute;
           bottom: -10px;
@@ -3813,7 +4378,7 @@ function renderPokerGame() {
           display:flex;
           justify-content:space-between;
         }
-        
+
         .bulb {
           width: 12px;
           height: 12px;
@@ -3822,7 +4387,7 @@ function renderPokerGame() {
           box-shadow: 0 0 8px rgba(255,200,0,0.9);
           border: 1px solid rgba(0,0,0,0.2);
         }
-        
+
         .cabinet {
           background: linear-gradient(180deg, #ff8f1a, #bf5310);
           padding: 20px;
@@ -3831,7 +4396,7 @@ function renderPokerGame() {
           border-bottom-right-radius: 16px;
           box-shadow: 0 14px 24px rgba(0,0,0,0.45);
         }
-        
+
         .info-row {
           display: flex;
           justify-content: space-between;
@@ -3841,13 +4406,13 @@ function renderPokerGame() {
           padding: 12px;
           border-radius: 10px;
         }
-        
+
         .cash-display {
           font-size: 18px;
           color: #fff8e6;
           font-weight: 700;
         }
-        
+
         .bet-control {
           display: flex;
           align-items: center;
@@ -3855,7 +4420,7 @@ function renderPokerGame() {
           font-size: 16px;
           color: #fff8e6;
         }
-        
+
         .bet-input {
           width: 80px;
           font-weight: 700;
@@ -3863,7 +4428,7 @@ function renderPokerGame() {
           padding: 6px;
           text-align: center;
         }
-        
+
         .reel-window {
           display: flex;
           justify-content: space-between;
@@ -3871,7 +4436,7 @@ function renderPokerGame() {
           gap: 15px;
           margin: 20px 0;
         }
-        
+
         .reel-frame {
           background: linear-gradient(180deg,#ffe, #fff);
           width: 100px;
@@ -3887,7 +4452,7 @@ function renderPokerGame() {
           position: relative;
           overflow: hidden;
         }
-        
+
         .reel-frame .highlight {
           position: absolute;
           top: 40%;
@@ -3898,7 +4463,7 @@ function renderPokerGame() {
           background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
           mix-blend-mode: overlay;
         }
-        
+
         .controls-row {
           display: flex;
           justify-content: center;
@@ -3907,7 +4472,7 @@ function renderPokerGame() {
           margin-top: 25px;
           flex-wrap: wrap;
         }
-        
+
         .btn-large {
           padding: 14px 30px;
           font-size: 18px;
@@ -3918,22 +4483,22 @@ function renderPokerGame() {
           border: none;
           transition: all 0.2s;
         }
-        
+
         .btn-large:hover {
           transform: translateY(-3px);
           box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         }
-        
+
         .spin-button {
           background: linear-gradient(180deg,#ff2,#f90);
           color: #3a1600;
         }
-        
+
         .back-button {
           background: linear-gradient(180deg,#444,#222);
           color: white;
         }
-        
+
         .lever-outer {
           position: absolute;
           right: -70px;
@@ -3945,7 +4510,7 @@ function renderPokerGame() {
           justify-content: center;
           pointer-events: none;
         }
-        
+
         .lever-rod {
           position: relative;
           width: 10px;
@@ -3958,7 +4523,7 @@ function renderPokerGame() {
           box-shadow: 0 6px 14px rgba(0,0,0,0.45);
           pointer-events: auto;
         }
-        
+
         .lever-knob {
           position: absolute;
           bottom: -18px;
@@ -3974,11 +4539,11 @@ function renderPokerGame() {
           transition: box-shadow 160ms;
           pointer-events: auto;
         }
-        
-        .lever-knob:active { 
-          box-shadow: 0 4px 8px rgba(0,0,0,0.35); 
+
+        .lever-knob:active {
+          box-shadow: 0 4px 8px rgba(0,0,0,0.35);
         }
-        
+
         .jackpot-row {
           display: flex;
           justify-content: space-between;
@@ -3991,53 +4556,53 @@ function renderPokerGame() {
           padding: 12px;
           border-radius: 10px;
         }
-        
-        .jackpot-label { 
-          font-size: 18px; 
+
+        .jackpot-label {
+          font-size: 18px;
         }
-        
-        .jackpot-value { 
-          font-size: 20px; 
-          color: gold; 
-          background: rgba(0,0,0,0.3); 
-          padding: 6px 12px; 
+
+        .jackpot-value {
+          font-size: 20px;
+          color: gold;
+          background: rgba(0,0,0,0.3);
+          padding: 6px 12px;
           border-radius: 8px;
           text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
         }
-        
+
         .payouts {
-          margin-top: 25px; 
-          color: #fff8e6; 
-          font-size: 14px; 
+          margin-top: 25px;
+          color: #fff8e6;
+          font-size: 14px;
           opacity: 0.95;
           background: rgba(0,0,0,0.2);
           padding: 15px;
           border-radius: 10px;
         }
-        
+
         .payouts h3 {
           margin-top: 0;
           color: gold;
         }
-        
-        .result-area { 
-          height: 40px; 
-          margin-top: 15px; 
-          font-weight: 700; 
-          color: #fff; 
+
+        .result-area {
+          height: 40px;
+          margin-top: 15px;
+          font-weight: 700;
+          color: #fff;
           text-shadow: 0 1px 0 rgba(0,0,0,0.35);
           font-size: 18px;
         }
-        
+
         .reel-frame.spin-end {
           transform: translateY(-8px);
         }
-        
+
         @media (max-width: 600px) {
           .lever-outer {
             display: none;
           }
-          
+
           .reel-frame {
             width: 80px;
             height: 100px;
@@ -4152,7 +4717,7 @@ function renderPokerGame() {
       reelElements.forEach(el => el.classList.remove('spin-end'));
       moveLever(true);
     }
-    
+
     function endSpinAnimation() {
       reelElements.forEach(el => {
         el.classList.add('spin-end');
@@ -4164,7 +4729,7 @@ function renderPokerGame() {
     leverKnob.addEventListener('click', () => {
       spinBtn.click();
     });
-    
+
     leverKnob.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -4184,6 +4749,11 @@ function renderPokerGame() {
         alert('Not enough cash to bet that amount');
         return;
       }
+
+      // Deduct bet immediately
+      cash -= bet;
+      cashSpan.textContent = cash.toFixed(2);
+      updateCash(cash);
 
       spinning = true;
       jackpot += bet * JACKPOT_CONTRIBUTION;
@@ -4237,7 +4807,7 @@ function renderPokerGame() {
             resultDiv.textContent = '😞 Sorry, you lost this round.';
           }
 
-          const newCash = cash - bet + payout;
+          const newCash = cash + payout;
           cash = newCash;
           cashSpan.textContent = cash.toFixed(2);
           updateCash(newCash);
@@ -4263,7 +4833,7 @@ function renderPokerGame() {
     });
   }
 
- function renderRouletteGame() {
+  function renderRouletteGame() {
     const rouletteNumbers = [
       { n: '0', c: 'green' },
       { n: '28', c: 'black' },
@@ -4309,20 +4879,20 @@ function renderPokerGame() {
 
     container.innerHTML = `
       <style>
-        .roulette-container { 
-          display: flex; 
-          flex-direction: column; 
-          align-items: center; 
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-          color: white; 
+        .roulette-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: white;
           background: linear-gradient(135deg, #0d331f, #1a5d38);
-          padding: 25px; 
+          padding: 25px;
           border-radius: 15px;
           max-width: 900px;
           margin: 0 auto;
           box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
-        
+
         .game-header {
           display: flex;
           justify-content: space-between;
@@ -4332,60 +4902,60 @@ function renderPokerGame() {
           padding-bottom: 15px;
           border-bottom: 2px solid rgba(255,255,255,0.2);
         }
-        
+
         .game-title {
           font-size: 2rem;
           margin: 0;
           color: gold;
           text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
-        
+
         .cash-info {
           font-size: 1.2rem;
           font-weight: bold;
         }
-        
+
         .wheel-container {
           position: relative;
           width: 350px;
           height: 350px;
           margin: 20px auto;
         }
-        
-        .wheel-outer { 
-          width: 100%; 
-          height: 100%; 
-          border-radius: 50%; 
-          border: 12px solid #444; 
-          position: relative; 
-          background: #222; 
-          overflow: hidden; 
+
+        .wheel-outer {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 12px solid #444;
+          position: relative;
+          background: #222;
+          overflow: hidden;
           box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        
-        .wheel-inner { 
-          position: absolute; 
-          top: 50%; 
-          left: 50%; 
-          transform: translate(-50%, -50%); 
-          width: 280px; 
-          height: 280px; 
-          border-radius: 50%; 
-          background: #0d331f; 
-          border: 6px solid #888; 
-          z-index: 2; 
+
+        .wheel-inner {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 280px;
+          height: 280px;
+          border-radius: 50%;
+          background: #0d331f;
+          border: 6px solid #888;
+          z-index: 2;
         }
-        
-        .ball { 
-          position: absolute; 
-          width: 20px; 
-          height: 20px; 
-          background: white; 
-          border-radius: 50%; 
-          z-index: 3; 
+
+        .ball {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          background: white;
+          border-radius: 50%;
+          z-index: 3;
           box-shadow: 0 0 8px rgba(255,255,255,0.8);
         }
-        
+
         .pointer {
           position: absolute;
           top: -20px;
@@ -4398,7 +4968,7 @@ function renderPokerGame() {
           z-index: 10;
           box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
-        
+
         .segment {
           position: absolute;
           top: 0;
@@ -4408,7 +4978,7 @@ function renderPokerGame() {
           transform-origin: bottom center;
           background: #888;
         }
-        
+
         .segment-number {
           position: absolute;
           top: 15px;
@@ -4419,30 +4989,30 @@ function renderPokerGame() {
           color: white;
           text-shadow: 1px 1px 1px black;
         }
-        
+
         .betting-section {
           width: 100%;
           margin: 25px 0;
         }
-        
+
         .betting-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 15px;
         }
-        
+
         .betting-title {
           font-size: 1.4rem;
           margin: 0;
         }
-        
+
         .bet-controls {
           display: flex;
           align-items: center;
           gap: 10px;
         }
-        
+
         .bet-input {
           padding: 8px;
           border-radius: 5px;
@@ -4452,52 +5022,52 @@ function renderPokerGame() {
           font-size: 1rem;
           font-weight: bold;
         }
-        
-        .betting-table { 
-          display: grid; 
-          grid-template-columns: repeat(14, 1fr); 
-          gap: 3px; 
-          background: #fff; 
-          padding: 6px; 
-          border-radius: 8px; 
-          color: #000; 
+
+        .betting-table {
+          display: grid;
+          grid-template-columns: repeat(14, 1fr);
+          gap: 3px;
+          background: #fff;
+          padding: 6px;
+          border-radius: 8px;
+          color: #000;
         }
-        
-        .bet-cell { 
-          padding: 12px 6px; 
-          text-align: center; 
-          border: 1px solid #ccc; 
-          cursor: pointer; 
-          font-weight: bold; 
-          min-width: 30px; 
+
+        .bet-cell {
+          padding: 12px 6px;
+          text-align: center;
+          border: 1px solid #ccc;
+          cursor: pointer;
+          font-weight: bold;
+          min-width: 30px;
           transition: all 0.2s;
         }
-        
-        .bet-cell:hover { 
-          background: #eee; 
+
+        .bet-cell:hover {
+          background: #eee;
           transform: scale(1.05);
         }
-        
-        .bet-cell.selected { 
-          outline: 3px solid yellow; 
-          background: #ffffcc; 
+
+        .bet-cell.selected {
+          outline: 3px solid yellow;
+          background: #ffffcc;
           position: relative;
           z-index: 1;
         }
-        
+
         .red { background: #d00; color: white; }
         .black { background: #222; color: white; }
         .green { background: #0a0; color: white; }
-        
-        .controls { 
-          margin: 25px 0; 
-          display: flex; 
-          gap: 15px; 
-          align-items: center; 
-          flex-wrap: wrap; 
-          justify-content: center; 
+
+        .controls {
+          margin: 25px 0;
+          display: flex;
+          gap: 15px;
+          align-items: center;
+          flex-wrap: wrap;
+          justify-content: center;
         }
-        
+
         .btn {
           padding: 12px 25px;
           font-size: 1.1rem;
@@ -4508,117 +5078,117 @@ function renderPokerGame() {
           transition: all 0.2s;
           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        
+
         .btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
         }
-        
+
         .btn-primary {
           background: linear-gradient(to bottom, #4CAF50, #2E7D32);
           color: white;
         }
-        
+
         .btn-secondary {
           background: linear-gradient(to bottom, #2196F3, #0D47A1);
           color: white;
         }
-        
+
         .btn-warning {
           background: linear-gradient(to bottom, #FF9800, #E65100);
           color: white;
         }
-        
+
         .btn-danger {
           background: linear-gradient(to bottom, #F44336, #B71C1C);
           color: white;
         }
-        
+
         .btn:hover:not(:disabled) {
           transform: translateY(-3px);
           box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
-        
-        .special-bets-container { 
-          margin: 15px 0; 
-          display: flex; 
-          gap: 12px; 
-          flex-wrap: wrap; 
-          justify-content: center; 
+
+        .special-bets-container {
+          margin: 15px 0;
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          justify-content: center;
         }
-        
-        .special-bet { 
-          min-width: 70px; 
-          padding: 12px 8px; 
-          border: 1px solid #ccc; 
-          cursor: pointer; 
-          font-weight: bold; 
-          border-radius: 6px; 
-          user-select: none; 
+
+        .special-bet {
+          min-width: 70px;
+          padding: 12px 8px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+          font-weight: bold;
+          border-radius: 6px;
+          user-select: none;
           transition: all 0.2s;
         }
-        
-        .special-bet:hover { 
-          background: #eee; 
-          color: #000; 
+
+        .special-bet:hover {
+          background: #eee;
+          color: #000;
           transform: scale(1.05);
         }
-        
-        .special-bet.selected { 
-          outline: 3px solid yellow; 
-          background: #ffffcc; 
-          color: #000; 
+
+        .special-bet.selected {
+          outline: 3px solid yellow;
+          background: #ffffcc;
+          color: #000;
         }
-        
-        #roulette-history { 
-          margin-top: 25px; 
-          width: 100%; 
-          background: rgba(0,0,0,0.3); 
-          border-radius: 10px; 
-          padding: 15px; 
-          color: white; 
-          font-size: 14px; 
+
+        #roulette-history {
+          margin-top: 25px;
+          width: 100%;
+          background: rgba(0,0,0,0.3);
+          border-radius: 10px;
+          padding: 15px;
+          color: white;
+          font-size: 14px;
         }
-        
-        #roulette-history h3 { 
-          margin: 0 0 12px 0; 
-          font-weight: bold; 
+
+        #roulette-history h3 {
+          margin: 0 0 12px 0;
+          font-weight: bold;
           color: gold;
         }
-        
+
         .history-list {
           display: flex;
           flex-wrap: wrap;
           gap: 8px;
         }
-        
-        .history-item { 
-          display: inline-block; 
-          width: 36px; 
-          height: 36px; 
-          line-height: 36px; 
-          border-radius: 50%; 
-          text-align: center; 
-          font-weight: bold; 
-          user-select: none; 
+
+        .history-item {
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+          line-height: 36px;
+          border-radius: 50%;
+          text-align: center;
+          font-weight: bold;
+          user-select: none;
           box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .history-item.red { background: #d00; color: white; }
         .history-item.black { background: #222; color: white; }
         .history-item.green { background: #0a0; color: white; }
-        
-        #win-loss { 
-          margin: 15px 0; 
-          font-size: 1.4rem; 
-          font-weight: bold; 
-          min-height: 30px; 
+
+        #win-loss {
+          margin: 15px 0;
+          font-size: 1.4rem;
+          font-weight: bold;
+          min-height: 30px;
           text-align: center;
           padding: 10px;
           border-radius: 8px;
           background: rgba(0,0,0,0.2);
         }
-        
+
         #roulette-result {
           margin: 15px 0;
           font-size: 1.8rem;
@@ -4627,13 +5197,13 @@ function renderPokerGame() {
           min-height: 40px;
         }
       </style>
-      
+
       <div class="roulette-container">
         <div class="game-header">
           <h2 class="game-title">🔴 AMERICAN ROULETTE</h2>
           <div class="cash-info">💰 Cash: $<span id="roulette-cash">${cash.toFixed(2)}</span></div>
         </div>
-        
+
         <div class="wheel-container">
           <div id="roulette-wheel" class="wheel-outer">
             <div class="wheel-inner"></div>
@@ -4641,10 +5211,10 @@ function renderPokerGame() {
             <div class="pointer"></div>
           </div>
         </div>
-        
+
         <div id="roulette-result"></div>
         <div id="win-loss"></div>
-        
+
         <div class="betting-section">
           <div class="betting-header">
             <h3 class="betting-title">Place Your Bets</h3>
@@ -4653,9 +5223,9 @@ function renderPokerGame() {
               <input type="number" id="roulette-bet-amount" class="bet-input" value="10" min="1">
             </div>
           </div>
-          
+
           <div class="betting-table" id="betting-grid"></div>
-          
+
           <div class="special-bets-container" id="special-bets">
             <div class="special-bet red" data-bet="red">Red</div>
             <div class="special-bet black" data-bet="black">Black</div>
@@ -4664,12 +5234,12 @@ function renderPokerGame() {
             <div class="special-bet" data-bet="even">Even</div>
           </div>
         </div>
-        
+
         <div class="controls">
           <button id="roulette-spin-btn" class="btn btn-primary">🎰 SPIN WHEEL</button>
           <button id="roulette-back-btn" class="btn btn-danger">BACK TO CASINO</button>
         </div>
-        
+
         <div id="roulette-history">
           <h3>🎲 Recent Spins</h3>
           <div class="history-list" id="history-list"></div>
@@ -4680,17 +5250,17 @@ function renderPokerGame() {
     // Create wheel segments with numbers
     const wheel = container.querySelector('#roulette-wheel');
     const segmentAngle = 360 / rouletteNumbers.length;
-    
+
     rouletteNumbers.forEach((num, i) => {
       const segment = document.createElement('div');
       segment.className = 'segment';
       segment.style.transform = `rotate(${i * segmentAngle}deg)`;
-      
+
       const numberEl = document.createElement('div');
       numberEl.className = 'segment-number';
       numberEl.textContent = num.n;
       numberEl.style.color = num.c === 'red' ? '#f55' : num.c === 'green' ? '#5f5' : '#fff';
-      
+
       segment.appendChild(numberEl);
       wheel.appendChild(segment);
     });
@@ -4770,6 +5340,11 @@ function renderPokerGame() {
         return;
       }
 
+      // Deduct total bet immediately
+      cash -= totalBet;
+      cashSpan.textContent = cash.toFixed(2);
+      updateCash(cash);
+
       isSpinning = true;
       spinBtn.disabled = true;
       resultDiv.textContent = 'Spinning...';
@@ -4785,7 +5360,7 @@ function renderPokerGame() {
       // Total rotation: full spins + segment position + offset
       const totalSpins = 5 + Math.floor(Math.random() * 3); // 5-7 full spins
       const targetRotation = -(totalSpins * 360 + winningIndex * segmentAngle + offsetAngle);
-      
+
       // Animate the wheel
       wheel.style.transition = 'transform 5s cubic-bezier(0.2, 0.8, 0.3, 1)';
       wheel.style.transform = `rotate(${targetRotation}deg)`;
@@ -4794,7 +5369,7 @@ function renderPokerGame() {
       const centerX = wheel.clientWidth / 2;
       const centerY = wheel.clientHeight / 2;
       const radius = 160;
-      
+
       ball.style.left = `${centerX + radius - ball.clientWidth / 2}px`;
       ball.style.top = `${centerY - ball.clientHeight / 2}px`;
       ball.style.display = 'block';
@@ -4804,46 +5379,46 @@ function renderPokerGame() {
       let animationId = null;
       const ballOrbitDuration = 4000; // Ball orbits for 4 seconds
       const ballFinalSettleTime = 1000; // Ball settles in 1 second
-      
+
       // Ball animation parameters
       const startAngle = Math.random() * Math.PI * 2; // Random starting angle
       const orbitSpeed = 5; // Speed of orbit (radians per second)
       const initialOrbitRadius = radius - 10; // Initial orbit radius
       const finalOrbitRadius = radius * 0.7; // Final orbit radius when settling
-      
+
       function animateBall(timestamp) {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
-        
+
         if (elapsed < ballOrbitDuration) {
           // Ball is orbiting
           const progress = elapsed / ballOrbitDuration;
           const currentAngle = startAngle + orbitSpeed * progress * Math.PI * 2;
           const currentRadius = initialOrbitRadius - (initialOrbitRadius - finalOrbitRadius) * progress;
-          
+
           const ballX = centerX + currentRadius * Math.sin(currentAngle) - ball.clientWidth / 2;
           const ballY = centerY - currentRadius * Math.cos(currentAngle) - ball.clientHeight / 2;
-          
+
           ball.style.left = `${ballX}px`;
           ball.style.top = `${ballY}px`;
-          
+
           animationId = requestAnimationFrame(animateBall);
         } else {
           // Ball settles to winning position
           cancelAnimationFrame(animationId);
-          
+
           // Move ball to the winning segment position
           const ballAngle = (winningIndex * segmentAngle + offsetAngle) * (Math.PI / 180);
           const ballX = centerX + (finalOrbitRadius) * Math.sin(ballAngle) - ball.clientWidth / 2;
           const ballY = centerY - (finalOrbitRadius) * Math.cos(ballAngle) - ball.clientHeight / 2;
-          
+
           // Smooth transition to final position
           ball.style.transition = `left ${ballFinalSettleTime}ms ease-out, top ${ballFinalSettleTime}ms ease-out`;
           ball.style.left = `${ballX}px`;
           ball.style.top = `${ballY}px`;
         }
       }
-      
+
       // Start ball animation
       animationId = requestAnimationFrame(animateBall);
 
@@ -4889,14 +5464,14 @@ function renderPokerGame() {
           winLossDiv.style.color = '#FFC107';
         }
 
-        const newCash = cash - totalBet + totalWin;
+        const newCash = cash + totalWin;
         cash = newCash;
         cashSpan.textContent = cash.toFixed(2);
         updateCash(newCash);
         updateCashDisplay();
 
         updateHistory(winningNumber);
-        
+
         // Clean up transitions
         setTimeout(() => {
           ball.style.transition = '';
@@ -4905,14 +5480,13 @@ function renderPokerGame() {
       }, 5500);
     });
 
-    backBtn.addEventListener('click', () => showGameMenu());
+    backBtn.addEventListener('click', () => {
+      showGameMenu();
+    });
   }
 
   showGameMenu();
 }
-
-
-
 
 
 (async () => {
@@ -4920,9 +5494,9 @@ function renderPokerGame() {
   render();
 })();
 
-setInterval(() => {
-  updatePrices();
-}, 15000);
+// Separate intervals for game time and price updates
+setInterval(updateGameTime, 30000); // Update game time every 15 seconds
+setInterval(updatePrices, 15000); // Update prices every 15 seconds
 </script>
 </body>
 </html>
