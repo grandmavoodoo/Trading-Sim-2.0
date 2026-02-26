@@ -54,13 +54,23 @@
     font-size: 1.8rem;
     font-weight: 700;
   }
-  #cash-display {
+  #balance-display {
     font-size: 1.2rem;
     font-weight: 600;
     background: rgba(255, 255, 255, 0.2);
     padding: 8px 16px;
     border-radius: 20px;
     backdrop-filter: blur(5px);
+    cursor: pointer;
+  }
+  #day-counter {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    margin-right: 10px;
   }
   nav {
     margin-top: 15px;
@@ -252,6 +262,38 @@
     border-radius: 6px;
     cursor: pointer;
   }
+
+  .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pagination button:hover:not(.active) {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.6);
+}
+
+.pagination button.active {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.8);
+  cursor: default;
+}
+
   .reset-btn {
     margin-top: 25px;
     padding: 12px 20px;
@@ -338,6 +380,8 @@
   }
   .portfolio-value {
     font-size: 24px;
+
+
     font-weight: 700;
     color: var(--dark-color);
   }
@@ -451,6 +495,10 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
   }
+  .chart-controls button {
+    margin: 0 5px;
+    padding: 8px 16px;
+  }
   .chart-order-section {
     margin-top: 30px;
     padding: 20px;
@@ -522,6 +570,121 @@
     font-weight: 600;
     margin-top: 5px;
   }
+  
+  /* Credit Payment Modal */
+  #credit-payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #credit-payment-content {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 500px;
+    padding: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  }
+  #credit-payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  #credit-payment-header h3 {
+    margin: 0;
+    color: var(--dark-color);
+    font-size: 22px;
+  }
+  #close-credit-payment {
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    color: #94a3b8;
+    transition: color 0.2s;
+  }
+  #close-credit-payment:hover {
+    color: var(--danger-color);
+  }
+  .payment-info {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f1f5f9;
+    border-radius: 8px;
+  }
+  .payment-info p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .payment-info strong {
+    color: var(--dark-color);
+  }
+  .payment-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .payment-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+  .shorts-info {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fef3c7;
+    border-radius: 8px;
+    border: 1px solid #f59e0b;
+  }
+  .shorts-info h4 {
+    margin-top: 0;
+    color: #92400e;
+  }
+  .short-position {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #f59e0b33;
+  }
+  .short-position:last-child {
+    border-bottom: none;
+  }
+  .cover-short-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .cover-short-btn:hover {
+    background-color: var(--secondary-color);
+  }
+  .cover-loss-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .cover-loss-btn:hover {
+    background-color: #dc2626;
+  }
+  
   @media (max-width: 768px) {
     body {
       padding: 10px;
@@ -538,7 +701,7 @@
       flex-direction: column;
       gap: 15px;
     }
-    #cash-display {
+    #balance-display {
       font-size: 1rem;
     }
     .action-buttons {
@@ -548,6 +711,12 @@
       width: 100%;
       margin: 5px 0;
     }
+    .payment-actions {
+      flex-direction: column;
+    }
+    .payment-actions .btn {
+      width: 100%;
+    }
   }
 </style>
 </head>
@@ -556,7 +725,11 @@
   <header>
     <div class="header-content">
       <h1 class="game-title">Trading Sim 2.0</h1>
-      <div id="cash-display">Cash: $10,000.00</div>
+      <div style="display: flex; align-items: center;">
+        <div id="day-counter">Day: 0 (Monday)</div>
+        <div id="balance-display">Cash: $10,000.00 | Credit: $0.00</div>
+<div id="interest-countdown" style="margin-left: 15px; font-weight: 600; color: #b45309;"></div>
+      </div>
     </div>
     <nav>
       <button id="nav-portfolio">Portfolio</button>
@@ -571,7 +744,7 @@
   <main id="main-content">
     <!-- Content injected by JS -->
   </main>
-  <footer>© Trading Sim 2.0 - UPDATE: 0.0.4 - Made By Mr.SusBus</footer>
+  <footer>© Trading Sim 2.0 - UPDATE: 0.0.5 - Made By Mr.SusBus</footer>
 </div>
 
 <!-- Detailed Chart Modal -->
@@ -619,6 +792,33 @@
         </thead>
         <tbody></tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Credit Payment Modal -->
+<div id="credit-payment-modal">
+  <div id="credit-payment-content">
+    <div id="credit-payment-header">
+      <h3>Credit Payment Due</h3>
+      <button id="close-credit-payment" title="Close">×</button>
+    </div>
+    <div class="payment-info">
+      <p id="credit-interest-countdown" style="font-weight: 600; color: #b45309;"></p>
+      <p><strong>Current Credit Balance:</strong> $<span id="credit-balance">0.00</span></p>
+      <p><strong>Minimum Payment Required:</strong> $<span id="min-payment">0.00</span></p>
+      <p><strong>Full Payment Required:</strong> $<span id="full-payment">0.00</span></p>
+      <p>If you don't pay at least the minimum, a 15% interest will be added to your credit balance EVERY WEEK.</p>
+      <p><strong>Interest Extension Weeks:</strong> <span id="extension-weeks">0</span>/6</p>
+    </div>
+    <div id="shorts-info-container" class="shorts-info" style="display: none;">
+      <h4>Short Positions</h4>
+      <div id="shorts-list"></div>
+    </div>
+    <div class="payment-actions">
+      <button id="pay-minimum-btn" class="btn btn-warning">Pay Minimum</button>
+      <button id="pay-full-btn" class="btn btn-success">Pay Full Amount</button>
+      <!-- <button id="skip-payment-btn" class="btn btn-danger">Skip Payment</button> -->
     </div>
   </div>
 </div>
@@ -812,6 +1012,7 @@ let selectedInvestment = null;
 let portfolio = {};
 let shortPositions = {};
 let cash = 10000;
+let credit = 0; // New credit balance for short selling
 let colors = {
   mainBg: '#ffff',
   header: '#2563eb',
@@ -821,6 +1022,14 @@ let colors = {
 let tradeHistory = [];
 let graphLineColor = colors.graphLine;
 
+// Game time tracking
+let gameDays = 0;
+let lastPaymentDay = 0;
+let paymentDue = false;
+let interestExtensionWeeks = 0; // Track interest extension weeks (max 6)
+const MAX_INTEREST_EXTENSION_WEEKS = 6;
+let lastDayIncrementTime = Date.now(); // Track when last day increment happened
+
 const mainContent = document.getElementById('main-content');
 const navStocks = document.getElementById('nav-stocks');
 const navPortfolio = document.getElementById('nav-portfolio');
@@ -829,7 +1038,8 @@ const navSettings = document.getElementById('nav-settings');
 const navTradeHistory = document.getElementById('nav-trade-history');
 const navInvestments = document.getElementById('nav-investments');
 const navVegas = document.getElementById('nav-vegas');
-const cashDisplay = document.getElementById('cash-display');
+const balanceDisplay = document.getElementById('balance-display');
+const dayCounter = document.getElementById('day-counter');
 
 navStocks.addEventListener('click', () => {
   currentPage = 'stocks';
@@ -881,6 +1091,11 @@ navVegas.addEventListener('click', () => {
   render();
 });
 
+// Add click event to balance display to open credit payment modal
+balanceDisplay.addEventListener('click', () => {
+  openCreditPaymentModal();
+});
+
 function updateNav() {
   navStocks.classList.toggle('active', currentPage === 'stocks');
   navPortfolio.classList.toggle('active', currentPage === 'portfolio');
@@ -891,12 +1106,24 @@ function updateNav() {
   navVegas.classList.toggle('active', currentPage === 'vegas');
 }
 
-function updateCashDisplay() {
-  cashDisplay.textContent = `Cash: $${cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+function updateBalanceDisplay() {
+  balanceDisplay.innerHTML = `
+    Cash: $${cash.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} | 
+    Credit: $${credit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+  `;
+  updateDayOfWeekDisplay();
+}
+
+// Update day of week display
+function updateDayOfWeekDisplay() {
+  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const dayOfWeek = dayNames[gameDays % 7];
+  dayCounter.textContent = `Day: ${gameDays} (${dayOfWeek})`;
 }
 
 function saveProgress() {
   localStorage.setItem('stockGameCash', cash.toFixed(2));
+  localStorage.setItem('stockGameCredit', credit.toFixed(2)); // Save credit balance
   localStorage.setItem('stockGamePortfolio', JSON.stringify(portfolio));
   localStorage.setItem('stockGameShorts', JSON.stringify(shortPositions));
   localStorage.setItem('stockGamePrices', JSON.stringify(priceHistories));
@@ -904,6 +1131,10 @@ function saveProgress() {
   localStorage.setItem('stockGameTradeHistory', JSON.stringify(tradeHistory));
   localStorage.setItem('stockGameOrders', JSON.stringify(orders));
   localStorage.setItem('stockGameMarketCapHistory', JSON.stringify(marketCapHistory));
+  // Save game time tracking
+  localStorage.setItem('stockGameDays', gameDays.toString());
+  localStorage.setItem('stockGameLastPaymentDay', lastPaymentDay.toString());
+  localStorage.setItem('stockGameInterestExtensionWeeks', interestExtensionWeeks.toString());
   // Save stock supplies
   const stockSupplies = {};
   stocks.forEach(stock => {
@@ -914,6 +1145,7 @@ function saveProgress() {
 
 async function loadProgress() {
   const savedCash = localStorage.getItem('stockGameCash');
+  const savedCredit = localStorage.getItem('stockGameCredit'); // Load credit balance
   const savedPortfolio = localStorage.getItem('stockGamePortfolio');
   const savedShorts = localStorage.getItem('stockGameShorts');
   const savedPrices = localStorage.getItem('stockGamePrices');
@@ -922,8 +1154,13 @@ async function loadProgress() {
   const savedOrders = localStorage.getItem('stockGameOrders');
   const savedMarketCapHistory = localStorage.getItem('stockGameMarketCapHistory');
   const savedSupplies = localStorage.getItem('stockGameSupplies');
+  // Load game time tracking
+  const savedGameDays = localStorage.getItem('stockGameDays');
+  const savedLastPaymentDay = localStorage.getItem('stockGameLastPaymentDay');
+  const savedInterestExtensionWeeks = localStorage.getItem('stockGameInterestExtensionWeeks');
 
   if (savedCash !== null) cash = parseFloat(savedCash);
+  if (savedCredit !== null) credit = parseFloat(savedCredit); // Load credit balance
   if (savedPortfolio !== null) portfolio = JSON.parse(savedPortfolio);
   if (savedShorts !== null) shortPositions = JSON.parse(savedShorts);
   if (savedPrices !== null) {
@@ -939,7 +1176,12 @@ async function loadProgress() {
   if (savedTradeHistory !== null) tradeHistory = JSON.parse(savedTradeHistory);
   if (savedOrders !== null) orders = JSON.parse(savedOrders);
   if (savedMarketCapHistory !== null) marketCapHistory = JSON.parse(savedMarketCapHistory);
-  
+
+  // Load game time tracking
+  if (savedGameDays !== null) gameDays = parseInt(savedGameDays);
+  if (savedLastPaymentDay !== null) lastPaymentDay = parseInt(savedLastPaymentDay);
+  if (savedInterestExtensionWeeks !== null) interestExtensionWeeks = parseInt(savedInterestExtensionWeeks);
+
   // Load stock supplies
   if (savedSupplies !== null) {
     const parsedSupplies = JSON.parse(savedSupplies);
@@ -956,13 +1198,14 @@ async function loadProgress() {
       }
     });
   }
-  
+
   // Calculate market cap history if not found
   if (marketCapHistory.length === 0) {
     calculateMarketCapHistory();
   }
-  
+
   applyColors();
+  updateDayOfWeekDisplay();
 }
 
 function applyColors() {
@@ -975,15 +1218,15 @@ function applyColors() {
   const root = document.documentElement;
   root.style.setProperty('--primary-color', colors.header);
   root.style.setProperty('--secondary-color', colors.header + 'dd'); // Slightly transparent for secondary
-  
+
   // Update body background (the gradient or solid color)
   document.body.style.background = colors.background;
-  
+
   // Update app container background
   const app = document.getElementById('app');
   if (app) app.style.backgroundColor = colors.mainBg;
 
-  updateCashDisplay();
+  updateBalanceDisplay();
   updateNav();
 }
 
@@ -1026,7 +1269,27 @@ function getAverageBuyPrice(symbol) {
   const totalCost = buys.reduce((sum, t) => sum + (t.shares * t.price), 0);
   return totalCost / totalShares;
 }
+function updateInterestCountdown() {
+  const countdownElement = document.getElementById('interest-countdown');
+  if (!countdownElement) return;
 
+  if (credit <= 0) {
+    countdownElement.textContent = '';
+    return;
+  }
+
+  const daysSinceLastPayment = gameDays - lastPaymentDay;
+  const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+
+  if (daysUntilInterest > 0) {
+    countdownElement.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+  } else {
+    countdownElement.textContent = 'Interest is due now!';
+  }
+}
+
+
+    updateInterestCountdown();
 // Helper to get average short entry price from history
 function getAverageShortPrice(symbol) {
   const shorts = tradeHistory.filter(t => t.symbol === symbol && t.type.toLowerCase() === 'short');
@@ -1069,20 +1332,34 @@ function checkOrders() {
         executedOrders.push(order);
       }
     } else if (order.type === 'short' && currentPrice >= orderPrice - TOLERANCE) {
+      // When shorting, player receives credit equal to (shares × short price)
       const proceeds = orderAmount * currentPrice;
-      cash += proceeds;
-      shortPositions[order.symbol] = (shortPositions[order.symbol] || 0) + orderAmount;
-      addTrade('Short', order.symbol, orderAmount, currentPrice);
-      executedOrders.push(order);
+      // Check if player has enough cash to cover the potential short (preventing infinite shorting)
+      if (proceeds <= cash) {
+        credit += proceeds;
+        shortPositions[order.symbol] = (shortPositions[order.symbol] || 0) + orderAmount;
+        addTrade('Short', order.symbol, orderAmount, currentPrice);
+        executedOrders.push(order);
+      }
     } else if (order.type === 'cover' && currentPrice <= orderPrice + TOLERANCE) {
       const shortAmt = shortPositions[order.symbol] || 0;
       if (shortAmt > 0 && orderAmount <= shortAmt) {
-        const cost = orderAmount * currentPrice;
-        if (cost <= cash) {
-          cash -= cost;
+        // Calculate average short price and profit/loss
+        const avgShort = getAverageShortPrice(order.symbol) || currentPrice;
+        const totalCreditForShort = avgShort * orderAmount;
+        const profitLoss = (avgShort - currentPrice) * orderAmount;
+
+        // Allow covering even with 0 credit if profitable
+        if (totalCreditForShort <= credit || profitLoss > 0) {
+          if (totalCreditForShort <= credit) {
+            credit -= totalCreditForShort;
+          }
+
+          // Add profit/loss to cash (not credit)
+          cash += profitLoss;
+
           shortPositions[order.symbol] = shortAmt - orderAmount;
           if (shortPositions[order.symbol] === 0) delete shortPositions[order.symbol];
-          const avgShort = getAverageShortPrice(order.symbol);
           addTrade('Cover', order.symbol, orderAmount, currentPrice, avgShort);
           executedOrders.push(order);
         }
@@ -1095,6 +1372,59 @@ function checkOrders() {
     saveProgress();
     if (currentPage === 'portfolio' || selectedStock || selectedInvestment) render();
     if (currentPage === 'tradeHistory') renderTradeHistory();
+  }
+}
+
+// Update game time (separate from price updates)
+  updateInterestCountdown();
+
+function updateGameTime() {
+  const now = Date.now();
+  // Increment game day every 30 seconds
+  if (now - lastDayIncrementTime >= 30000) {
+    gameDays++;
+    lastDayIncrementTime = now;
+    updateDayOfWeekDisplay();
+    
+    // Check if payment is due (every 30 days + extended weeks)
+    if (gameDays - lastPaymentDay >= 30 + (interestExtensionWeeks * 7) && credit > 0) {
+      paymentDue = true;
+      openCreditPaymentModal();
+    }
+    
+    // Apply weekly interest every 7 days, but skip if within extension period
+    if ((gameDays - lastPaymentDay) % 7 === 0 && credit > 0) {
+      const weeksSincePayment = Math.floor((gameDays - lastPaymentDay) / 7);
+      // Skip interest if within extension period
+      if (weeksSincePayment > interestExtensionWeeks) {
+        const interest = credit * 0.15;
+        credit += interest;
+        interestExtensionWeeks = 0; // Reset interest extension weeks on interest charge
+        saveProgress();
+        updateBalanceDisplay();
+      }
+    }
+
+// Update the interest countdown display
+function updateInterestCountdown() {
+  const countdownElement = document.getElementById('interest-countdown');
+  if (!countdownElement) return;
+
+  if (credit <= 0) {
+    countdownElement.textContent = '';
+    return;
+  }
+
+  const daysSinceLastPayment = gameDays - lastPaymentDay;
+  const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+
+  if (daysUntilInterest > 0) {
+    countdownElement.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+  } else {
+    countdownElement.textContent = 'Interest is due now!';
+  }
+}
+
   }
 }
 
@@ -1142,11 +1472,11 @@ async function updatePrices() {
 
   // Update market cap history
   updateMarketCapHistory();
-  
+
   checkOrders();
   saveProgress();
   updatePriceDisplays(previousPrices);
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function updateMarketCapHistory() {
@@ -1156,7 +1486,7 @@ function updateMarketCapHistory() {
     const currentPrice = history[history.length - 1].price;
     currentMarketCap += currentPrice * stock.supply;
   });
-  
+
   if (marketCapHistory.length >= 180) marketCapHistory.shift();
   marketCapHistory.push({
     day: marketCapHistory.length > 0 ? marketCapHistory[marketCapHistory.length - 1].day + 1 : 0,
@@ -1173,13 +1503,13 @@ function updatePriceDisplays(previousPrices) {
       const stock = stocks.find(s => s.symbol === symbol);
       const owned = portfolio[symbol] || 0;
       const hasFullOwnership = stock && owned >= stock.supply;
-      
+
       item.querySelector('.stock-info').innerHTML = `${stock.name} (${symbol}) - $${currentPrice.toFixed(2)}`;
       const checkmark = item.querySelector('.checkmark');
       if (checkmark) {
         checkmark.style.display = hasFullOwnership ? 'inline' : 'none';
       }
-      
+
       if (previousPrice) {
         if (currentPrice > previousPrice) {
           item.classList.add('price-up');
@@ -1272,30 +1602,34 @@ function renderPortfolioValues() {
       gainLossCell.className = gainLossColor;
     }
   });
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function addTrade(type, symbol, shares, price, entryPrice = null) {
   if (!Array.isArray(tradeHistory)) tradeHistory = [];
 
-  const trade = {
-    type: String(type || '').trim(),
-    symbol: String(symbol || '').trim(),
+  const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const dayOfWeek = dayNames[gameDays % 7];
+
+  const t = {
+    type: String(type || ''),
+    symbol: String(symbol || ''),
     shares: Number(shares) || 0,
     price: Number(price) || 0,
     entryPrice: entryPrice != null ? Number(entryPrice) : null,
-    date: new Date().toISOString(),
+    gameDay: gameDays,
+    dayOfWeek: dayOfWeek
   };
 
-  tradeHistory.unshift(trade);
+  tradeHistory.unshift(t);
   if (tradeHistory.length > 125) tradeHistory.length = 125;
-
-  saveProgress();
-  if (currentPage === 'tradeHistory') renderTradeHistory();
+  // if your app calls saveProgress or rerender, call them here:
+  if (typeof saveProgress === 'function') saveProgress();
+  if (typeof renderTradeHistory === 'function') renderTradeHistory();
 }
 
 function render() {
-  updateCashDisplay();
+  updateBalanceDisplay();
   if (currentPage === 'stocks' && !selectedStock) renderStocksList();
   else if (currentPage === 'stocks' && selectedStock) renderStockDetails();
   else if (currentPage === 'portfolio') renderPortfolio();
@@ -1420,7 +1754,7 @@ function renderStocksList(page = 1) {
   const endIndex = startIndex + stocksPerPage;
   const paginatedStocks = stocks.slice(startIndex, endIndex);
   const totalPages = Math.ceil(stocks.length / stocksPerPage);
-  
+
   let html = '<h2 class="section-title">Available Stocks</h2><ul>';
   paginatedStocks.forEach(stock => {
     const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
@@ -1432,7 +1766,7 @@ function renderStocksList(page = 1) {
     </li>`;
   });
   html += '</ul>';
-  
+
   // Add pagination controls
   if (totalPages > 1) {
     html += '<div class="pagination">';
@@ -1447,9 +1781,9 @@ function renderStocksList(page = 1) {
     }
     html += '</div>';
   }
-  
+
   mainContent.innerHTML = html;
-  
+
   // Add event listeners for stock items
   document.querySelectorAll('.stock-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -1458,7 +1792,7 @@ function renderStocksList(page = 1) {
       render();
     });
   });
-  
+
   // Add event listeners for pagination buttons
   document.querySelectorAll('.page-btn').forEach(button => {
     button.addEventListener('click', (e) => {
@@ -1543,11 +1877,13 @@ function renderStockDetails() {
   document.querySelector('.short-btn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('buy-amount').value);
     if (isNaN(amount) || amount <= 0) return alert('Enter valid amount');
+    // When shorting, player receives credit equal to (shares × short price)
     const proceeds = amount * currentPrice;
-    if (proceeds > cash) return alert('Not enough cash for margin');
-    cash -= proceeds;
+    if (proceeds > cash) return alert('You cannot short for more money than you have in cash');
+    credit += proceeds;
     shortPositions[selectedStock.symbol] = (shortPositions[selectedStock.symbol] || 0) + amount;
     addTrade('Short', selectedStock.symbol, amount, currentPrice);
+    interestExtensionWeeks = 0; // Reset interest extension weeks on new short
     saveProgress();
     render();
   });
@@ -1569,15 +1905,29 @@ function renderStockDetails() {
     const amount = parseFloat(document.getElementById('sell-amount').value);
     const shorted = shortPositions[selectedStock.symbol] || 0;
     if (isNaN(amount) || amount <= 0 || amount > shorted) return alert('Invalid amount');
+
+    // When covering, player uses credit equal to (shares × cover price)
     const cost = amount * currentPrice;
-    if (cost > cash) return alert('Not enough cash');
-    cash -= cost;
-    shortPositions[selectedStock.symbol] -= amount;
-    if (shortPositions[selectedStock.symbol] === 0) delete shortPositions[selectedStock.symbol];
-    const avgShort = getAverageShortPrice(selectedStock.symbol);
-    addTrade('Cover', selectedStock.symbol, amount, currentPrice, avgShort);
-    saveProgress();
-    render();
+    const avgShort = getAverageShortPrice(selectedStock.symbol) || currentPrice;
+    const profitLoss = (avgShort - currentPrice) * amount;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      shortPositions[selectedStock.symbol] -= amount;
+      if (shortPositions[selectedStock.symbol] === 0) delete shortPositions[selectedStock.symbol];
+      addTrade('Cover', selectedStock.symbol, amount, currentPrice, avgShort);
+      saveProgress();
+      render();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   });
 
   document.querySelector('.sell-all-btn').addEventListener('click', () => {
@@ -1593,15 +1943,28 @@ function renderStockDetails() {
 
   document.querySelector('.cover-all-btn').addEventListener('click', () => {
     const shorted = shortPositions[selectedStock.symbol] || 0;
-    if (shorted <= 0) return;
+    if (shorted <= 0) return alert('You do not have any short position to cover');
+
     const cost = shorted * currentPrice;
-    if (cost > cash) return alert('Not enough cash');
-    cash -= cost;
-    const avgShort = getAverageShortPrice(selectedStock.symbol);
-    addTrade('Cover', selectedStock.symbol, shorted, currentPrice, avgShort);
-    delete shortPositions[selectedStock.symbol];
-    saveProgress();
-    render();
+    const avgShort = getAverageShortPrice(selectedStock.symbol) || currentPrice;
+    const profitLoss = (avgShort - currentPrice) * shorted;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      delete shortPositions[selectedStock.symbol];
+      addTrade('Cover', selectedStock.symbol, shorted, currentPrice, avgShort);
+      saveProgress();
+      render();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   });
 
   document.querySelectorAll('.order-btn').forEach(button => {
@@ -1657,7 +2020,7 @@ function renderPortfolio() {
     const prices = priceHistories[symbol];
     if (!prices || prices.length === 0) return;
     const currentPrice = prices[prices.length - 1].price;
-    
+
     const avgBuy = getAverageBuyPrice(symbol) || currentPrice;
     const avgShort = getAverageShortPrice(symbol) || currentPrice;
 
@@ -1673,7 +2036,7 @@ function renderPortfolio() {
   html += `<div class="portfolio-summary">
     <div class="portfolio-value">Net Value: $${(cash + totalCurrentValue).toFixed(2)}</div>
     <div class="portfolio-gain-loss ${totalGainLossColor}">Total Gain/Loss: ${calculatedTotalGainLoss >= 0 ? '+' : ''}$${Math.abs(calculatedTotalGainLoss).toFixed(2)} (${totalPercentChange.toFixed(2)}%)</div>
-    <div>Available Cash: $${cash.toFixed(2)}</div>
+    <div>Cash: $${cash.toFixed(2)} | Credit: $${credit.toFixed(2)}</div>
   </div>`;
 
   if (ownedSymbols.length === 0 && shortSymbols.length === 0 && orders.length === 0) {
@@ -1691,7 +2054,7 @@ function renderPortfolio() {
         const stock = stocks.find(s => s.symbol === symbol);
         const investment = investments.find(i => i.symbol === symbol);
         const hasFullOwnership = stock && owned >= stock.supply;
-        
+
         if (stock) {
           html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}${hasFullOwnership ? ' ✓' : ''}</a></td><td>${owned.toFixed(3)}</td><td>$${(owned * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
         } else if (investment) {
@@ -1712,7 +2075,7 @@ function renderPortfolio() {
         const gainLossColor = gainLoss >= 0 ? 'positive' : 'negative';
         const stock = stocks.find(s => s.symbol === symbol);
         const investment = investments.find(i => i.symbol === symbol);
-        
+
         if (stock) {
           html += `<tr data-symbol="${symbol}"><td><a href="#" class="portfolio-stock-link" data-symbol="${symbol}">${symbol}</a></td><td>${shorted.toFixed(3)}</td><td>$${(shorted * currentPrice).toFixed(2)}</td><td class="${gainLossColor}">${gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</td></tr>`;
         } else if (investment) {
@@ -1762,30 +2125,30 @@ function renderPortfolio() {
 
 function renderMarketCap() {
   let html = `<h2 class="section-title">Market Capitalization</h2>`;
-  
+
   // Calculate current market cap
   let currentMarketCap = 0;
   stocks.forEach(stock => {
     const currentPrice = priceHistories[stock.symbol][priceHistories[stock.symbol].length - 1].price;
     currentMarketCap += currentPrice * stock.supply;
   });
-  
+
   // Calculate market cap 60 days ago
   let pastMarketCap = marketCapHistory.length > 0 ? marketCapHistory[0].marketCap : currentMarketCap;
-  
+
   // Calculate percentage change
   const percentChange = ((currentMarketCap - pastMarketCap) / pastMarketCap) * 100;
   const changeColor = percentChange >= 0 ? 'positive' : 'negative';
-  
+
   html += `<div class="market-cap-info">
     <div class="market-cap-value">Total Market Cap: $${currentMarketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
     <div class="market-cap-change ${changeColor}">60-Day Change: ${percentChange >= 0 ? '+' : ''}${percentChange.toFixed(2)}%</div>
   </div>`;
-  
+
   html += `<div id="market-cap-graph"></div>`;
-  
+
   mainContent.innerHTML = html;
-  
+
   // Draw the market cap graph
   drawMarketCapGraph();
 }
@@ -1797,7 +2160,7 @@ function drawMarketCapGraph() {
   const width = Math.min(container.clientWidth, 600);
   const height = 200;
   const padding = 40;
-  
+
   const maxMarketCap = Math.max(...marketCapHistory.map(p => p.marketCap));
   const minMarketCap = Math.min(...marketCapHistory.map(p => p.marketCap));
   const marketCapRange = maxMarketCap - minMarketCap || 1;
@@ -1921,60 +2284,77 @@ function renderSettings() {
   });
 }
 
-function renderTradeHistory() {
-  let html = `<h2 class="section-title">Trade History</h2>`;
+function renderTradeHistory(page = 1) {
+  // adapt to how you render to the page; this uses an example container with id "trade-history-container"
+  const container = document.getElementById('trade-history-container') || document.getElementById('main-content');
+  if (!container) return;
 
-  if (tradeHistory.length === 0) {
-    html += '<p>No trades yet.</p>';
-    mainContent.innerHTML = html;
+  if (!Array.isArray(tradeHistory) || tradeHistory.length === 0) {
+    container.innerHTML = '<h2>Trade History</h2><p>No trades yet.</p>';
     return;
   }
 
-  html += `<table class="trade-history-table"><thead><tr><th>Date/Time</th><th>Type</th><th>Asset</th><th>Shares</th><th>Price</th><th>Result ($)</th><th>Result (%)</th></tr></thead><tbody>`;
+  const tradesPerPage = 10;
+  const totalPages = Math.ceil(tradeHistory.length / tradesPerPage);
+  // clamp page
+  page = Math.max(1, Math.min(page, totalPages));
+  const startIndex = (page - 1) * tradesPerPage;
+  const endIndex = startIndex + tradesPerPage;
+  const paginatedTrades = tradeHistory.slice(startIndex, endIndex);
 
-  tradeHistory.forEach(trade => {
-    const dateStr = new Date(trade.date).toLocaleString();
-    const symbol = trade.symbol;
-    const type = (trade.type || '').toLowerCase();
+  let html = '<h2>Trade History</h2><table class="trade-history-table"><thead><tr><th>Game Day</th><th>Day of Week</th><th>Type</th><th>Asset</th><th>Shares</th><th>Price</th><th>Result ($)</th><th>Result (%)</th></tr></thead><tbody>';
+  paginatedTrades.forEach(trade => {
+    const day = trade.gameDay != null ? trade.gameDay : '?';
+    const dayOfWeek = trade.dayOfWeek || '';
+    const type = trade.type || '';
+    const symbol = trade.symbol || '';
     const shares = Number(trade.shares) || 0;
     const price = Number(trade.price) || 0;
-    const entryPrice = trade.entryPrice != null ? Number(trade.entryPrice) : (
-      type.includes('sell') ? getAverageBuyPrice(symbol) :
-      type.includes('cover') ? getAverageShortPrice(symbol) : null
-    );
+    const entry = trade.entryPrice != null ? Number(trade.entryPrice) : null;
 
-    let resultDollar = '-';
-    let resultPercent = '-';
-    let color = '';
+    let resDollar = '-';
+    let resPct = '-';
+    let cls = '';
 
-    if ((type.includes('sell') || type.includes('cover')) && entryPrice != null && entryPrice !== 0 && shares > 0) {
+    if ((/sell|cover/i).test(type) && entry && entry !== 0 && shares > 0) {
       let perSharePL = 0;
-      if (type.includes('sell')) {
-        perSharePL = price - entryPrice;
-      } else if (type.includes('cover')) {
-        perSharePL = entryPrice - price;
-      }
+      if (/sell/i.test(type)) perSharePL = price - entry;
+      else if (/cover/i.test(type)) perSharePL = entry - price;
       const diff = perSharePL * shares;
-      const pct = (perSharePL / entryPrice) * 100;
-
-      color = diff >= 0 ? 'positive' : 'negative';
-      resultDollar = (diff >= 0 ? '+' : '') + '$' + diff.toFixed(2);
-      resultPercent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+      const pct = (perSharePL / entry) * 100;
+      cls = diff >= 0 ? 'positive' : 'negative';
+      resDollar = (diff >= 0 ? '+' : '') + '$' + diff.toFixed(2);
+      resPct = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
     }
 
-    html += `<tr>
-      <td>${dateStr}</td>
-      <td>${trade.type}</td>
-      <td>${symbol}</td>
-      <td>${shares.toFixed(3)}</td>
-      <td>$${price.toFixed(2)}</td>
-      <td class="${color}">${resultDollar}</td>
-      <td class="${color}">${resultPercent}</td>
-    </tr>`;
+    html += `<tr><td>Day ${day}</td><td>${dayOfWeek}</td><td>${type}</td><td>${symbol}</td><td>${shares.toFixed(3)}</td><td>$${price.toFixed(2)}</td><td class="${cls}">${resDollar}</td><td class="${cls}">${resPct}</td></tr>`;
   });
-
   html += '</tbody></table>';
-  mainContent.innerHTML = html;
+
+  // Add pagination controls (styled like Available Stocks)
+  if (totalPages > 1) {
+    html += '<div class="pagination">';
+    if (page > 1) {
+      html += `<button class="page-btn" data-page="${page - 1}">Previous</button>`;
+    }
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="page-btn ${i === page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+    }
+    if (page < totalPages) {
+      html += `<button class="page-btn" data-page="${page + 1}">Next</button>`;
+    }
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+
+  // Add event listeners for pagination buttons
+  container.querySelectorAll('.page-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const newPage = parseInt(e.target.getAttribute('data-page'), 10);
+      if (!isNaN(newPage)) renderTradeHistory(newPage);
+    });
+  });
 }
 
 function renderVegas() {
@@ -1988,15 +2368,20 @@ function renderVegas() {
 function updateCashFromVegas(newCash) {
   cash = newCash;
   saveProgress();
-  updateCashDisplay();
+  updateBalanceDisplay();
 }
 
 function resetProfile() {
   cash = 10000;
+  credit = 0; // Reset credit balance
   portfolio = {};
   shortPositions = {};
   tradeHistory = [];
   orders = [];
+  gameDays = 0;
+  lastPaymentDay = 0;
+  paymentDue = false;
+  interestExtensionWeeks = 0; // Reset interest extension
 
   // Regenerate price histories
   stocks.forEach(stock => {
@@ -2348,8 +2733,12 @@ function openDetailedChart(symbol, name) {
     const price = parseFloat(modalOrderPrice.value);
     if (isNaN(amount) || amount <= 0) return alert('Enter a valid amount');
     if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+    // When shorting, player receives credit equal to (shares × short price)
     const proceeds = amount * price;
-    if (proceeds > cash) return alert('Not enough cash for margin');
+    if (proceeds > cash) return alert('You cannot short for more money than you have in cash');
+    credit += proceeds;
+    shortPositions[symbol] = (shortPositions[symbol] || 0) + amount;
+    addTrade('Short', symbol, amount, price);
     placeOrder(symbol, 'short', amount, price);
     renderOrders();
   };
@@ -2362,10 +2751,28 @@ function openDetailedChart(symbol, name) {
     if (shorted <= 0) return alert('You do not have any short position to cover');
     if (amount > shorted) return alert('You cannot cover more than your short position');
     if (isNaN(price) || price <= 0) return alert('Enter a valid price');
+
     const cost = amount * price;
-    if (cost > cash) return alert('Not enough cash to place this cover order');
-    placeOrder(symbol, 'cover', amount, price);
-    renderOrders();
+    const avgShort = getAverageShortPrice(symbol) || price;
+    const profitLoss = (avgShort - price) * amount;
+    
+    // Allow covering even with 0 credit if profitable
+    if (cost <= credit || profitLoss > 0) {
+      if (cost <= credit) {
+        credit -= cost;
+      }
+      
+      // Add profit/loss to cash (not credit)
+      cash += profitLoss;
+
+      shortPositions[symbol] = (shortPositions[symbol] || 0) - amount;
+      if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+      addTrade('Cover', symbol, amount, price, avgShort);
+      placeOrder(symbol, 'cover', amount, price);
+      renderOrders();
+    } else {
+      alert('Not enough credit to cover this position.');
+    }
   };
 
   modal.style.display = 'flex';
@@ -2381,9 +2788,238 @@ function openDetailedChart(symbol, name) {
   };
 }
 
+// Credit Payment Modal Functions
+function openCreditPaymentModal() {
+  const modal = document.getElementById('credit-payment-modal');
+  const interestCountdown = document.getElementById('credit-interest-countdown');
+  if (interestCountdown) {
+    const daysSinceLastPayment = gameDays - lastPaymentDay;
+    const daysUntilInterest = 30 + (interestExtensionWeeks * 7) - daysSinceLastPayment;
+    if (daysUntilInterest > 0) {
+      interestCountdown.textContent = `Interest will be added in ${daysUntilInterest} day${daysUntilInterest !== 1 ? 's' : ''}`;
+    } else {
+      interestCountdown.textContent = 'Interest is due now!';
+    }
+  }
+  const creditBalance = document.getElementById('credit-balance');
+  const minPayment = document.getElementById('min-payment');
+  const fullPayment = document.getElementById('full-payment');
+  const shortsInfoContainer = document.getElementById('shorts-info-container');
+  const shortsList = document.getElementById('shorts-list');
+  const extensionWeeks = document.getElementById('extension-weeks');
+  
+  // Ensure credit is treated as a number
+  const currentCredit = Number(credit) || 0;
 
+  // Calculate 10% minimum, but ensure it's at least $0.01 if credit exists
+  let minAmount = currentCredit * 0.1;
+  if (currentCredit > 0 && minAmount < 0.01) minAmount = currentCredit;
 
+  // Update the UI text
+  creditBalance.textContent = currentCredit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  minPayment.textContent = minAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  fullPayment.textContent = currentCredit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  extensionWeeks.textContent = interestExtensionWeeks;
+  
+  // Check for short positions
+  const allShorts = [];
+  for (const symbol in shortPositions) {
+    if (shortPositions[symbol] > 0) {
+      const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+      const avgShortPrice = getAverageShortPrice(symbol) || currentPrice;
+      
+      // Calculate profit/loss for the entire position
+      const profitLoss = (avgShortPrice - currentPrice) * shortPositions[symbol];
+      
+      allShorts.push({
+        symbol,
+        amount: shortPositions[symbol],
+        avgPrice: avgShortPrice,
+        currentPrice,
+        profitLoss
+      });
+    }
+  }
+  
+  // Display short positions info if any exist
+  if (allShorts.length > 0) {
+    shortsInfoContainer.style.display = 'block';
+    let shortsHtml = '';
+    allShorts.forEach(short => {
+      const isProfitable = short.profitLoss > 0;
+      const buttonText = isProfitable 
+        ? `Cover for $${short.profitLoss.toFixed(2)} profit` 
+        : `Cover for $${Math.abs(short.profitLoss).toFixed(2)} loss`;
+      
+      const buttonClass = isProfitable ? 'cover-short-btn' : 'cover-loss-btn';
+      
+      shortsHtml += `
+        <div class="short-position">
+          <div>${short.symbol}: ${short.amount.toFixed(3)} shares</div>
+          <div>
+            <button class="${buttonClass}" data-symbol="${short.symbol}" data-amount="${short.amount}">
+              ${buttonText}
+            </button>
+          </div>
+        </div>
+      `;
+    });
+    shortsList.innerHTML = shortsHtml;
+    
+    // Add event listeners to cover buttons
+    document.querySelectorAll('.cover-short-btn, .cover-loss-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const symbol = e.target.dataset.symbol;
+        const amount = parseFloat(e.target.dataset.amount);
+        coverShortPosition(symbol, amount);
+      });
+    });
+  } else {
+    shortsInfoContainer.style.display = 'none';
+  }
+  
+  modal.style.display = 'flex';
+}
 
+function closeCreditPaymentModal() {
+  const modal = document.getElementById('credit-payment-modal');
+  modal.style.display = 'none';
+}
+
+// Function to cover a short position
+function coverShortPosition(symbol, amount) {
+  const currentPrice = priceHistories[symbol][priceHistories[symbol].length - 1].price;
+  const avgShort = getAverageShortPrice(symbol) || currentPrice;
+  const profitLoss = (avgShort - currentPrice) * amount;
+  
+  // When covering, player uses credit equal to (shares × avg short price)
+  const cost = avgShort * amount; // Use avg short price, not current price
+  
+  // For profitable shorts, we can cover even with 0 credit
+  // For losing shorts, we need to use cash instead of credit
+  if (profitLoss > 0) {
+    // Profitable short - can cover even with 0 credit
+    if (cost <= credit) {
+      credit -= cost;
+    }
+    
+    // Add profit to cash (not credit)
+    cash += profitLoss;
+    
+    shortPositions[symbol] -= amount;
+    if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+    
+    addTrade('Cover', symbol, amount, currentPrice, avgShort);
+    saveProgress();
+    updateBalanceDisplay();
+    
+    // Refresh the modal to update the UI
+    openCreditPaymentModal();
+    
+    alert(`Covered ${amount.toFixed(3)} shares of ${symbol} for a profit of $${profitLoss.toFixed(2)}.`);
+  } else {
+    // Losing short - use cash instead of credit
+    const loss = Math.abs(profitLoss);
+    if (cash >= loss) {
+      cash -= loss;
+      
+      shortPositions[symbol] -= amount;
+      if (shortPositions[symbol] <= 0) delete shortPositions[symbol];
+      
+      addTrade('Cover', symbol, amount, currentPrice, avgShort);
+      saveProgress();
+      updateBalanceDisplay();
+      
+      // Refresh the modal to update the UI
+      openCreditPaymentModal();
+      
+      alert(`Covered ${amount.toFixed(3)} shares of ${symbol} for a loss of $${loss.toFixed(2)} using cash.`);
+    } else {
+      alert('Not enough cash to cover this losing position.');
+    }
+  }
+}
+
+// Event listeners for credit payment modal
+const closeCreditPaymentBtn = document.getElementById('close-credit-payment');
+if (closeCreditPaymentBtn) {
+  closeCreditPaymentBtn.addEventListener('click', closeCreditPaymentModal);
+}
+
+const payMinimumBtn = document.getElementById('pay-minimum-btn');
+if (payMinimumBtn) {
+  payMinimumBtn.addEventListener('click', () => {
+    // Re-calculate the exact same 10% logic used in the modal
+    const currentCredit = Number(credit) || 0;
+    let minAmount = currentCredit * 0.1;
+    
+    // If credit is very small, just pay the whole thing
+    if (minAmount < 0.01) minAmount = currentCredit;
+
+    if (cash >= minAmount) {
+      cash -= minAmount;
+      credit -= minAmount;
+      
+      // Extend interest deferral by 1 week, max 6 weeks
+      if (interestExtensionWeeks < MAX_INTEREST_EXTENSION_WEEKS) {
+        interestExtensionWeeks++;
+      }
+      
+      // Reset the payment timer
+      lastPaymentDay = gameDays;
+      paymentDue = false;
+      
+      saveProgress();
+      updateBalanceDisplay();
+      closeCreditPaymentModal();
+      alert(`Minimum payment of $${minAmount.toFixed(2)} successful. Interest deferred by ${interestExtensionWeeks} week(s).`);
+    } else {
+      alert(`You need $${minAmount.toFixed(2)} in cash to make the minimum payment.`);
+    }
+  });
+}
+
+const payFullBtn = document.getElementById('pay-full-btn');
+if (payFullBtn) {
+  payFullBtn.addEventListener('click', () => {
+    if (cash >= credit) {
+      cash -= credit;
+      credit = 0;
+      lastPaymentDay = gameDays;
+      paymentDue = false;
+      interestExtensionWeeks = 0; // Reset extension when paying full
+      saveProgress();
+      updateBalanceDisplay();
+      closeCreditPaymentModal();
+      alert('Paid off your entire credit balance!');
+    } else {
+      alert('Not enough cash to pay off your credit balance.');
+    }
+  });
+}
+
+const skipPaymentBtn = document.getElementById('skip-payment-btn');
+if (skipPaymentBtn) {
+  skipPaymentBtn.addEventListener('click', () => {
+    // Apply 15% interest to credit balance
+    const interest = credit * 0.15;
+    credit += interest;
+    saveProgress();
+    updateBalanceDisplay();
+    closeCreditPaymentModal();
+    alert(`15% interest ($${interest.toFixed(2)}) has been added to your credit balance.`);
+  });
+}
+
+// Close modals when clicking outside
+const creditPaymentModal = document.getElementById('credit-payment-modal');
+if (creditPaymentModal) {
+  creditPaymentModal.addEventListener('click', (e) => {
+    if (e.target === creditPaymentModal) {
+      closeCreditPaymentModal();
+    }
+  });
+}
 
 
 (async () => {
@@ -2391,10 +3027,9 @@ function openDetailedChart(symbol, name) {
   render();
 })();
 
-setInterval(() => {
-  updatePrices();
-}, 15000);
+// Separate intervals for game time and price updates
+setInterval(updateGameTime, 30000); // Update game time every 15 seconds
+setInterval(updatePrices, 15000); // Update prices every 15 seconds
 </script>
 </body>
-
 </html>
